@@ -32,17 +32,19 @@
 `timescale 1ns / 10ps
 
 
-module <module_name> (
+module <module_name> #(
+  //----------------- Parameters  -----------------------
+  parameter MODULE_NAME = "<module_name>"
 
-  //--------------------- Misc Ports (Logic)  -----------
+) (
+
+  //--------------------- Ports -------------------------
 
 
-  //--------------------- Interfaces --------------------
 
+);
 
-                );
-
-//----------------------- Global parameters Declarations ------------------
+//----------------------- Local Parameters Declarations -------------------
 
 
 //----------------------- Input Declarations ------------------------------
