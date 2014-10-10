@@ -34,6 +34,7 @@
 
 module i2c_master #(
   //----------------- Parameter List  ------------------
+  parameter MODULE_NAME         = "I2C_MASTER"
   parameter LB_DATA_W           = 32,
   parameter LB_ADDR_W           = 8,
   parameter CLK_DIV_CNT_W       = 8,
@@ -97,6 +98,8 @@ module i2c_master #(
   wire  [(DATA_CNTR_W-3)-1:0] data_cntr_bytes;
 
   wire  [I2C_SEQ_W-1:0]       i2c_seq_bits;
+
+  wire                        sda_i;
 
 
   genvar  i,j;
@@ -178,7 +181,7 @@ enum  logic [2:0] { IDLE_S  = 0,
 
         if(i2c_rd_n_wr  & (fsm_pstate ==  DATA_S) & tck_by_2_valid)
         begin
-          data_cache[data_cntr_bytes  - 1'b1] = {data_cache[data_cntr_bytes - 1'b1][6:1],sda};
+          data_cache[data_cntr_bytes  - 1'b1] = {data_cache[data_cntr_bytes - 1'b1][6:1],sda_i};
         end
       end
 
@@ -212,6 +215,19 @@ enum  logic [2:0] { IDLE_S  = 0,
       lb_rd_valid             <=  lb_rd_en;
     end
   end
+
+
+  /*  Synchronize SDA Line input */
+  module dd_sync  #(.P_NO_SYNC_STAGES(2)) sda_sync_inst
+  (
+      .clk          (clk),
+      .rst_n        (rst_n),
+
+      .signal_id    (sda),
+
+      .signal_od    (sda_i)
+  );
+
 
 
   /*  FSM Logic */
@@ -427,6 +443,8 @@ endmodule // i2c_master
  
 
  -- <Log>
+
+[10-10-2014  08:56:07 AM][mammenx] Synchronized SDA Line input
 
 [07-10-2014  08:44:32 PM][mammenx] Initial Commit
 
