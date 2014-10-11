@@ -193,15 +193,15 @@ enum  logic [2:0] { IDLE_S  = 0,
       begin
         case(lb_addr)
 
-          I2C_ADDR_REG_ADDR     : lb_rd_data  <=  {'d0,i2c_addr,1'b0};
+          I2C_ADDR_REG_ADDR     : lb_rd_data  <=  {{(LB_DATA_W-8){1'b0}},i2c_addr,1'b0};
 
-          I2C_CLK_DIV_REG_ADDR  : lb_rd_data  <=  {'d0,i2c_clk_div_cnt};
+          I2C_CLK_DIV_REG_ADDR  : lb_rd_data  <=  {{(LB_DATA_W-CLK_DIV_CNT_W){1'b0}},i2c_clk_div_cnt};
 
-          I2C_CONFIG_REG_ADDR   : lb_rd_data  <=  {'d0,i2c_num_bytes,4'd0,i2c_rd_n_wr,i2c_init,i2c_stop_en,i2c_start_en};
+          I2C_CONFIG_REG_ADDR   : lb_rd_data  <=  {{(LB_DATA_W-8-NUM_BYTES_IDX){1'b0}},i2c_num_bytes,4'd0,i2c_rd_n_wr,i2c_init,i2c_stop_en,i2c_start_en};
 
-          I2C_STATUS_REG_ADDR   : lb_rd_data  <=  {'d0,i2c_nack_det,i2c_busy};
+          I2C_STATUS_REG_ADDR   : lb_rd_data  <=  {{(LB_DATA_W-2){1'b0}},i2c_nack_det,i2c_busy};
 
-          I2C_FSM_REG_ADDR      : lb_rd_data  <=  {'d0,fsm_pstate};
+          I2C_FSM_REG_ADDR      : lb_rd_data  <=  {{(LB_DATA_W-3){1'b0}},fsm_pstate};
 
           //I2C_DATA_CACHE_BASE_ADDR
           default :
@@ -443,6 +443,8 @@ endmodule // i2c_master
  
 
  -- <Log>
+
+[11-10-2014  05:17:57 PM][mammenx] Modified LB read data formatting
 
 [10-10-2014  08:56:07 AM][mammenx] Synchronized SDA Line input
 
