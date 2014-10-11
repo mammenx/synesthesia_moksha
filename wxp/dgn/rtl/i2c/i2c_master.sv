@@ -60,7 +60,7 @@ module i2c_master #(
 );
 
 //----------------------- Local parameters Declarations ------------------
-  `include  "i2c_master_regmap.sv"
+  `include  "i2c_master_regmap.svh"
 
   localparam  NUM_BYTES_IDX   = $clog2(I2C_MAX_DATA_BYTES)    + 1;
   localparam  DATA_CNTR_W     = $clog2(I2C_MAX_DATA_BYTES*8)  + 1;
@@ -443,6 +443,8 @@ endmodule // i2c_master
  
 
  -- <Log>
+
+[11-10-2014  05:29:40 PM][mammenx] Renamed regmap files as .svh
 
 [11-10-2014  05:17:57 PM][mammenx] Modified LB read data formatting
 

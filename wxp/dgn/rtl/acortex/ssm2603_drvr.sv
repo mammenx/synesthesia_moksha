@@ -80,7 +80,7 @@ module ssm2603_drvr #(
 );
 
 //----------------------- Local Parameters Declarations -------------------
-  `include  "ssm2603_drvr_regmap.sv"
+  `include  "ssm2603_drvr_regmap.svh"
 
   localparam  MCLK_SEL_W      = $clog2(NUM_MCLKS);
 
@@ -569,6 +569,8 @@ endmodule // ssm2603_drvr
  
 
  -- <Log>
+
+[11-10-2014  05:29:40 PM][mammenx] Renamed regmap files as .svh
 
 [11-10-2014  05:18:26 PM][mammenx] Initial Commit
 
