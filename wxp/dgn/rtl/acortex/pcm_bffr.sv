@@ -22,7 +22,7 @@
 /*
  --------------------------------------------------------------------------
  -- Project Code      : synesthesia-moksha
- -- Module Name       : pcm_buffer
+ -- Module Name       : pcm_bffr
  -- Author            : mammenx
  -- Associated modules: 
  -- Function          : This module maintains a dual bank memory for storing
@@ -33,9 +33,9 @@
 `timescale 1ns / 10ps
 
 
-module pcm_buffer #(
+module pcm_bffr #(
   //----------------- Parameters  -----------------------
-  parameter MODULE_NAME   = "PCM_BUFFER",
+  parameter MODULE_NAME   = "PCM_BFFR",
   parameter LB_DATA_W     = 32,
   parameter LB_ADDR_W     = 8,
   parameter NUM_SAMPLES   = 128,
@@ -303,7 +303,7 @@ module pcm_buffer #(
 
 
 
-endmodule // pcm_buffer
+endmodule // pcm_bffr
 
 /*
  --------------------------------------------------------------------------
@@ -312,6 +312,8 @@ endmodule // pcm_buffer
  
 
  -- <Log>
+
+[12-10-2014  09:40:44 PM][mammenx] Modified module name to match filename
 
 [12-10-2014  08:44:07 PM][mammenx] Renamed regmap to .svh
 
