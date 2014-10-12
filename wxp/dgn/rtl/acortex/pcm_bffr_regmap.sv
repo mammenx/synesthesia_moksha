@@ -1,0 +1,4 @@
+parameter PCM_BFFR_CONTROL_REG_ADDR   = 0;
+parameter PCM_BFFR_STATUS_REG_ADDR    = 1;
+parameter PCM_BFFR_CAP_ADDR_REG_ADDR  = 2;
+parameter PCM_BFFR_CAP_DATA_REG_ADDR  = 3;
