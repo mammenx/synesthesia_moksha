@@ -74,6 +74,7 @@ module pcm_buffer #(
 );
 
 //----------------------- Local Parameters Declarations -------------------
+  `include  "pcm_bffr_regmap.svh"
 
 
 //----------------------- Input Declarations ------------------------------
@@ -311,6 +312,8 @@ endmodule // pcm_buffer
  
 
  -- <Log>
+
+[12-10-2014  08:44:07 PM][mammenx] Renamed regmap to .svh
 
 [12-10-2014  02:12:20 PM][mammenx] Initial Commit
 
