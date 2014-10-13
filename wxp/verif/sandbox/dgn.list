@@ -1,0 +1,24 @@
++incdir+../../dgn/rtl/altera/
++incdir+../../dgn/rtl/common/
++incdir+../../dgn/rtl/i2c/
++incdir+../../dgn/rtl/acortex/
+
+//Altera Libraries
+../../dgn/rtl/altera/altera_mf.v
+../../dgn/rtl/altera/cyclonev_atoms.v
+../../dgn/rtl/altera/async_dpram_32W_256D.v
+../../dgn/rtl/altera/sync_dpram_32W_256D.v
+
+//Common
+../../dgn/rtl/common/clk_mux.sv
+../../dgn/rtl/common/dd_sync.sv
+../../dgn/rtl/common/pulse_toggle_sync.sv
+../../dgn/rtl/common/lb_splitter.sv
+
+//I2C
+../../dgn/rtl/i2c/i2c_master.sv
+
+//Acortex
+../../dgn/rtl/acortex/pcm_bffr.sv
+../../dgn/rtl/acortex/ssm2603_drvr.sv
+../../dgn/rtl/acortex/acortex.sv
