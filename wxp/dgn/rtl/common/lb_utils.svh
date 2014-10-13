@@ -51,6 +51,27 @@
       .p_prefix``_rd_valid_``p_postfix    (w_prefix``_rd_valid_``w_postfix),  \
       .p_prefix``_rd_data_``p_postfix     (w_prefix``_rd_data_``w_postfix )   \
 
+
+  `define drop_lb_splitter_wires(LB_DATA_W,LB_ADDR_W,NUM_CHILDREN,prefix,postfix) \
+      wire    [NUM_CHILDREN-1:0]  prefix``_wr_en_``postfix;           \
+      wire    {NUM_CHILDREN-1:0]  prefix``_rd_en_``postfix;           \
+      wire    [LB_ADDR_W-1:0]     prefix``_addr_``postfix [NUM_CHILDREN-1:0]; \
+      wire    [LB_DATA_W-1:0]     prefix``_wr_data_``postfix [NUM_CHILDREN-1:0]; \
+      wire    [NUM_CHILDREN-1:0]  prefix``_wr_valid_``postfix;        \
+      wire    [NUM_CHILDREN-1:0]  prefix``_rd_valid_``postfix;        \
+      wire    [LB_DATA_W-1:0]     prefix``_rd_data_``postfix [NUM_CHILDREN-1:0]; \
+
+
+  `define drop_lb_ports_split(CHILD_ID,p_prefix,p_postfix,w_prefix,w_postfix)  \
+      .p_prefix``_wr_en_``p_postfix       (w_prefix``_wr_en_``w_postfix[CHILD_ID]   ),  \
+      .p_prefix``_rd_en_``p_postfix       (w_prefix``_rd_en_``w_postfix[CHILD_ID]   ),  \
+      .p_prefix``_addr_``p_postfix        (w_prefix``_addr_``w_postfix[CHILD_ID]    ),  \
+      .p_prefix``_wr_data_``p_postfix     (w_prefix``_wr_data_``w_postfix[CHILD_ID] ),  \
+      .p_prefix``_wr_valid_``p_postfix    (w_prefix``_wr_valid_``w_postfix[CHILD_ID]),  \
+      .p_prefix``_rd_valid_``p_postfix    (w_prefix``_rd_valid_``w_postfix[CHILD_ID]),  \
+      .p_prefix``_rd_data_``p_postfix     (w_prefix``_rd_data_``w_postfix[CHILD_ID] )   \
+
+
 `endif
 
 /*
@@ -60,6 +81,8 @@
  
 
  -- <Log>
+
+[13-10-2014  10:31:24 PM][mammenx] Added lb_splitter related macros
 
 [12-10-2014  10:02:19 PM][mammenx] Initial Commit
 
