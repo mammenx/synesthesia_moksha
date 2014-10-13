@@ -84,6 +84,7 @@ module acortex #(
 
   localparam  CHILD_LB_DATA_W = LB_DATA_W;
   localparam  CHILD_LB_ADDR_W = LB_ADDR_W - LB_ADDR_BLK_W;
+  localparam  NUM_LB_CHILDREN = 3;
 
 
 //----------------------- Input Declarations ------------------------------
@@ -102,24 +103,7 @@ module acortex #(
 
 
 //----------------------- Internal Wire Declarations ----------------------
-  `drop_lb_wires(CHILD_LB_DATA_W,CHILD_LB_ADDR_W,i2c_lb,w)
-  `drop_lb_wires(CHILD_LB_DATA_W,CHILD_LB_ADDR_W,drvr_lb,w)
-  `drop_lb_wires(CHILD_LB_DATA_W,CHILD_LB_ADDR_W,bffr_lb,w)
-
-  wire  [LB_ADDR_BLK_W-1:0]   lb_addr_blk;
-  wire  [CHILD_LB_ADDR_W-1:0] lb_child_addr;
-
-  wire                        i2c_blk_sel;
-  wire                        drvr_blk_sel;
-  wire                        bffr_blk_sel;
-
-  wire                        adc_pcm_valid;
-  wire  [31:0]                adc_lpcm_data;
-  wire  [31:0]                adc_rpcm_data;
-
-  wire                        dac_pcm_nxt;
-  wire  [31:0]                dac_lpcm_data;
-  wire  [31:0]                dac_rpcm_data;
+  `drop_lb_splitter_wires(CHILD_LB_DATA_W,CHILD_LB_ADDR_W,NUM_LB_CHILDREN,lb_chld,w)
 
 //----------------------- Internal Interface Declarations -----------------
 
@@ -130,34 +114,24 @@ module acortex #(
 //----------------------- Start of Code -----------------------------------
 
   /*  Local Bus Logic */
-  assign  {lb_addr_blk,lb_child_addr} = lb_addr;
+  lb_splitter #(
+    .LB_DATA_W         (LB_DATA_W),
+    .LB_ADDR_W         (LB_ADDR_W),
+    .LB_CHLD_ADDR_W    (CHILD_LB_ADDR_W),
+    .NUM_CHILDREN      (NUM_LB_CHILDREN),
+    .REGISTER_OUTPUTS  (0),
+    .DEFAULT_DATA_VAL  ('hdeadbabe)
 
-  assign  i2c_blk_sel         =   (lb_addr_blk  ==  ACORTEX_I2C_BLK_CODE)       ? 1'b1  : 1'b0;
-  assign  drvr_blk_sel        =   (lb_addr_blk  ==  ACORTEX_DRVR_BLK_CODE)      ? 1'b1  : 1'b0;
-  assign  bffr_blk_sel        =   (lb_addr_blk  ==  ACORTEX_PCM_BFFR_CLK_CODE)  ? 1'b1  : 1'b0;
+  ) lb_splitter_inst  (
 
-  assign  i2c_lb_addr_w       =   lb_child_addr;
-  assign  drvr_lb_addr_w      =   lb_child_addr;
-  assign  bffr_lb_addr_w      =   lb_child_addr;
+    .clk                      (acortex_clk),
+    .rst_n                    (acortex_rst_n),
 
-  assign  i2c_lb_wr_data_w    =   lb_wr_data;
-  assign  drvr_lb_wr_data_w   =   lb_wr_data;
-  assign  bffr_lb_wr_data_w   =   lb_wr_data;
+    `drop_lb_ports(lb,,i2c_lb,)
+    ,
+    `drop_lb_ports(child_lb,,lb_chld,w)
 
-  assign  i2c_lb_wr_en_w      =   lb_wr_en  & i2c_blk_sel;
-  assign  drvr_lb_wr_en_w     =   lb_wr_en  & drvr_blk_sel;
-  assign  bffr_lb_wr_en_w     =   lb_wr_en  & bffr_blk_sel;
-
-  assign  i2c_lb_rd_en_w      =   lb_rd_en  & i2c_blk_sel;
-  assign  drvr_lb_rd_en_w     =   lb_rd_en  & drvr_blk_sel;
-  assign  bffr_lb_rd_en_w     =   lb_rd_en  & bffr_blk_sel;
-
-  assign  lb_wr_valid         =   i2c_lb_wr_valid_w | drvr_lb_wr_valid_w  | bffr_lb_wr_valid_w;
-  assign  lb_rd_valid         =   i2c_lb_rd_valid_w | drvr_lb_rd_valid_w  | bffr_lb_rd_valid_w;
-
-  assign  lb_rd_data          =   i2c_blk_sel   ? i2c_lb_rd_data_w  :
-                                  drvr_blk_sel  ? drvr_lb_rd_data_w :
-                                  bffr_blk_sel  ? bffr_lb_rd_data_w : 'hdeadbabe;
+  );
 
 
   /*  I2C Master  */
@@ -172,7 +146,7 @@ module acortex #(
     .clk                      (acortex_clk),
     .rst_n                    (acortex_rst_n),
 
-    `drop_lb_ports(lb,,i2c_lb,w)
+    `drop_lb_ports_split(ACORTEX_I2C_BLK_CODE,lb,,lb_chld,w)
     ,
 
     .scl                      (scl),
@@ -194,7 +168,7 @@ module acortex #(
     .rst_n                    (acortex_rst_n),
 
 
-    `drop_lb_ports(lb,,drvr_lb,w)
+    `drop_lb_ports_split(ACORTEX_DRVR_BLK_CODE,lb,,lb_chld,w)
     ,
 
     .mclk_vec                 (mclk_vec),
@@ -232,7 +206,7 @@ module acortex #(
     .fgyrus_rst_n             (fgyrus_rst_n),
 
 
-    `drop_lb_ports(lb,,bffr_lb,w)
+    `drop_lb_ports(ACORTEX_PCM_BFFR_CLK_CODE,lb,,lb_chld,w)
     ,
 
     .adc_pcm_valid            (adc_pcm_valid),
@@ -259,6 +233,8 @@ endmodule // acortex
  
 
  -- <Log>
+
+[13-10-2014  10:30:51 PM][mammenx] Modified LB logic to lb_splitter
 
 [12-10-2014  10:02:19 PM][mammenx] Initial Commit
 
