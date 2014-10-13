@@ -29,47 +29,47 @@
  --------------------------------------------------------------------------
 */
 
-`infdef __LB_UTILS
+`ifndef __LB_UTILS
 `define __LB_UTILS 
 
   `define drop_lb_wires(LB_DATA_W,LB_ADDR_W,prefix,postfix) \
-      wire                        prefix``_wr_en_``postfix;           \
-      wire                        prefix``_rd_en_``postfix;           \
-      wire    [LB_ADDR_W-1:0]     prefix``_addr_``postfix;            \
-      wire    [LB_DATA_W-1:0]     prefix``_wr_data_``postfix;         \
-      wire                        prefix``_wr_valid_``postfix;        \
-      wire                        prefix``_rd_valid_``postfix;        \
-      wire    [LB_DATA_W-1:0]     prefix``_rd_data_``postfix;         \
+      wire                        prefix``wr_en``postfix;           \
+      wire                        prefix``rd_en``postfix;           \
+      wire    [LB_ADDR_W-1:0]     prefix``addr``postfix;            \
+      wire    [LB_DATA_W-1:0]     prefix``wr_data``postfix;         \
+      wire                        prefix``wr_valid``postfix;        \
+      wire                        prefix``rd_valid``postfix;        \
+      wire    [LB_DATA_W-1:0]     prefix``rd_data``postfix;         \
 
 
   `define drop_lb_ports(p_prefix,p_postfix,w_prefix,w_postfix)  \
-      .p_prefix``_wr_en_``p_postfix       (w_prefix``_wr_en_``w_postfix   ),  \
-      .p_prefix``_rd_en_``p_postfix       (w_prefix``_rd_en_``w_postfix   ),  \
-      .p_prefix``_addr_``p_postfix        (w_prefix``_addr_``w_postfix    ),  \
-      .p_prefix``_wr_data_``p_postfix     (w_prefix``_wr_data_``w_postfix ),  \
-      .p_prefix``_wr_valid_``p_postfix    (w_prefix``_wr_valid_``w_postfix),  \
-      .p_prefix``_rd_valid_``p_postfix    (w_prefix``_rd_valid_``w_postfix),  \
-      .p_prefix``_rd_data_``p_postfix     (w_prefix``_rd_data_``w_postfix )   \
+      .p_prefix``wr_en``p_postfix       (w_prefix``wr_en``w_postfix   ),  \
+      .p_prefix``rd_en``p_postfix       (w_prefix``rd_en``w_postfix   ),  \
+      .p_prefix``addr``p_postfix        (w_prefix``addr``w_postfix    ),  \
+      .p_prefix``wr_data``p_postfix     (w_prefix``wr_data``w_postfix ),  \
+      .p_prefix``wr_valid``p_postfix    (w_prefix``wr_valid``w_postfix),  \
+      .p_prefix``rd_valid``p_postfix    (w_prefix``rd_valid``w_postfix),  \
+      .p_prefix``rd_data``p_postfix     (w_prefix``rd_data``w_postfix )   \
 
 
   `define drop_lb_splitter_wires(LB_DATA_W,LB_ADDR_W,NUM_CHILDREN,prefix,postfix) \
-      wire    [NUM_CHILDREN-1:0]  prefix``_wr_en_``postfix;           \
-      wire    {NUM_CHILDREN-1:0]  prefix``_rd_en_``postfix;           \
-      wire    [LB_ADDR_W-1:0]     prefix``_addr_``postfix [NUM_CHILDREN-1:0]; \
-      wire    [LB_DATA_W-1:0]     prefix``_wr_data_``postfix [NUM_CHILDREN-1:0]; \
-      wire    [NUM_CHILDREN-1:0]  prefix``_wr_valid_``postfix;        \
-      wire    [NUM_CHILDREN-1:0]  prefix``_rd_valid_``postfix;        \
-      wire    [LB_DATA_W-1:0]     prefix``_rd_data_``postfix [NUM_CHILDREN-1:0]; \
+      wire    [NUM_CHILDREN-1:0]  prefix``wr_en``postfix;           \
+      wire    [NUM_CHILDREN-1:0]  prefix``rd_en``postfix;           \
+      wire    [LB_ADDR_W-1:0]     prefix``addr``postfix [NUM_CHILDREN-1:0]; \
+      wire    [LB_DATA_W-1:0]     prefix``wr_data``postfix [NUM_CHILDREN-1:0]; \
+      wire    [NUM_CHILDREN-1:0]  prefix``wr_valid``postfix;        \
+      wire    [NUM_CHILDREN-1:0]  prefix``rd_valid``postfix;        \
+      wire    [LB_DATA_W-1:0]     prefix``rd_data``postfix [NUM_CHILDREN-1:0]; \
 
 
   `define drop_lb_ports_split(CHILD_ID,p_prefix,p_postfix,w_prefix,w_postfix)  \
-      .p_prefix``_wr_en_``p_postfix       (w_prefix``_wr_en_``w_postfix[CHILD_ID]   ),  \
-      .p_prefix``_rd_en_``p_postfix       (w_prefix``_rd_en_``w_postfix[CHILD_ID]   ),  \
-      .p_prefix``_addr_``p_postfix        (w_prefix``_addr_``w_postfix[CHILD_ID]    ),  \
-      .p_prefix``_wr_data_``p_postfix     (w_prefix``_wr_data_``w_postfix[CHILD_ID] ),  \
-      .p_prefix``_wr_valid_``p_postfix    (w_prefix``_wr_valid_``w_postfix[CHILD_ID]),  \
-      .p_prefix``_rd_valid_``p_postfix    (w_prefix``_rd_valid_``w_postfix[CHILD_ID]),  \
-      .p_prefix``_rd_data_``p_postfix     (w_prefix``_rd_data_``w_postfix[CHILD_ID] )   \
+      .p_prefix``wr_en``p_postfix       (w_prefix``wr_en``w_postfix[CHILD_ID]   ),  \
+      .p_prefix``rd_en``p_postfix       (w_prefix``rd_en``w_postfix[CHILD_ID]   ),  \
+      .p_prefix``addr``p_postfix        (w_prefix``addr``w_postfix[CHILD_ID]    ),  \
+      .p_prefix``wr_data``p_postfix     (w_prefix``wr_data``w_postfix[CHILD_ID] ),  \
+      .p_prefix``wr_valid``p_postfix    (w_prefix``wr_valid``w_postfix[CHILD_ID]),  \
+      .p_prefix``rd_valid``p_postfix    (w_prefix``rd_valid``w_postfix[CHILD_ID]),  \
+      .p_prefix``rd_data``p_postfix     (w_prefix``rd_data``w_postfix[CHILD_ID] )   \
 
 
 `endif
@@ -81,6 +81,8 @@
  
 
  -- <Log>
+
+[14-10-2014  12:47:57 AM][mammenx] Fixed compilation errors & warnings
 
 [13-10-2014  10:31:24 PM][mammenx] Added lb_splitter related macros
 

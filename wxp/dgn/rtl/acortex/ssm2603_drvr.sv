@@ -56,26 +56,26 @@ module ssm2603_drvr #(
   input                       lb_rd_en,
   input   [LB_ADDR_W-1:0]     lb_addr,
   input   [LB_DATA_W-1:0]     lb_wr_data,
-  output                      lb_wr_valid,
-  output                      lb_rd_valid,
-  output  [LB_DATA_W-1:0]     lb_rd_data,
+  output  reg                 lb_wr_valid,
+  output  reg                 lb_rd_valid,
+  output  reg [LB_DATA_W-1:0] lb_rd_data,
 
   input   [NUM_MCLKS-1:0]     mclk_vec,
 
-  output                      adc_pcm_valid,
-  output  [31:0]              adc_lpcm_data,
-  output  [31:0]              adc_rpcm_data,
+  output  reg                 adc_pcm_valid,
+  output  reg [31:0]          adc_lpcm_data,
+  output  reg [31:0]          adc_rpcm_data,
 
-  output                      dac_pcm_nxt,
+  output  reg                 dac_pcm_nxt,
   input   [31:0]              dac_lpcm_data,
   input   [31:0]              dac_rpcm_data,
 
   input                       AUD_ADCDAT,
-  output                      AUD_ADCLRCK,
-  output                      AUD_BCLK,
-  output                      AUD_DACDAT,
-  output                      AUD_DACLRCK,
-  output                      AUD_XCK
+  output  reg                 AUD_ADCLRCK,
+  output  reg                 AUD_BCLK,
+  output  reg                 AUD_DACDAT,
+  output  reg                 AUD_DACLRCK,
+  output  reg                 AUD_XCK
 
 );
 
@@ -91,20 +91,6 @@ module ssm2603_drvr #(
 
 
 //----------------------- Output Declarations -----------------------------
-  reg                         lb_wr_valid;
-  reg                         lb_rd_valid;
-  reg     [LB_DATA_W-1:0]     lb_rd_data;
-
-  reg                         adc_pcm_valid;
-  reg     [31:0]              adc_lpcm_data;
-  reg     [31:0]              adc_rpcm_data;
-
-  reg                         dac_pcm_nxt;
-
-  reg                         AUD_ADCLRCK;
-  reg                         AUD_BCLK;
-  reg                         AUD_DACDAT;
-  reg                         AUD_DACLRCK;
 
 
 //----------------------- Output Register Declaration ---------------------
@@ -271,7 +257,7 @@ module ssm2603_drvr #(
     end
   end
 
-  assign  fs_tck              <=  (fs_cntr  ==  fs_val) ? bclk_tck  : 1'b0;
+  assign  fs_tck              =   (fs_cntr  ==  fs_val) ? bclk_tck  : 1'b0;
 
   always@(*)
   begin
@@ -376,7 +362,7 @@ module ssm2603_drvr #(
   end
 
   assign  bclk_tck            =   (bclk_cntr  ==  bclk_div_val) ? 1'b1  : 1'b0;
-  assign  bclk_tck_by_2       =   (bclk_cntr  ==  {1'b0,bclk_div_val[BCLK_CNTR_W-1:1]}  ? 1'b1  : bclk_tck;
+  assign  bclk_tck_by_2       =   (bclk_cntr  ==  {1'b0,bclk_div_val[BCLK_CNTR_W-1:1]}) ? 1'b1  : bclk_tck;
 
 
   //Bit reverse DAC data for transmission
@@ -391,6 +377,7 @@ module ssm2603_drvr #(
 
   //Decode offsets, format data based on word length
   always@(*)
+  begin
     case(bps_val)
 
       2'b00 : //16b
@@ -528,9 +515,9 @@ module ssm2603_drvr #(
           end
 
           default : //2'b10, 24b
+          begin
             adc_lpcm_data     <=  {{8{adc_lpcm_data[23]}},adc_lpcm_data[23:0]};
             adc_rpcm_data     <=  {{8{adc_rpcm_data[23]}},adc_rpcm_data[23:0]};
-          begin
           end
 
         endcase
@@ -542,7 +529,7 @@ module ssm2603_drvr #(
 
 
   /*  Instantiate MCLK Mux  */
-  module clk_mux  #(.P_NO_CLOCKS(NUM_MCLKS))  mclk_mux_inst
+  clk_mux  #(.P_NO_CLOCKS(NUM_MCLKS))  mclk_mux_inst
   (
       .clk_vec      (mclk_vec),
       .rst_n        (rst_n),
@@ -569,6 +556,8 @@ endmodule // ssm2603_drvr
  
 
  -- <Log>
+
+[14-10-2014  12:47:57 AM][mammenx] Fixed compilation errors & warnings
 
 [11-10-2014  05:29:40 PM][mammenx] Renamed regmap files as .svh
 

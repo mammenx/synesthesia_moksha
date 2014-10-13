@@ -55,17 +55,17 @@ module pcm_bffr #(
   input                       lb_rd_en,
   input   [LB_ADDR_W-1:0]     lb_addr,
   input   [LB_DATA_W-1:0]     lb_wr_data,
-  output                      lb_wr_valid,
-  output                      lb_rd_valid,
-  output  [LB_DATA_W-1:0]     lb_rd_data,
+  output  reg                 lb_wr_valid,
+  output  reg                 lb_rd_valid,
+  output  reg [LB_DATA_W-1:0] lb_rd_data,
 
   input                       adc_pcm_valid,
   input   [31:0]              adc_lpcm_data,
   input   [31:0]              adc_rpcm_data,
 
   input                       dac_pcm_nxt,
-  output  [31:0]              dac_lpcm_data,
-  output  [31:0]              dac_rpcm_data,
+  output  reg [31:0]          dac_lpcm_data,
+  output  reg [31:0]          dac_rpcm_data,
 
   output                      acortex2fgyrus_pcm_rdy,
   input   [MEM_ADDR_W-1:0]    fgyrus2acortex_addr,
@@ -87,9 +87,7 @@ module pcm_bffr #(
 
 
 //----------------------- Output Register Declaration ---------------------
-  reg                         lb_wr_valid;
-  reg                         lb_rd_valid;
-  reg     [LB_DATA_W-1:0]     lb_rd_data;
+
 
 //----------------------- Internal Register Declarations ------------------
   reg                         bffr_mode;
@@ -215,8 +213,8 @@ module pcm_bffr #(
       end
       else  //Normal mode
       begin
-        pcm_raddr[MEM_ADDR_W-1]   <=  pcm_raddr[MEM_ADDR_W-1]   ^ adc_pcm_nxt_extended;
-        pcm_raddr[MEM_ADDR_W-2:0] <=  pcm_raddr[MEM_ADDR_W-2:0] + adc_pcm_nxt_1d;
+        pcm_raddr[MEM_ADDR_W-1]   <=  pcm_raddr[MEM_ADDR_W-1]   ^ dac_pcm_nxt_extended;
+        pcm_raddr[MEM_ADDR_W-2:0] <=  pcm_raddr[MEM_ADDR_W-2:0] + dac_pcm_nxt_1d;
       end
 
       if(bffr_mode) //Capture Mode
@@ -312,6 +310,8 @@ endmodule // pcm_bffr
  
 
  -- <Log>
+
+[14-10-2014  12:47:57 AM][mammenx] Fixed compilation errors & warnings
 
 [12-10-2014  09:40:44 PM][mammenx] Modified module name to match filename
 

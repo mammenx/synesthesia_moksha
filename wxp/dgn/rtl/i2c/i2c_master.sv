@@ -34,7 +34,7 @@
 
 module i2c_master #(
   //----------------- Parameter List  ------------------
-  parameter MODULE_NAME         = "I2C_MASTER"
+  parameter MODULE_NAME         = "I2C_MASTER",
   parameter LB_DATA_W           = 32,
   parameter LB_ADDR_W           = 8,
   parameter CLK_DIV_CNT_W       = 8,
@@ -50,11 +50,11 @@ module i2c_master #(
   input                       lb_rd_en,
   input   [LB_ADDR_W-1:0]     lb_addr,
   input   [LB_DATA_W-1:0]     lb_wr_data,
-  output                      lb_wr_valid,
-  output                      lb_rd_valid,
-  output  [LB_DATA_W-1:0]     lb_rd_data,
+  output  reg                 lb_wr_valid,
+  output  reg                 lb_rd_valid,
+  output  reg [LB_DATA_W-1:0] lb_rd_data,
 
-  output                      scl,
+  output  reg                 scl,
   inout                       sda
 
 );
@@ -69,11 +69,7 @@ module i2c_master #(
 
 
 //----------------------- Output Register Declaration ---------------------
-  reg                         lb_wr_valid;
-  reg                         lb_rd_valid;
-  reg   [LB_DATA_W-1:0]       lb_rd_data;
 
-  reg                         scl;
 
 //----------------------- Internal Register Declarations ------------------
   reg   [6:0]                 i2c_addr;
@@ -140,7 +136,7 @@ enum  logic [2:0] { IDLE_S  = 0,
       i2c_start_en            <=  0;
       i2c_stop_en             <=  0;
       i2c_init                <=  0;
-      data_cache              <=  0;
+      data_cache              <=  {0};
     end
     else
     begin
@@ -151,28 +147,28 @@ enum  logic [2:0] { IDLE_S  = 0,
 
           I2C_ADDR_REG_ADDR :
           begin
-            i2c_addr          <=  lb_data[7:1];
+            i2c_addr          <=  lb_wr_data[7:1];
           end
 
           I2C_CLK_DIV_REG_ADDR  :
           begin
-            i2c_clk_div_cnt   <=  lb_data[CLK_DIV_CNT_W-1:0];
+            i2c_clk_div_cnt   <=  lb_wr_data[CLK_DIV_CNT_W-1:0];
           end
 
           I2C_CONFIG_REG_ADDR :
           begin
-            i2c_num_bytes     <=  lb_data[8 :+  NUM_BYTES_IDX];
-            i2c_start_en      <=  lb_data[0];
-            i2c_stop_en       <=  lb_data[1];
-            i2c_init          <=  lb_data[2];
-            i2c_rd_n_wr       <=  lb_data[3];
+            i2c_num_bytes     <=  lb_wr_data[8 :+  NUM_BYTES_IDX];
+            i2c_start_en      <=  lb_wr_data[0];
+            i2c_stop_en       <=  lb_wr_data[1];
+            i2c_init          <=  lb_wr_data[2];
+            i2c_rd_n_wr       <=  lb_wr_data[3];
           end
 
         endcase
 
         if(lb_addr  >=  I2C_DATA_CACHE_BASE_ADDR)
         begin
-          data_cache[data_cache_idx]  <=  lb_data[7:0];
+          data_cache[data_cache_idx]  <=  lb_wr_data[7:0];
         end
       end
       else
@@ -206,7 +202,7 @@ enum  logic [2:0] { IDLE_S  = 0,
           //I2C_DATA_CACHE_BASE_ADDR
           default :
           begin
-            lb_rd_data        <=  {'d0,data_cache[data_cache_idx]};
+            lb_rd_data        <=  {{(LB_DATA_W-8){1'b0}},data_cache[data_cache_idx]};
           end
 
         endcase
@@ -218,7 +214,7 @@ enum  logic [2:0] { IDLE_S  = 0,
 
 
   /*  Synchronize SDA Line input */
-  module dd_sync  #(.P_NO_SYNC_STAGES(2)) sda_sync_inst
+  dd_sync  #(.P_NO_SYNC_STAGES(2)) sda_sync_inst
   (
       .clk          (clk),
       .rst_n        (rst_n),
@@ -443,6 +439,8 @@ endmodule // i2c_master
  
 
  -- <Log>
+
+[14-10-2014  12:47:57 AM][mammenx] Fixed compilation errors & warnings
 
 [11-10-2014  05:29:40 PM][mammenx] Renamed regmap files as .svh
 

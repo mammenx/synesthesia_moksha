@@ -63,7 +63,7 @@ module acortex #(
 
   output                      acortex2fgyrus_pcm_rdy,
   input   [MEM_ADDR_W-1:0]    fgyrus2acortex_addr,
-  output  [31:0]              acortex2fgyrus_pcm_data
+  output  [31:0]              acortex2fgyrus_pcm_data,
 
   output                      scl,
   inout                       sda,
@@ -103,7 +103,15 @@ module acortex #(
 
 
 //----------------------- Internal Wire Declarations ----------------------
-  `drop_lb_splitter_wires(CHILD_LB_DATA_W,CHILD_LB_ADDR_W,NUM_LB_CHILDREN,lb_chld,w)
+  `drop_lb_splitter_wires(CHILD_LB_DATA_W,CHILD_LB_ADDR_W,NUM_LB_CHILDREN,lb_chld_,_w)
+
+  wire                        adc_pcm_valid;
+  wire  [31:0]                adc_lpcm_data;
+  wire  [31:0]                adc_rpcm_data;
+
+  wire                        dac_pcm_nxt;
+  wire  [31:0]                dac_lpcm_data;
+  wire  [31:0]                dac_rpcm_data;
 
 //----------------------- Internal Interface Declarations -----------------
 
@@ -127,9 +135,9 @@ module acortex #(
     .clk                      (acortex_clk),
     .rst_n                    (acortex_rst_n),
 
-    `drop_lb_ports(lb,,i2c_lb,)
+    `drop_lb_ports(lb_,,lb_,)
     ,
-    `drop_lb_ports(child_lb,,lb_chld,w)
+    `drop_lb_ports(chld_lb_,,lb_chld_,_w)
 
   );
 
@@ -146,7 +154,7 @@ module acortex #(
     .clk                      (acortex_clk),
     .rst_n                    (acortex_rst_n),
 
-    `drop_lb_ports_split(ACORTEX_I2C_BLK_CODE,lb,,lb_chld,w)
+    `drop_lb_ports_split(ACORTEX_I2C_BLK_CODE,lb_,,lb_chld_,_w)
     ,
 
     .scl                      (scl),
@@ -168,7 +176,7 @@ module acortex #(
     .rst_n                    (acortex_rst_n),
 
 
-    `drop_lb_ports_split(ACORTEX_DRVR_BLK_CODE,lb,,lb_chld,w)
+    `drop_lb_ports_split(ACORTEX_DRVR_BLK_CODE,lb_,,lb_chld_,_w)
     ,
 
     .mclk_vec                 (mclk_vec),
@@ -206,7 +214,7 @@ module acortex #(
     .fgyrus_rst_n             (fgyrus_rst_n),
 
 
-    `drop_lb_ports(ACORTEX_PCM_BFFR_CLK_CODE,lb,,lb_chld,w)
+    `drop_lb_ports_split(ACORTEX_PCM_BFFR_CLK_CODE,lb_,,lb_chld_,_w)
     ,
 
     .adc_pcm_valid            (adc_pcm_valid),
@@ -233,6 +241,8 @@ endmodule // acortex
  
 
  -- <Log>
+
+[14-10-2014  12:47:57 AM][mammenx] Fixed compilation errors & warnings
 
 [13-10-2014  10:30:51 PM][mammenx] Modified LB logic to lb_splitter
 

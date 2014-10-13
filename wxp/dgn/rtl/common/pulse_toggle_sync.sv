@@ -67,14 +67,6 @@ module pulse_toggle_sync #(
 
 
 //----------------------- Output Register Declaration ---------------------
-  generate
-  begin
-    if(REGISTER_OUTPUT)
-    begin
-      reg                     pulse_out;
-    end
-  end
-  endgenerate
 
 
 //----------------------- Internal Register Declarations ------------------
@@ -134,17 +126,21 @@ module pulse_toggle_sync #(
   begin
     if(REGISTER_OUTPUT)
     begin
+      reg                     pulse_out_reg;
+
       always@(posedge out_clk, negedge out_rst_n)
       begin
         if(~out_rst_n)
         begin
-          pulse_out           <=  0;
+          pulse_out_reg       <=  0;
         end
         else
         begin
-          pulse_out           <=  out_tggl  ^ out_tggl_1d;
+          pulse_out_reg       <=  out_tggl  ^ out_tggl_1d;
         end
       end
+
+      assign  pulse_out       =   pulse_out_reg;
     end
     else  //~REGISTER_OUTPUT
     begin
@@ -164,6 +160,8 @@ endmodule // pulse_toggle_sync
  
 
  -- <Log>
+
+[14-10-2014  12:47:57 AM][mammenx] Fixed compilation errors & warnings
 
 [12-10-2014  02:12:20 PM][mammenx] Initial Commit
 
