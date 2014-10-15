@@ -195,7 +195,7 @@
           ovm_report_info({get_name(),"[run]"},$psprintf("Got data : 0x%x",data),OVM_LOW);
 
           @(posedge intf.scl);
-          @(posedge intf.sda  iif (intf.scl ==  1));
+          @(posedge intf.sda  iff (intf.scl ==  1));
           ovm_report_info({get_name(),"[run]"},$psprintf("<STOP> detected ..."),OVM_LOW);
 
           if(update_reg_map_en)
@@ -231,6 +231,8 @@
  
 
  -- <Log>
+
+[16-10-2014  12:52:42 AM][mammenx] Fixed compilation errors
 
 [15-10-2014  11:44:12 PM][mammenx] Initial Commit
 

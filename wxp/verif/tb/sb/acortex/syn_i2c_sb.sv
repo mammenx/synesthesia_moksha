@@ -42,7 +42,8 @@
                       type  RCVD_PKT_TYPE = syn_lb_seq_item
                     ) extends ovm_scoreboard;
 
-    `include  "syn_acortex_reg_map.sv"
+    `include  "acortex_regmap.svh"
+    `include  "i2c_master_regmap.svh"
  
 
     /*  Register with Factory */
@@ -105,17 +106,17 @@
         //foreach(pkt.addr[i])
         for(int i=0;  i<pkt.addr.size;  i++)
         begin
-          if(pkt.addr[i]  ==  {ACORTEX_I2CM_CODE,ACORTEX_I2CM_ADDR_REG_ADDR})
+          if(pkt.addr[i]  ==  {ACORTEX_I2C_BLK_CODE,I2C_ADDR_REG_ADDR})
           begin
             $cast({i2c_addr,i2c_rd_n_wr}, pkt.data[i]);
             ovm_report_info({get_name(),"[write_i2c_sb_lb_pkt]"},$psprintf("Updated i2c_addr[0x%x], i2c_rd_n_wr[0x%x]",i2c_addr,i2c_rd_n_wr),OVM_LOW);
           end
-          else if(pkt.addr[i] ==  ACORTEX_I2CM_DATA_REG_ADDR)
+          else if(pkt.addr[i] ==  I2C_DATA_CACHE_BASE_ADDR)
           begin
             $cast(i2c_data, pkt.data[i]);
             ovm_report_info({get_name(),"[write_i2c_sb_lb_pkt]"},$psprintf("Updated i2c_data[0x%x]",i2c_data),OVM_LOW);
           end
-          else if(pkt.addr[i] ==  ACORTEX_I2CM_STATUS_REG_ADDR)
+          else if(pkt.addr[i] ==  I2C_STATUS_REG_ADDR)
           begin
             i2c_pkt = new();
             i2c_pkt.addr  = new[1];
@@ -208,6 +209,8 @@
  
 
  -- <Log>
+
+[16-10-2014  12:52:42 AM][mammenx] Fixed compilation errors
 
 [15-10-2014  11:44:12 PM][mammenx] Initial Commit
 

@@ -44,7 +44,9 @@
                       parameter type  PCM_PKT_TYPE  = syn_pcm_seq_item
                     ) extends ovm_scoreboard;
 
-    `include  "syn_acortex_reg_map.sv"
+    `include  "acortex_regmap.svh"
+    `include  "pcm_bffr_regmap.svh"
+    `include  "ssm2603_drvr_regmap.svh"
 
     /*  Register with Factory */
     `ovm_component_param_utils(syn_adc_sb#(LB_PKT_TYPE, PCM_PKT_TYPE))
@@ -97,9 +99,9 @@
     function  void  build_adc_reg_map();
 
       adc_reg_map = syn_reg_map#(16)::type_id::create("adc_reg_map",  this);
-      adc_reg_map.create_field("adc_en",      {ACORTEX_WMDRVR_CODE,ACORTEX_WMDRVR_CTRL_REG_ADDR},   1,  1);
-      adc_reg_map.create_field("bps",         {ACORTEX_WMDRVR_CODE,ACORTEX_WMDRVR_CTRL_REG_ADDR},   2,  2);
-      adc_reg_map.create_field("acache_mode", {ACORTEX_ACACHE_CODE,ACORTEX_ACACHE_CTRL_REG_ADDR},   0,  0);
+      adc_reg_map.create_field("adc_en",      {ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_CONFIG_REG_ADDR},   1,  1);
+      adc_reg_map.create_field("bps",         {ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_CONFIG_REG_ADDR},   2,  2);
+      adc_reg_map.create_field("acache_mode", {ACORTEX_PCM_BFFR_CLK_CODE,PCM_BFFR_CONTROL_REG_ADDR},   0,  0);
 
     endfunction : build_adc_reg_map
 
@@ -235,6 +237,8 @@
  
 
  -- <Log>
+
+[16-10-2014  12:52:42 AM][mammenx] Fixed compilation errors
 
 [15-10-2014  11:44:12 PM][mammenx] Initial Commit
 

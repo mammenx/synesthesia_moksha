@@ -30,8 +30,6 @@
 */
 
 
-import  syn_env_pkg::*;
-
 class syn_acortex_base_test extends ovm_test;
 
 
@@ -149,6 +147,8 @@ endclass : syn_acortex_base_test
  
 
  -- <Log>
+
+[16-10-2014  12:52:42 AM][mammenx] Fixed compilation errors
 
 [15-10-2014  11:44:12 PM][mammenx] Initial Commit
 

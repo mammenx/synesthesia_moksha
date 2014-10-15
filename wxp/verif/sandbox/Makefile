@@ -1,10 +1,16 @@
 TEST_NAME=syn_acortex_base_test
 #TEST_NAME=syn_acortex_i2c_test
 
+TB_TOP=syn_acortex_tb_top
+
 DGN_LIB=dgn.lib
 LINT_OPT=-lint
 PREPROCESS_OPT=
 #PREPROCESS_OPT=-Epretty dgn.preprocess.v
+
+MSIM_DIR=/altera/modelsim/6.5e/modelsim_ase
+MSIM_INC_DIR=$(MSIM_DIR)/include
+MSIM_WIN32_DIR=$(MSIM_DIR)/linuxaloem
 
 all: clean show_dir dgn tb dpi dll sim
 
@@ -19,6 +25,11 @@ clean:
 	vlib work
 	vmap work work
 
+show_dir:
+	echo  MSIM_DIR : $(MSIM_DIR)
+	echo  MSIM_INC_DIR : $(MSIM_INC_DIR)
+	echo  MSIM_WIN32_DIR : $(MSIM_WIN32_DIR)
+
 git:
 	rm -rf work
 	rm -rf logs
@@ -31,6 +42,12 @@ dgn_lib:
 	vlib dgn.lib
 	vmap dgn.lib work
 	vlog -work $(DGN_LIB) -sv -f dgn.list -timescale "1ns / 10ps" $(LINT_OPT) $(PREPROCESS_OPT) | tee dgn.vlog.log
+
+dgn:
+	echo	"Compiling RTL into $(DGN_LIB) library"
+	vlib dgn.lib
+	vmap dgn.lib work
+	vlog -sv -f dgn.list -timescale "1ns / 10ps" $(LINT_OPT) $(PREPROCESS_OPT) | tee dgn.vlog.log
 
 tb:
 	echo "Compiling TB"

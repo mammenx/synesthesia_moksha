@@ -110,7 +110,7 @@
       .LB_ADDR_W      (LB_ADDR_W),
       .LB_ADDR_BLK_W  (4),
       .NUM_MCLKS      (2),
-      .NUM_SAMPLES    (128),
+      .NUM_SAMPLES    (128)
 
     ) acortex_inst  (
 
@@ -165,6 +165,8 @@
  
 
  -- <Log>
+
+[16-10-2014  12:52:42 AM][mammenx] Fixed compilation errors
 
 [15-10-2014  11:44:12 PM][mammenx] Initial Commit
 

@@ -47,8 +47,8 @@
     /*  Linking with p_sequencer  */
     `ovm_declare_p_sequencer(SEQR_TYPE)
 
-    `include  "syn_cortex_reg_map.svh"
-    `include  "syn_acortex_reg_map.svh"
+    `include  "cortex_regmap.svh"
+    `include  "acortex_regmap.svh"
     `include  "i2c_master_regmap.svh"
 
 
@@ -160,6 +160,8 @@
  
 
  -- <Log>
+
+[16-10-2014  12:52:42 AM][mammenx] Fixed compilation errors
 
 [15-10-2014  11:44:12 PM][mammenx] Initial Commit
 

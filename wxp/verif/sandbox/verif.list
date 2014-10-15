@@ -25,10 +25,11 @@
 +incdir+../../verif/tb/tests/fgyrus/
 +incdir+../../verif/tb/tests/sram_acc/
 +incdir+../../verif/tb/tests/cortex/
-+incdir+../../dgn/rtl/visual_cortex/
-+incdir+../../dgn/rtl/audio_cortex/
-+incdir+../../dgn/rtl/fusiform_gyrus/
-+incdir+../../dgn/rtl/cortex_top/
++incdir+../../dgn/rtl/vcortex/
++incdir+../../dgn/rtl/acortex/
++incdir+../../dgn/rtl/i2c/
++incdir+../../dgn/rtl/fgyrus/
++incdir+../../dgn/rtl/cortex/
 
 //System Verilog DPI
 -dpiheader syn_dpi.h
@@ -43,6 +44,7 @@
 ../../verif/tb/env/interfaces/syn_wm8731_intf.sv
 
 //Packages
+../../verif/tb/env/syn_fft_pkg.sv
 ../../verif/tb/env/syn_math_pkg.sv
 ../../verif/tb/env/syn_audio_pkg.sv
 
