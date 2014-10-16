@@ -22,14 +22,14 @@
 /*
  --------------------------------------------------------------------------
  -- Project Code      : synesthesia_moksha
- -- Interface Name    : syn_pcm_mem_intf
+ -- Interface Name    : syn_pcm_mem_intf_m
  -- Author            : mammenx
  -- Function          : This interace contains all the signals required to
                         transfer PCM data from Acortex to Fgyrus.
  --------------------------------------------------------------------------
 */
 
-interface syn_pcm_mem_intf  #(DATA_W=32,ADDR_W=7,RD_DELAY=2) (input logic clk_ir,rst_il);
+interface syn_pcm_mem_intf_m  #(DATA_W=32,ADDR_W=8,RD_DELAY=2) (input logic clk_ir,rst_il);
 
   //Logic signals
   logic                     pcm_data_rdy;
@@ -43,14 +43,25 @@ interface syn_pcm_mem_intf  #(DATA_W=32,ADDR_W=7,RD_DELAY=2) (input logic clk_ir
   clocking  cb  @(posedge clk_ir);
     default input #2ns  output  #2ns;
 
-    inout   pcm_data_rdy;
-    inout   pcm_addr;
-    inout   pcm_rden;
-    inout   pcm_rdata;
-    inout   pcm_rd_valid;
-    input   pcm_raddr;  //to be used only by monitor
+    output  pcm_data_rdy;
+    input   pcm_addr;
+    input   pcm_rden;
+    output  pcm_rdata;
+    output  pcm_rd_valid;
 
   endclocking : cb
+
+  clocking  cb_mon  @(posedge clk_ir);
+    default input #2ns  output  #2ns;
+
+    input pcm_data_rdy;
+    input pcm_addr;
+    input pcm_rden;
+    input pcm_rdata;
+    input pcm_rd_valid;
+    input pcm_raddr;  //to be used only by monitor
+
+  endclocking : cb_mon
 
   /*  Read address delay logic  */
   logic [(ADDR_W*RD_DELAY)-1:0]  pcm_raddr_del;
@@ -71,10 +82,11 @@ interface syn_pcm_mem_intf  #(DATA_W=32,ADDR_W=7,RD_DELAY=2) (input logic clk_ir
 
 
   //Modports
-  modport TB  (input   clk_ir,rst_il, clocking  cb);
+  modport TB_DRVR   (input   clk_ir,rst_il, clocking  cb);
+  modport TB_MON    (input   clk_ir,rst_il, clocking  cb_mon);
 
 
-endinterface  //  syn_pcm_mem_intf
+endinterface  //  syn_pcm_mem_intf_m
 
 /*
  --------------------------------------------------------------------------
@@ -83,6 +95,8 @@ endinterface  //  syn_pcm_mem_intf
  
 
  -- <Log>
+
+[16-10-2014  09:46:11 PM][mammenx] Split into seperate interfaces for master & slave
 
 [15-10-2014  11:44:12 PM][mammenx] Initial Commit
 
