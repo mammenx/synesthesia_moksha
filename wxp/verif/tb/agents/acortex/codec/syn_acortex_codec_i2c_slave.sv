@@ -184,7 +184,7 @@
             #2;
 
             ovm_report_info({get_name(),"[run]"},$psprintf("Driving ACK"),OVM_LOW);
-            intf.sda_0      <=  0;
+            intf.sda_o      <=  0;
             intf.release_sda<=  0;
 
             @(negedge intf.scl);
@@ -231,6 +231,8 @@
  
 
  -- <Log>
+
+[16-10-2014  09:47:25 PM][mammenx] Misc changes to fix issues found during syn_acortex_base_test
 
 [16-10-2014  12:52:42 AM][mammenx] Fixed compilation errors
 

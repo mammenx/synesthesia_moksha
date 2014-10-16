@@ -97,7 +97,7 @@
             begin
               //Monitor logic
               ovm_report_info({get_name(),"[run]"},"Waiting for pcm_data_rdy pulse",OVM_LOW);
-              @(posedge intf.cb.pcm_data_rdy);
+              @(posedge intf.cb_mon.pcm_data_rdy);
               ovm_report_info({get_name(),"[run]"},"Detected pcm_data_rdy pulse",OVM_LOW);
               @(posedge intf.clk_ir);
 
@@ -109,18 +109,18 @@
               begin
                 @(posedge intf.clk_ir);
 
-                pcm_addr_2d  = intf.cb.pcm_raddr;
+                pcm_addr_2d  = intf.cb_mon.pcm_raddr;
 
-                if(intf.cb.pcm_rd_valid)
+                if(intf.cb_mon.pcm_rd_valid)
                 begin
                   if(pcm_addr_2d  > NUM_SAMPLES)
                   begin
-                    pkt.pcm_data[pcm_addr_2d-NUM_SAMPLES].rchnnl = intf.cb.pcm_rdata;
+                    pkt.pcm_data[pcm_addr_2d-NUM_SAMPLES].rchnnl = intf.cb_mon.pcm_rdata;
                     ovm_report_info({get_name(),"[run]"},$psprintf("pkt.pcm_data[%1d].rchnnl = 0x%x",(pcm_addr_2d-NUM_SAMPLES),pkt.pcm_data[pcm_addr_2d-NUM_SAMPLES].lchnnl),OVM_LOW);
                   end
                   else
                   begin
-                    pkt.pcm_data[pcm_addr_2d].lchnnl = intf.cb.pcm_rdata;
+                    pkt.pcm_data[pcm_addr_2d].lchnnl = intf.cb_mon.pcm_rdata;
                     ovm_report_info({get_name(),"[run]"},$psprintf("pkt.pcm_data[%1d].lchnnl = 0x%x",pcm_addr_2d,pkt.pcm_data[pcm_addr_2d].lchnnl),OVM_LOW);
                   end
 
@@ -158,6 +158,8 @@
  
 
  -- <Log>
+
+[16-10-2014  09:47:25 PM][mammenx] Misc changes to fix issues found during syn_acortex_base_test
 
 [15-10-2014  11:44:12 PM][mammenx] Initial Commit
 

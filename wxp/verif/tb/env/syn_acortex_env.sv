@@ -36,7 +36,11 @@
 
   class syn_acortex_env extends ovm_env;
 
+    `include  "cortex_regmap.svh"
     `include  "acortex_regmap.svh"
+    `include  "i2c_master_regmap.svh"
+    `include  "pcm_bffr_regmap.svh"
+    `include  "ssm2603_drvr_regmap.svh"
 
     //Parameters
     parameter       LB_DATA_W   = 32;
@@ -57,7 +61,10 @@
     parameter type  ADC_INTF_TYPE = virtual syn_wm8731_intf.TB_ADC;
 
     parameter       NUM_PCM_SAMPLES   = 128;
-    parameter type  PCM_MEM_INTF_TYPE = virtual syn_pcm_mem_intf#(32,8,2);
+    //parameter type  PCM_MEM_INTF_DRVR_TYPE = virtual syn_pcm_mem_intf#(32,8,2).TB_MASTER;
+    //parameter type  PCM_MEM_INTF_MON_TYPE  = virtual syn_pcm_mem_intf#(32,8,2).TB_MON;
+    parameter type  PCM_MEM_INTF_DRVR_TYPE  = virtual syn_pcm_mem_intf_s.TB_DRVR;
+    parameter type  PCM_MEM_INTF_MON_TYPE   = virtual syn_pcm_mem_intf_s.TB_MON;
 
 
     /*  Register with factory */
@@ -73,12 +80,14 @@
                               DAC_INTF_TYPE,
                               ADC_INTF_TYPE
                             )  codec_agent;
-    syn_pcm_mem_agent#(NUM_PCM_SAMPLES,PCM_PKT_TYPE,PCM_MEM_INTF_TYPE)        pcm_mem_agent;
-    syn_i2c_sb#(I2C_DATA_W,LB_PKT_T,I2C_PKT_TYPE)   i2c_sb;
+    syn_pcm_mem_agent#(NUM_PCM_SAMPLES,PCM_PKT_TYPE,PCM_MEM_INTF_DRVR_TYPE,PCM_MEM_INTF_MON_TYPE)  pcm_mem_agent;
+    syn_i2c_sb#(I2C_DATA_W,LB_DATA_W,LB_PKT_T,I2C_PKT_TYPE)   i2c_sb;
     syn_adc_sb#(LB_PKT_T,PCM_PKT_TYPE)              adc_sb;
     syn_dac_sb#(LB_PKT_T,PCM_PKT_TYPE)              dac_sb;
 
     syn_reg_map#(REG_MAP_W)   wm8731_reg_map;  //each register is 9b
+
+    syn_reg_map#(LB_DATA_W)   acortex_reg_map;
     
 
     OVM_FILE  f;
@@ -86,9 +95,6 @@
 
     //For routing LB packets
     tlm_analysis_fifo#(LB_PKT_T)  LB2Env_ff;
-    ovm_analysis_port#(LB_PKT_T)  Env2I2C_Sb_port;
-    ovm_analysis_port#(LB_PKT_T)  Env2ADC_Sb_port;
-    ovm_analysis_port#(LB_PKT_T)  Env2DAC_Sb_port;
 
 
     /*  Constructor */
@@ -113,19 +119,20 @@
 
       lb_agent      = syn_lb_agent#(LB_DATA_W,LB_ADDR_W,LB_PKT_T,LB_DRVR_INTF_T,LB_MON_INTF_T)::type_id::create("lb_agent",  this);
       codec_agent   = syn_acortex_codec_agent#(REG_MAP_W,I2C_DATA_W,I2C_INTF_TYPE,I2C_PKT_TYPE,PCM_PKT_TYPE,DAC_INTF_TYPE,ADC_INTF_TYPE)::type_id::create("codec_agent",  this);
-      pcm_mem_agent = syn_pcm_mem_agent#(NUM_PCM_SAMPLES,PCM_PKT_TYPE,PCM_MEM_INTF_TYPE)::type_id::create("pcm_mem_agent",  this);
-      i2c_sb        = syn_i2c_sb#(I2C_DATA_W,LB_PKT_T,I2C_PKT_TYPE)::type_id::create("i2c_sb",  this);
+      pcm_mem_agent = syn_pcm_mem_agent#(NUM_PCM_SAMPLES,PCM_PKT_TYPE,PCM_MEM_INTF_DRVR_TYPE,PCM_MEM_INTF_MON_TYPE)::type_id::create("pcm_mem_agent",  this);
+      i2c_sb        = syn_i2c_sb#(I2C_DATA_W,LB_DATA_W,LB_PKT_T,I2C_PKT_TYPE)::type_id::create("i2c_sb",  this);
       adc_sb        = syn_adc_sb#(LB_PKT_T,PCM_PKT_TYPE)::type_id::create("adc_sb",  this);
       dac_sb        = syn_dac_sb#(LB_PKT_T,PCM_PKT_TYPE)::type_id::create("dac_sb",  this);
 
       LB2Env_ff       = new("LB2Env_ff",this);
-      Env2I2C_Sb_port = new("Env2I2C_Sb_port",this);
-      Env2ADC_Sb_port = new("Env2ADC_Sb_port",this);
-      Env2DAC_Sb_port = new("Env2DAC_Sb_port",this);
 
       wm8731_reg_map     = syn_reg_map#(REG_MAP_W)::type_id::create("wm8731_reg_map",this);
       build_wm8731_reg_map();
       ovm_report_info(get_name(),$psprintf("WM8731 Reg Map Table%s",wm8731_reg_map.sprintTable()),OVM_LOW);
+
+      acortex_reg_map    = syn_reg_map#(LB_DATA_W)::type_id::create("acortex_reg_map",this);
+      build_acortex_reg_map();
+      ovm_report_info(get_name(),$psprintf("Acortex Reg Map Table%s",acortex_reg_map.sprintTable()),OVM_LOW);
 
       ovm_report_info(get_name(),"End of build ",OVM_LOW);
     endfunction
@@ -141,9 +148,6 @@
 
         //Ports
         lb_agent.mon.Mon2Sb_port.connect(this.LB2Env_ff.analysis_export);
-        this.Env2I2C_Sb_port.connect(i2c_sb.Mon_lb_2Sb_port);
-        this.Env2ADC_Sb_port.connect(adc_sb.Mon_lb_2Sb_port);
-        this.Env2DAC_Sb_port.connect(dac_sb.Mon_lb_2Sb_port);
         codec_agent.i2c_mon.Mon2Sb_port.connect(i2c_sb.Mon_i2c_2Sb_port);
         pcm_mem_agent.mon.Mon2Sb_port.connect(adc_sb.Mon_rcvd_2Sb_port);
         codec_agent.adc_mon.Mon2Sb_port.connect(adc_sb.Mon_sent_2Sb_port);
@@ -156,56 +160,43 @@
         codec_agent.dac_mon.reg_map   = this.wm8731_reg_map;
         codec_agent.i2c_slave.reg_map = this.wm8731_reg_map;
 
+        i2c_sb.reg_map        = this.acortex_reg_map;
+
       ovm_report_info(get_name(),"END of connect ",OVM_LOW);
     endfunction
 
     /*  Run */
     task  run();
-      LB_PKT_T  lb_pkt,sb_pkt;
+      LB_PKT_T  lb_pkt;
 
       ovm_report_info({get_name(),"[run]"},"START of run ...",OVM_LOW);
 
       forever
       begin
+        ovm_report_info({get_name(),"[run]"},$psprintf("Waiting for LB packets"),OVM_LOW);
+
         LB2Env_ff.get(lb_pkt);
 
-        foreach(lb_pkt.addr[i])
+        ovm_report_info({get_name(),"[run]"},$psprintf("Received LB pkt->\n%s",lb_pkt.sprint()),OVM_LOW);
+
+        if((lb_pkt.lb_xtn  ==  WRITE) ||  (lb_pkt.lb_xtn  ==  BURST_WRITE))
         begin
-          sb_pkt  = new();
-          sb_pkt.addr = new[1];
-          sb_pkt.data = new[1];
-          sb_pkt.addr[0]  = lb_pkt.addr[i];
-          sb_pkt.data[0]  = lb_pkt.data[i];
-          sb_pkt.lb_xtn   = lb_pkt.lb_xtn;
-
-          case(lb_pkt.addr[i][11:8])
-
-            ACORTEX_I2C_BLK_CODE  :
+          for(int i=0;  i<lb_pkt.addr.size; i++)
+          begin
+            if(!acortex_reg_map.set_reg(lb_pkt.addr[i],lb_pkt.data[i]))
             begin
-              ovm_report_info({get_name(),"[run]"},$psprintf("Sending lb_pkt to I2C Scoreboard\n%s",sb_pkt.sprint()),OVM_LOW);
-              Env2I2C_Sb_port.write(sb_pkt);
+              ovm_report_info({get_name(),"[run]"},"Updated regmap",OVM_LOW);
             end
-
-            ACORTEX_DRVR_BLK_CODE :
+            else
             begin
-              ovm_report_info({get_name(),"[run]"},$psprintf("Sending lb_pkt to ADC/DAC Scoreboards\n%s",sb_pkt.sprint()),OVM_LOW);
-              Env2ADC_Sb_port.write(sb_pkt);
-              Env2DAC_Sb_port.write(sb_pkt);
+              ovm_report_warning({get_name(),"[run]"},"Could not update regmap!",OVM_LOW);
             end
+          end
 
-            ACORTEX_PCM_BFFR_CLK_CODE :
-            begin
-              ovm_report_info({get_name(),"[run]"},$psprintf("Sending lb_pkt to ADC/DAC Scoreboards\n%s",sb_pkt.sprint()),OVM_LOW);
-              Env2ADC_Sb_port.write(sb_pkt);
-              Env2DAC_Sb_port.write(sb_pkt);
-            end
+          #1;
 
-            default :
-            begin
-              ovm_report_warning({get_name(),"[run]"},$psprintf("Nowhere to send pkt ...\n%s",lb_pkt.sprint()),OVM_LOW);
-            end
-
-          endcase
+          //Intimate people
+          i2c_sb.lb_event.put(1);
         end
       end
     endtask : run
@@ -261,6 +252,38 @@
 
     endfunction : build_wm8731_reg_map
 
+    function  bit[LB_ADDR_W-1:0]  build_addr(input  int blk,base);
+      bit [LB_ADDR_W-1:0] res;
+
+      res[LB_ADDR_W-4-1:0]          = base;
+      res[LB_ADDR_W-1:LB_ADDR_W-4]  = blk;
+
+      return  res;
+    endfunction : build_addr
+
+    function  void  build_acortex_reg_map();
+      acortex_reg_map.create_field("i2c_addr",      build_addr(ACORTEX_I2C_BLK_CODE,I2C_ADDR_REG_ADDR),    1,    7);
+      acortex_reg_map.create_field("clk_div",       build_addr(ACORTEX_I2C_BLK_CODE,I2C_CLK_DIV_REG_ADDR), 0,    LB_DATA_W-1);
+      acortex_reg_map.create_field("i2c_start_en",  build_addr(ACORTEX_I2C_BLK_CODE,I2C_CONFIG_REG_ADDR),  0,    0);
+      acortex_reg_map.create_field("i2c_stop_en",   build_addr(ACORTEX_I2C_BLK_CODE,I2C_CONFIG_REG_ADDR),  1,    1);
+      acortex_reg_map.create_field("i2c_init",      build_addr(ACORTEX_I2C_BLK_CODE,I2C_CONFIG_REG_ADDR),  2,    2);
+      acortex_reg_map.create_field("i2c_rd_n_wr",   build_addr(ACORTEX_I2C_BLK_CODE,I2C_CONFIG_REG_ADDR),  3,    3);
+      acortex_reg_map.create_field("i2c_num_bytes", build_addr(ACORTEX_I2C_BLK_CODE,I2C_CONFIG_REG_ADDR),  8,    LB_DATA_W-1);
+      acortex_reg_map.create_field("i2c_data_0",    build_addr(ACORTEX_I2C_BLK_CODE,I2C_DATA_CACHE_BASE_ADDR+0),  0,  7);
+      acortex_reg_map.create_field("i2c_data_1",    build_addr(ACORTEX_I2C_BLK_CODE,I2C_DATA_CACHE_BASE_ADDR+1),  0,  7);
+      acortex_reg_map.create_field("i2c_data_2",    build_addr(ACORTEX_I2C_BLK_CODE,I2C_DATA_CACHE_BASE_ADDR+2),  0,  7);
+      acortex_reg_map.create_field("i2c_data_3",    build_addr(ACORTEX_I2C_BLK_CODE,I2C_DATA_CACHE_BASE_ADDR+3),  0,  7);
+
+      acortex_reg_map.create_field("dac_en",        build_addr(ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_CONFIG_REG_ADDR),   0,  0);
+      acortex_reg_map.create_field("adc_en",        build_addr(ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_CONFIG_REG_ADDR),   1,  1);
+      acortex_reg_map.create_field("bps_val",       build_addr(ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_CONFIG_REG_ADDR),   2,  3);
+      acortex_reg_map.create_field("bclk_div_val",  build_addr(ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_BCLK_DIV_REG_ADDR), 0,  LB_DATA_W-1);
+      acortex_reg_map.create_field("fs_val",        build_addr(ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_FS_VAL_REG_ADDR),   0,  LB_DATA_W-1);
+      acortex_reg_map.create_field("mclk_sel",      build_addr(ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_MCLK_SEL_REG_ADDR), 0,  LB_DATA_W-1);
+
+      acortex_reg_map.create_field("bffr_mode",     build_addr(ACORTEX_PCM_BFFR_CLK_CODE,PCM_BFFR_CONTROL_REG_ADDR),  0,  0);
+    endfunction : build_acortex_reg_map
+
   endclass  : syn_acortex_env
 
 `endif
@@ -272,6 +295,8 @@
  
 
  -- <Log>
+
+[16-10-2014  09:47:25 PM][mammenx] Misc changes to fix issues found during syn_acortex_base_test
 
 [16-10-2014  12:52:42 AM][mammenx] Fixed compilation errors
 

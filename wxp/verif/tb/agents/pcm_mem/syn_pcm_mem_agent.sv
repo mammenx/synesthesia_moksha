@@ -34,17 +34,18 @@
   class syn_pcm_mem_agent #(
                               parameter NUM_SAMPLES   = 128,
                               parameter type  PCM_PKT_TYPE  = syn_pcm_seq_item,
-                              parameter type  INTF_TYPE     = virtual syn_pcm_mem_intf
+                              parameter type  DRVR_INTF_TYPE= virtual syn_pcm_mem_intf.TB_DRVR,
+                              parameter type  MON_INTF_TYPE = virtual syn_pcm_mem_intf.TB_MON
                           ) extends ovm_component;
 
     /*  Register with factory */
-    `ovm_component_utils(syn_pcm_mem_agent#(NUM_SAMPLES,PCM_PKT_TYPE,INTF_TYPE))
+    `ovm_component_utils(syn_pcm_mem_agent#(NUM_SAMPLES,PCM_PKT_TYPE,DRVR_INTF_TYPE,MON_INTF_TYPE))
 
 
     //Declare Seqr, Drvr, Mon, Sb objects
-    syn_pcm_mem_drvr#(NUM_SAMPLES,PCM_PKT_TYPE,INTF_TYPE)     drvr;
-    syn_pcm_mem_seqr#(PCM_PKT_TYPE)                           seqr;
-    syn_pcm_mem_mon#(NUM_SAMPLES,PCM_PKT_TYPE,INTF_TYPE)      mon;
+    syn_pcm_mem_drvr#(NUM_SAMPLES,PCM_PKT_TYPE,DRVR_INTF_TYPE)  drvr;
+    syn_pcm_mem_seqr#(PCM_PKT_TYPE)                             seqr;
+    syn_pcm_mem_mon#(NUM_SAMPLES,PCM_PKT_TYPE,MON_INTF_TYPE)    mon;
 
 
     OVM_FILE  f;
@@ -71,9 +72,9 @@
       ovm_report_info(get_name(),"Start of build ",OVM_LOW);
 
       //Build Seqr, Drvr, Mon, Sb objects using Factory
-      drvr  = syn_pcm_mem_drvr#(NUM_SAMPLES,PCM_PKT_TYPE,INTF_TYPE)::type_id::create("syn_pcm_mem_drvr",  this);
+      drvr  = syn_pcm_mem_drvr#(NUM_SAMPLES,PCM_PKT_TYPE,DRVR_INTF_TYPE)::type_id::create("syn_pcm_mem_drvr",  this);
       seqr  = syn_pcm_mem_seqr#(PCM_PKT_TYPE)::type_id::create("syn_pcm_mem_seqr",  this);
-      mon   = syn_pcm_mem_mon#(NUM_SAMPLES,PCM_PKT_TYPE,INTF_TYPE)::type_id::create("syn_pcm_mem_mon",  this);
+      mon   = syn_pcm_mem_mon#(NUM_SAMPLES,PCM_PKT_TYPE,MON_INTF_TYPE)::type_id::create("syn_pcm_mem_mon",  this);
 
       ovm_report_info(get_name(),"End of build ",OVM_LOW);
     endfunction
@@ -115,6 +116,8 @@
  
 
  -- <Log>
+
+[16-10-2014  09:47:25 PM][mammenx] Misc changes to fix issues found during syn_acortex_base_test
 
 [15-10-2014  11:44:12 PM][mammenx] Initial Commit
 

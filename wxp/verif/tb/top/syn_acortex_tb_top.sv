@@ -64,7 +64,7 @@
 
     syn_wm8731_intf                   wm8731_intf(sys_rst);
 
-    syn_pcm_mem_intf#(PCM_MEM_DATA_W,PCM_MEM_ADDR_W,2)  pcm_mem_intf(sys_clk_100,sys_rst);
+    syn_pcm_mem_intf_s#(PCM_MEM_DATA_W,PCM_MEM_ADDR_W,2)  pcm_mem_intf(sys_clk_100,sys_rst);
 
 
     /////////////////////////////////////////////////////
@@ -165,6 +165,8 @@
  
 
  -- <Log>
+
+[16-10-2014  09:47:25 PM][mammenx] Misc changes to fix issues found during syn_acortex_base_test
 
 [16-10-2014  12:52:42 AM][mammenx] Fixed compilation errors
 

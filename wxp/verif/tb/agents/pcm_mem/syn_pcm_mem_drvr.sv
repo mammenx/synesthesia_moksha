@@ -187,7 +187,6 @@
 
       //Reset signals
       intf.cb.pcm_addr    <=  0;
-      intf.cb.pcm_wdata   <=  0;
       intf.cb.pcm_rden    <=  0;
 
       //Wait for reset ...
@@ -234,6 +233,8 @@
  
 
  -- <Log>
+
+[16-10-2014  09:47:25 PM][mammenx] Misc changes to fix issues found during syn_acortex_base_test
 
 [15-10-2014  11:44:12 PM][mammenx] Initial Commit
 

@@ -40,7 +40,8 @@
 
 //Interfaces
 ../../verif/tb/env/interfaces/syn_lb_tb_intf.sv
-../../verif/tb/env/interfaces/syn_pcm_mem_intf.sv
+../../verif/tb/env/interfaces/syn_pcm_mem_intf_s.sv
+../../verif/tb/env/interfaces/syn_pcm_mem_intf_m.sv
 ../../verif/tb/env/interfaces/syn_wm8731_intf.sv
 
 //Packages
