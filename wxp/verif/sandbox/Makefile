@@ -39,8 +39,8 @@ git:
 
 dgn_lib:
 	echo	"Compiling RTL into $(DGN_LIB) library"
-	vlib dgn.lib
-	vmap dgn.lib work
+	vlib $(DGN_LIB)
+	vmap $(DGN_LIB) work
 	vlog -work $(DGN_LIB) -sv -f dgn.list -timescale "1ns / 10ps" $(LINT_OPT) $(PREPROCESS_OPT) | tee dgn.vlog.log
 
 dgn:

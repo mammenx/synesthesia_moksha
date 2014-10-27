@@ -39,7 +39,7 @@ module i2c_master #(
   parameter LB_ADDR_W           = 8,
   parameter CLK_DIV_CNT_W       = 8,
   parameter I2C_MAX_DATA_BYTES  = 4,
-  parameter ACK_VAL             = 1'b1
+  parameter ACK_VAL             = 1'b0
 ) (
 
   //--------------------- Ports -----------
@@ -90,6 +90,7 @@ module i2c_master #(
   wire                        i2c_busy;
   wire  [NUM_BYTES_IDX-1:0]   data_cache_idx;
 
+  wire  [CLK_DIV_CNT_W-1:0]   i2c_clk_div_val_by_2,i2c_clk_div_val_by_4,i2c_clk_div_val_3_by_4;
   wire                        tck_valid,tck_by_2_valid,tck_by_4_valid;
   wire  [(DATA_CNTR_W-3)-1:0] data_cntr_bytes;
 
@@ -141,7 +142,7 @@ enum  logic [2:0] { IDLE_S  = 0,
     else
     begin
       /*  Write Logic */
-      if(lb_wr_valid)
+      if(lb_wr_en)
       begin
         case(lb_addr)
 
@@ -157,7 +158,7 @@ enum  logic [2:0] { IDLE_S  = 0,
 
           I2C_CONFIG_REG_ADDR :
           begin
-            i2c_num_bytes     <=  lb_wr_data[8 :+  NUM_BYTES_IDX];
+            i2c_num_bytes     <=  lb_wr_data[8 +: NUM_BYTES_IDX];
             i2c_start_en      <=  lb_wr_data[0];
             i2c_stop_en       <=  lb_wr_data[1];
             i2c_init          <=  lb_wr_data[2];
@@ -235,13 +236,14 @@ enum  logic [2:0] { IDLE_S  = 0,
       tck_cntr                <=  0;
       data_cntr               <=  0;
       rel_i2c_bus             <=  0;
+      i2c_nack_det            <=  0;
     end
     else
     begin
       fsm_pstate              <=  next_state;
       rel_i2c_bus             <=  rel_i2c_bus_next;
 
-      if(tck_by_2_valid | ~i2c_busy)
+      if(tck_valid | ~i2c_busy)
       begin
         tck_cntr              <=  0;
       end
@@ -258,12 +260,27 @@ enum  logic [2:0] { IDLE_S  = 0,
       begin
         data_cntr             <=  data_cntr + 1'b1;
       end
+
+      if(i2c_nack_det)
+      begin
+        i2c_nack_det          <=  ~i2c_init;
+      end
+      else if(fsm_pstate  ==  ACK_S)
+      begin
+        i2c_nack_det          <= i2c_nack_det | ((sda_i ==  NACK_VAL) & tck_by_2_valid);
+      end
     end
   end
 
-  assign  tck_valid           =   (tck_cntr ==  i2c_clk_div_cnt)  ? 1'b1  : tck_by_2_valid;
-  assign  tck_by_2_valid    =   (tck_cntr ==  {1'b0,i2c_clk_div_cnt[CLK_DIV_CNT_W-1:1]}) ? 1'b1  : tck_valid;
-  assign  tck_by_4_valid    =   (tck_cntr ==  {2'b0,i2c_clk_div_cnt[CLK_DIV_CNT_W-1:2]}) ? 1'b1  : tck_by_2_valid;
+  assign  i2c_clk_div_val_by_2    = {1'b0,i2c_clk_div_cnt[CLK_DIV_CNT_W-1:1]};
+  assign  i2c_clk_div_val_by_4    = {2'b0,i2c_clk_div_cnt[CLK_DIV_CNT_W-1:2]};
+  assign  i2c_clk_div_val_3_by_4  = i2c_clk_div_val_by_2  + i2c_clk_div_val_by_4;
+
+  assign  tck_valid         =   (tck_cntr ==  i2c_clk_div_cnt)        ? 1'b1  : 1'b0;
+  assign  tck_by_2_valid    =   (tck_cntr ==  i2c_clk_div_val_by_2)   ? 1'b1  : tck_valid;
+  assign  tck_by_4_valid    =   (tck_cntr ==  i2c_clk_div_val_by_4)   ? 1'b1  : 
+                                (tck_cntr ==  i2c_clk_div_val_3_by_4) ? 1'b1  : tck_by_2_valid;
+
   assign  data_cntr_bytes     =   data_cntr[DATA_CNTR_W-1:3];
 
   always@(*)
@@ -310,7 +327,7 @@ enum  logic [2:0] { IDLE_S  = 0,
 
         if(tck_valid)
         begin
-          if(data_cntr_bytes  > i2c_num_bytes)
+          if((data_cntr_bytes  > i2c_num_bytes) | i2c_nack_det)
           begin
             next_state        =  i2c_stop_en  ? STOP_S  : IDLE_S; 
           end

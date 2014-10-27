@@ -155,7 +155,7 @@
 
               $cast(i2c_pkt.addr[0],  reg_map.get_field("i2c_addr"));
 
-              foreach(i2c_pkt.data[i])
+              for(int i=0;  i<i2c_pkt.data.size;  i++)
               begin
                 $cast(i2c_pkt.data[i],  reg_map.get_field($psprintf("i2c_data_%1d",i)));
               end

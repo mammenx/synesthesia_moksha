@@ -91,7 +91,7 @@ class syn_acortex_i2c_test extends syn_acortex_base_test;
 
       #500;
 
-      for(int i=0;  i<10; i++)
+      for(int i=0;  i<1; i++)
       begin
         i2c_config_seq.poll_en    = 1;
         i2c_config_seq.rd_n_wr    = 0;
