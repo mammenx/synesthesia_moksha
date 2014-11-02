@@ -32,6 +32,8 @@
 `ifndef __SYN_I2C_CONFIG_SEQ
 `define __SYN_I2C_CONFIG_SEQ
 
+  import  syn_env_pkg::build_addr;
+
   class syn_i2c_config_seq  #(
                               parameter I2C_DATA_W  = 16,
                               parameter type  PKT_TYPE  = syn_lb_seq_item,
@@ -87,19 +89,19 @@
       pkt.data  = new[NUM_BYTES+3];
       pkt.lb_xtn= BURST_WRITE;
 
-      $cast(pkt.addr[0],  {ACORTEX_BLK,ACORTEX_I2C_BLK_CODE,I2C_ADDR_REG_ADDR});
+      $cast(pkt.addr[0],  build_addr(ACORTEX_BLK,ACORTEX_I2C_BLK_CODE,I2C_ADDR_REG_ADDR));
       pkt.data[0] = `I2C_ADDR;
 
-      $cast(pkt.addr[1],  {ACORTEX_BLK,ACORTEX_I2C_BLK_CODE,I2C_CLK_DIV_REG_ADDR});
+      $cast(pkt.addr[1],  build_addr(ACORTEX_BLK,ACORTEX_I2C_BLK_CODE,I2C_CLK_DIV_REG_ADDR));
       pkt.data[1] = `I2C_CLK_DIV;
 
       for(i=0;  i<NUM_BYTES;  i++)
       begin
-        $cast(pkt.addr[2+i],  {ACORTEX_BLK,ACORTEX_I2C_BLK_CODE,(I2C_DATA_CACHE_BASE_ADDR+i)});
+        $cast(pkt.addr[2+i],  build_addr(ACORTEX_BLK,ACORTEX_I2C_BLK_CODE,(I2C_DATA_CACHE_BASE_ADDR+i)));
         pkt.data[2+i] = i2c_data[((NUM_BYTES-1-i)*8) +:  8] ;
       end
 
-      $cast(pkt.addr[NUM_BYTES+2],  {ACORTEX_BLK,ACORTEX_I2C_BLK_CODE,I2C_CONFIG_REG_ADDR});
+      $cast(pkt.addr[NUM_BYTES+2],  build_addr(ACORTEX_BLK,ACORTEX_I2C_BLK_CODE,I2C_CONFIG_REG_ADDR));
       pkt.data[NUM_BYTES+2]     = num_bytes <<  8;
       pkt.data[NUM_BYTES+2][0]  = 1;
       pkt.data[NUM_BYTES+2][1]  = 1;
@@ -160,6 +162,8 @@
  
 
  -- <Log>
+
+[02-11-2014  01:47:10 PM][mammenx] Modified for syn_env_pkg
 
 [16-10-2014  12:52:42 AM][mammenx] Fixed compilation errors
 

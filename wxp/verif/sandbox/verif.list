@@ -48,6 +48,7 @@
 ../../verif/tb/env/syn_fft_pkg.sv
 ../../verif/tb/env/syn_math_pkg.sv
 ../../verif/tb/env/syn_audio_pkg.sv
+../../verif/tb/env/syn_env_pkg.sv
 
 
 //TB TOP

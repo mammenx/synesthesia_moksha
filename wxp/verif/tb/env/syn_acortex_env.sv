@@ -33,6 +33,7 @@
 `ifndef __SYN_ACORTEX_ENV
 `define __SYN_ACORTEX_ENV
 
+  import  syn_env_pkg::*;
 
   class syn_acortex_env extends ovm_env;
 
@@ -43,8 +44,8 @@
     `include  "ssm2603_drvr_regmap.svh"
 
     //Parameters
-    parameter       LB_DATA_W   = 32;
-    parameter       LB_ADDR_W   = 12;
+    parameter       LB_DATA_W   = syn_env_pkg::LB_DATA_W;
+    parameter       LB_ADDR_W   = syn_env_pkg::LB_BLK_0_W + syn_env_pkg::LB_BASE_W;
     parameter type  LB_PKT_T    = syn_lb_seq_item#(LB_DATA_W,LB_ADDR_W);
     parameter type  LB_DRVR_INTF_T  = virtual syn_lb_tb_intf#(LB_DATA_W,LB_ADDR_W);
     parameter type  LB_MON_INTF_T   = virtual syn_lb_tb_intf#(LB_DATA_W,LB_ADDR_W);
@@ -252,36 +253,27 @@
 
     endfunction : build_wm8731_reg_map
 
-    function  bit[LB_ADDR_W-1:0]  build_addr(input  int blk,base);
-      bit [LB_ADDR_W-1:0] res;
-
-      res[LB_ADDR_W-4-1:0]          = base;
-      res[LB_ADDR_W-1:LB_ADDR_W-4]  = blk;
-
-      return  res;
-    endfunction : build_addr
-
     function  void  build_acortex_reg_map();
-      acortex_reg_map.create_field("i2c_addr",      build_addr(ACORTEX_I2C_BLK_CODE,I2C_ADDR_REG_ADDR),    1,    7);
-      acortex_reg_map.create_field("clk_div",       build_addr(ACORTEX_I2C_BLK_CODE,I2C_CLK_DIV_REG_ADDR), 0,    LB_DATA_W-1);
-      acortex_reg_map.create_field("i2c_start_en",  build_addr(ACORTEX_I2C_BLK_CODE,I2C_CONFIG_REG_ADDR),  0,    0);
-      acortex_reg_map.create_field("i2c_stop_en",   build_addr(ACORTEX_I2C_BLK_CODE,I2C_CONFIG_REG_ADDR),  1,    1);
-      acortex_reg_map.create_field("i2c_init",      build_addr(ACORTEX_I2C_BLK_CODE,I2C_CONFIG_REG_ADDR),  2,    2);
-      acortex_reg_map.create_field("i2c_rd_n_wr",   build_addr(ACORTEX_I2C_BLK_CODE,I2C_CONFIG_REG_ADDR),  3,    3);
-      acortex_reg_map.create_field("i2c_num_bytes", build_addr(ACORTEX_I2C_BLK_CODE,I2C_CONFIG_REG_ADDR),  8,    LB_DATA_W-1);
-      acortex_reg_map.create_field("i2c_data_0",    build_addr(ACORTEX_I2C_BLK_CODE,I2C_DATA_CACHE_BASE_ADDR+0),  0,  7);
-      acortex_reg_map.create_field("i2c_data_1",    build_addr(ACORTEX_I2C_BLK_CODE,I2C_DATA_CACHE_BASE_ADDR+1),  0,  7);
-      acortex_reg_map.create_field("i2c_data_2",    build_addr(ACORTEX_I2C_BLK_CODE,I2C_DATA_CACHE_BASE_ADDR+2),  0,  7);
-      acortex_reg_map.create_field("i2c_data_3",    build_addr(ACORTEX_I2C_BLK_CODE,I2C_DATA_CACHE_BASE_ADDR+3),  0,  7);
+      acortex_reg_map.create_field("i2c_addr",      build_addr(0,ACORTEX_I2C_BLK_CODE,I2C_ADDR_REG_ADDR),    1,    7);
+      acortex_reg_map.create_field("clk_div",       build_addr(0,ACORTEX_I2C_BLK_CODE,I2C_CLK_DIV_REG_ADDR), 0,    LB_DATA_W-1);
+      acortex_reg_map.create_field("i2c_start_en",  build_addr(0,ACORTEX_I2C_BLK_CODE,I2C_CONFIG_REG_ADDR),  0,    0);
+      acortex_reg_map.create_field("i2c_stop_en",   build_addr(0,ACORTEX_I2C_BLK_CODE,I2C_CONFIG_REG_ADDR),  1,    1);
+      acortex_reg_map.create_field("i2c_init",      build_addr(0,ACORTEX_I2C_BLK_CODE,I2C_CONFIG_REG_ADDR),  2,    2);
+      acortex_reg_map.create_field("i2c_rd_n_wr",   build_addr(0,ACORTEX_I2C_BLK_CODE,I2C_CONFIG_REG_ADDR),  3,    3);
+      acortex_reg_map.create_field("i2c_num_bytes", build_addr(0,ACORTEX_I2C_BLK_CODE,I2C_CONFIG_REG_ADDR),  8,    LB_DATA_W-1);
+      acortex_reg_map.create_field("i2c_data_0",    build_addr(0,ACORTEX_I2C_BLK_CODE,I2C_DATA_CACHE_BASE_ADDR+0),  0,  7);
+      acortex_reg_map.create_field("i2c_data_1",    build_addr(0,ACORTEX_I2C_BLK_CODE,I2C_DATA_CACHE_BASE_ADDR+1),  0,  7);
+      acortex_reg_map.create_field("i2c_data_2",    build_addr(0,ACORTEX_I2C_BLK_CODE,I2C_DATA_CACHE_BASE_ADDR+2),  0,  7);
+      acortex_reg_map.create_field("i2c_data_3",    build_addr(0,ACORTEX_I2C_BLK_CODE,I2C_DATA_CACHE_BASE_ADDR+3),  0,  7);
 
-      acortex_reg_map.create_field("dac_en",        build_addr(ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_CONFIG_REG_ADDR),   0,  0);
-      acortex_reg_map.create_field("adc_en",        build_addr(ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_CONFIG_REG_ADDR),   1,  1);
-      acortex_reg_map.create_field("bps_val",       build_addr(ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_CONFIG_REG_ADDR),   2,  3);
-      acortex_reg_map.create_field("bclk_div_val",  build_addr(ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_BCLK_DIV_REG_ADDR), 0,  LB_DATA_W-1);
-      acortex_reg_map.create_field("fs_val",        build_addr(ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_FS_VAL_REG_ADDR),   0,  LB_DATA_W-1);
-      acortex_reg_map.create_field("mclk_sel",      build_addr(ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_MCLK_SEL_REG_ADDR), 0,  LB_DATA_W-1);
+      acortex_reg_map.create_field("dac_en",        build_addr(0,ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_CONFIG_REG_ADDR),   0,  0);
+      acortex_reg_map.create_field("adc_en",        build_addr(0,ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_CONFIG_REG_ADDR),   1,  1);
+      acortex_reg_map.create_field("bps_val",       build_addr(0,ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_CONFIG_REG_ADDR),   2,  3);
+      acortex_reg_map.create_field("bclk_div_val",  build_addr(0,ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_BCLK_DIV_REG_ADDR), 0,  LB_DATA_W-1);
+      acortex_reg_map.create_field("fs_val",        build_addr(0,ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_FS_VAL_REG_ADDR),   0,  LB_DATA_W-1);
+      acortex_reg_map.create_field("mclk_sel",      build_addr(0,ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_MCLK_SEL_REG_ADDR), 0,  LB_DATA_W-1);
 
-      acortex_reg_map.create_field("bffr_mode",     build_addr(ACORTEX_PCM_BFFR_CLK_CODE,PCM_BFFR_CONTROL_REG_ADDR),  0,  0);
+      acortex_reg_map.create_field("bffr_mode",     build_addr(0,ACORTEX_PCM_BFFR_CLK_CODE,PCM_BFFR_CONTROL_REG_ADDR),  0,  0);
     endfunction : build_acortex_reg_map
 
   endclass  : syn_acortex_env
@@ -295,6 +287,8 @@
  
 
  -- <Log>
+
+[02-11-2014  01:47:10 PM][mammenx] Modified for syn_env_pkg
 
 [16-10-2014  09:47:25 PM][mammenx] Misc changes to fix issues found during syn_acortex_base_test
 
