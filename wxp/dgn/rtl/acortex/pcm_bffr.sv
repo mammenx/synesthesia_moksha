@@ -63,6 +63,7 @@ module pcm_bffr #(
   input   [31:0]              adc_lpcm_data,
   input   [31:0]              adc_rpcm_data,
 
+  output  reg                 dac_data_rdy,
   input                       dac_pcm_nxt,
   output  reg [31:0]          dac_lpcm_data,
   output  reg [31:0]          dac_rpcm_data,
@@ -93,7 +94,9 @@ module pcm_bffr #(
   reg                         bffr_mode;
 
   reg                         adc_pcm_valid_1d;
-  reg                         dac_pcm_nxt_1d;
+  reg                         dac_data_rdy_1d;
+  reg                         dac_pcm_nxt_1d,dac_pcm_nxt_2d;
+  reg                         fwft_refresh,fwft_refresh_1d;
   reg     [MEM_ADDR_W-1:0]    pcm_raddr,pcm_waddr;
   reg                         bffr_a_n_b_sel;
   reg     [MEM_RD_DELAY-1:0]  mem_rd_del_vec;
@@ -157,7 +160,7 @@ module pcm_bffr #(
 
           PCM_BFFR_STATUS_REG_ADDR  :
           begin
-
+            lb_rd_data        <=  bffr_pcm_rdata;
           end
 
           default :
@@ -178,11 +181,16 @@ module pcm_bffr #(
   begin
     if(~acortex_rst_n)
     begin
+      dac_data_rdy          <=  0;
       dac_lpcm_data         <=  0;
       dac_rpcm_data         <=  0;
 
       adc_pcm_valid_1d      <=  0;
+      dac_data_rdy_1d       <=  0;
       dac_pcm_nxt_1d        <=  0;
+      dac_pcm_nxt_2d        <=  0;
+      fwft_refresh          <=  0;
+      fwft_refresh_1d       <=  0;
       pcm_waddr             <=  0;
       pcm_raddr             <=  0;
       bffr_a_n_b_sel        <=  1;
@@ -191,17 +199,32 @@ module pcm_bffr #(
     else
     begin
       adc_pcm_valid_1d      <=  adc_pcm_valid;
+      dac_data_rdy_1d       <=  dac_data_rdy;
       dac_pcm_nxt_1d        <=  dac_pcm_nxt;
+      dac_pcm_nxt_2d        <=  dac_pcm_nxt_1d;
+      fwft_refresh_1d       <=  fwft_refresh;
       mem_rd_del_vec        <=  {mem_rd_del_vec[MEM_RD_DELAY-2:0],pcm_raddr[MEM_ADDR_W-1]};
+
+      if(~fwft_refresh)
+      begin
+        fwft_refresh        <=  dac_data_rdy  & ~dac_data_rdy_1d;
+      end
+      else
+      begin
+        fwft_refresh        <=  ~fwft_refresh_1d;
+      end
 
       if(lb_wr_en & (lb_addr  ==  PCM_BFFR_CONTROL_REG_ADDR))
       begin
         pcm_waddr           <=  0;
+        dac_data_rdy        <=  0;
       end
       else
       begin
         pcm_waddr[MEM_ADDR_W-1]   <=  pcm_waddr[MEM_ADDR_W-1]   ^ adc_pcm_valid_extended;
         pcm_waddr[MEM_ADDR_W-2:0] <=  pcm_waddr[MEM_ADDR_W-2:0] + adc_pcm_valid_1d;
+
+        dac_data_rdy        <=  dac_data_rdy  | switch_banks;
       end
 
       if(bffr_mode) //Capture Mode
@@ -213,8 +236,16 @@ module pcm_bffr #(
       end
       else  //Normal mode
       begin
-        pcm_raddr[MEM_ADDR_W-1]   <=  pcm_raddr[MEM_ADDR_W-1]   ^ dac_pcm_nxt_extended;
-        pcm_raddr[MEM_ADDR_W-2:0] <=  pcm_raddr[MEM_ADDR_W-2:0] + dac_pcm_nxt_1d;
+        if(lb_wr_en & (lb_addr  ==  PCM_BFFR_CONTROL_REG_ADDR))
+        begin
+          pcm_raddr           <=  0;
+        end
+        else
+        begin
+          pcm_raddr[MEM_ADDR_W-1]   <=  pcm_raddr[MEM_ADDR_W-1]   ^ (dac_pcm_nxt_extended | fwft_refresh);
+          //pcm_raddr[MEM_ADDR_W-1]   <=  ~pcm_raddr[MEM_ADDR_W-1];
+          pcm_raddr[MEM_ADDR_W-2:0] <=  pcm_raddr[MEM_ADDR_W-2:0] + dac_pcm_nxt_1d;
+        end
       end
 
       if(bffr_mode) //Capture Mode
@@ -223,7 +254,14 @@ module pcm_bffr #(
       end
       else  //Normal mode
       begin
-        bffr_a_n_b_sel        <=  bffr_a_n_b_sel  ^ switch_banks;
+        if(lb_wr_en & (lb_addr  ==  PCM_BFFR_CONTROL_REG_ADDR))
+        begin
+          bffr_a_n_b_sel      <=  1'b1;
+        end
+        else
+        begin
+          bffr_a_n_b_sel      <=  bffr_a_n_b_sel  ^ switch_banks;
+        end
       end
 
       dac_lpcm_data           <=  mem_rd_del_vec[MEM_RD_DELAY-1]  ? dac_lpcm_data   : bffr_pcm_rdata;
@@ -231,12 +269,12 @@ module pcm_bffr #(
     end
   end
 
-  assign  adc_pcm_valid_extended  = adc_pcm_valid | adc_pcm_valid_1d;
-  assign  dac_pcm_nxt_extended    = dac_pcm_nxt   | dac_pcm_nxt_1d;
+  assign  adc_pcm_valid_extended  = adc_pcm_valid   | adc_pcm_valid_1d;
+  assign  dac_pcm_nxt_extended    = dac_pcm_nxt_1d  | dac_pcm_nxt_2d;
 
   assign  pcm_mem_wdata           = adc_pcm_valid ? adc_lpcm_data : adc_rpcm_data;
 
-  assign  switch_banks            = (pcm_waddr  ==  (NUM_SAMPLES*2))  ? adc_pcm_valid_extended  : 1'b0;
+  assign  switch_banks            = (pcm_waddr  ==  ((NUM_SAMPLES*2)-1))  ? adc_pcm_valid_extended  : 1'b0;
 
   assign  bffr_a_wr_en            = bffr_a_n_b_sel  & adc_pcm_valid_extended;
   assign  bffr_b_wr_en            = ~bffr_a_n_b_sel & adc_pcm_valid_extended;
@@ -310,6 +348,8 @@ endmodule // pcm_bffr
  
 
  -- <Log>
+
+[02-11-2014  07:52:04 PM][mammenx] Fixed issues found in PCM Test
 
 [14-10-2014  12:47:57 AM][mammenx] Fixed compilation errors & warnings
 

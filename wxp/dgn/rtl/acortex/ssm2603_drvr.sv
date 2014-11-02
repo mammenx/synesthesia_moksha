@@ -66,6 +66,7 @@ module ssm2603_drvr #(
   output  reg [31:0]          adc_lpcm_data,
   output  reg [31:0]          adc_rpcm_data,
 
+  input                       dac_data_rdy,
   output  reg                 dac_pcm_nxt,
   input   [31:0]              dac_lpcm_data,
   input   [31:0]              dac_rpcm_data,
@@ -267,7 +268,7 @@ module ssm2603_drvr #(
 
       IDLE_S  :
       begin
-        if(dac_en | adc_en)
+        if((dac_en  & dac_data_rdy) | adc_en)
         begin
           next_state          =   LRCK_S;
         end
@@ -295,7 +296,7 @@ module ssm2603_drvr #(
         begin
           if(fs_tck)  //skip WAIT_FOR_FS_S
           begin
-            if(adc_en | dac_en)
+            if(adc_en | (dac_en & dac_data_rdy))
             begin
               next_state      =   LRCK_S;
             end
@@ -315,7 +316,7 @@ module ssm2603_drvr #(
       begin
         if(fs_tck)
         begin
-          if(adc_en | dac_en)
+          if(adc_en | (dac_en & dac_data_rdy))
           begin
             next_state        =   LRCK_S;
           end
@@ -443,9 +444,9 @@ module ssm2603_drvr #(
     end
     else
     begin
-      dac_pcm_nxt             <=  (fs_cntr  ==  rpcm_lsb_offset)  ? dac_en  & bclk_tck  : 1'b0;
+      dac_pcm_nxt             <=  (fs_cntr  ==  rpcm_lsb_offset)  ? dac_en  & dac_data_rdy  & bclk_tck  : 1'b0;
 
-      AUD_DACLRCK             <=  (fsm_pstate ==  LRCK_S) ? dac_en  : 1'b0;
+      AUD_DACLRCK             <=  (fsm_pstate ==  LRCK_S) ? dac_en  & dac_data_rdy  : 1'b0;
 
       if(fsm_pstate ==  LCHANNEL_S)
       begin
@@ -556,6 +557,8 @@ endmodule // ssm2603_drvr
  
 
  -- <Log>
+
+[02-11-2014  07:52:04 PM][mammenx] Fixed issues found in PCM Test
 
 [14-10-2014  12:47:57 AM][mammenx] Fixed compilation errors & warnings
 

@@ -109,6 +109,7 @@ module acortex #(
   wire  [31:0]                adc_lpcm_data;
   wire  [31:0]                adc_rpcm_data;
 
+  wire                        dac_data_rdy;
   wire                        dac_pcm_nxt;
   wire  [31:0]                dac_lpcm_data;
   wire  [31:0]                dac_rpcm_data;
@@ -185,6 +186,7 @@ module acortex #(
     .adc_lpcm_data            (adc_lpcm_data),
     .adc_rpcm_data            (adc_rpcm_data),
                                             
+    .dac_data_rdy             (dac_data_rdy),
     .dac_pcm_nxt              (dac_pcm_nxt  ),
     .dac_lpcm_data            (dac_lpcm_data),
     .dac_rpcm_data            (dac_rpcm_data),
@@ -220,7 +222,8 @@ module acortex #(
     .adc_pcm_valid            (adc_pcm_valid),
     .adc_lpcm_data            (adc_lpcm_data),
     .adc_rpcm_data            (adc_rpcm_data),
-                                            
+
+    .dac_data_rdy             (dac_data_rdy),
     .dac_pcm_nxt              (dac_pcm_nxt  ),
     .dac_lpcm_data            (dac_lpcm_data),
     .dac_rpcm_data            (dac_rpcm_data),
@@ -241,6 +244,8 @@ endmodule // acortex
  
 
  -- <Log>
+
+[02-11-2014  07:52:04 PM][mammenx] Fixed issues found in PCM Test
 
 [14-10-2014  12:47:57 AM][mammenx] Fixed compilation errors & warnings
 
