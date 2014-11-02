@@ -83,8 +83,6 @@
 
     /*  Run */
     task run();
-      int pcm_addr_2d;
-
       ovm_report_info({get_name(),"[run]"},"Start of run ",OVM_LOW);
 
       //wait for reset
@@ -109,23 +107,21 @@
               begin
                 @(posedge intf.clk_ir);
 
-                pcm_addr_2d  = intf.cb_mon.pcm_raddr;
-
                 if(intf.cb_mon.pcm_rd_valid)
                 begin
-                  if(pcm_addr_2d  > NUM_SAMPLES)
+                  if(intf.cb_mon.pcm_raddr  >= NUM_SAMPLES)
                   begin
-                    pkt.pcm_data[pcm_addr_2d-NUM_SAMPLES].rchnnl = intf.cb_mon.pcm_rdata;
-                    ovm_report_info({get_name(),"[run]"},$psprintf("pkt.pcm_data[%1d].rchnnl = 0x%x",(pcm_addr_2d-NUM_SAMPLES),pkt.pcm_data[pcm_addr_2d-NUM_SAMPLES].lchnnl),OVM_LOW);
+                    pkt.pcm_data[intf.cb_mon.pcm_raddr-NUM_SAMPLES].rchnnl = intf.cb_mon.pcm_rdata;
+                    ovm_report_info({get_name(),"[run]"},$psprintf("pkt.pcm_data[%1d].rchnnl = 0x%x",(intf.cb_mon.pcm_raddr-NUM_SAMPLES),pkt.pcm_data[intf.cb_mon.pcm_raddr-NUM_SAMPLES].lchnnl),OVM_LOW);
                   end
                   else
                   begin
-                    pkt.pcm_data[pcm_addr_2d].lchnnl = intf.cb_mon.pcm_rdata;
-                    ovm_report_info({get_name(),"[run]"},$psprintf("pkt.pcm_data[%1d].lchnnl = 0x%x",pcm_addr_2d,pkt.pcm_data[pcm_addr_2d].lchnnl),OVM_LOW);
+                    pkt.pcm_data[intf.cb_mon.pcm_raddr].lchnnl = intf.cb_mon.pcm_rdata;
+                    ovm_report_info({get_name(),"[run]"},$psprintf("pkt.pcm_data[%1d].lchnnl = 0x%x",intf.cb_mon.pcm_raddr,pkt.pcm_data[intf.cb_mon.pcm_raddr].lchnnl),OVM_LOW);
                   end
 
 
-                  if(pcm_addr_2d  ==  ((NUM_SAMPLES*2)-1))
+                  if(intf.cb_mon.pcm_raddr  ==  ((NUM_SAMPLES*2)-1))
                     break;
                 end
               end
@@ -158,6 +154,8 @@
  
 
  -- <Log>
+
+[02-11-2014  07:53:10 PM][mammenx] Misc changes for PCM Test
 
 [16-10-2014  09:47:25 PM][mammenx] Misc changes to fix issues found during syn_acortex_base_test
 

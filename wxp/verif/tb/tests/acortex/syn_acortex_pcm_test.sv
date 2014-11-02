@@ -107,6 +107,8 @@ class syn_acortex_pcm_test extends syn_acortex_base_test;
       fork
         begin
           codec_adc_config_seq.start(super.env.codec_agent.adc_seqr);
+          codec_adc_config_seq.start(super.env.codec_agent.adc_seqr);
+          codec_adc_config_seq.start(super.env.codec_agent.adc_seqr);
         end
 
         begin
@@ -118,7 +120,7 @@ class syn_acortex_pcm_test extends syn_acortex_base_test;
       begin
         #100ns;
       end 
-      while(super.env.codec_agent.dac_mon.num_samples < 128);
+      while(super.env.codec_agent.dac_mon.num_samples < 256);
 
       #10;
 
@@ -138,6 +140,8 @@ endclass : syn_acortex_pcm_test
  
 
  -- <Log>
+
+[02-11-2014  07:53:10 PM][mammenx] Misc changes for PCM Test
 
 [02-11-2014  01:48:33 PM][mammenx] Fixed misc issues from simulation
 

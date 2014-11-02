@@ -83,8 +83,8 @@
                             )  codec_agent;
     syn_pcm_mem_agent#(NUM_PCM_SAMPLES,PCM_PKT_TYPE,PCM_MEM_INTF_DRVR_TYPE,PCM_MEM_INTF_MON_TYPE)  pcm_mem_agent;
     syn_i2c_sb#(I2C_DATA_W,LB_DATA_W,LB_PKT_T,I2C_PKT_TYPE)   i2c_sb;
-    syn_adc_sb#(LB_PKT_T,PCM_PKT_TYPE)              adc_sb;
-    syn_dac_sb#(LB_PKT_T,PCM_PKT_TYPE)              dac_sb;
+    syn_adc_sb#(LB_PKT_T,PCM_PKT_TYPE,LB_DATA_W)              adc_sb;
+    syn_dac_sb#(LB_PKT_T,PCM_PKT_TYPE,LB_DATA_W)              dac_sb;
 
     syn_reg_map#(REG_MAP_W)   wm8731_reg_map;  //each register is 9b
 
@@ -122,8 +122,8 @@
       codec_agent   = syn_acortex_codec_agent#(REG_MAP_W,I2C_DATA_W,I2C_INTF_TYPE,I2C_PKT_TYPE,PCM_PKT_TYPE,DAC_INTF_TYPE,ADC_INTF_TYPE)::type_id::create("codec_agent",  this);
       pcm_mem_agent = syn_pcm_mem_agent#(NUM_PCM_SAMPLES,PCM_PKT_TYPE,PCM_MEM_INTF_DRVR_TYPE,PCM_MEM_INTF_MON_TYPE)::type_id::create("pcm_mem_agent",  this);
       i2c_sb        = syn_i2c_sb#(I2C_DATA_W,LB_DATA_W,LB_PKT_T,I2C_PKT_TYPE)::type_id::create("i2c_sb",  this);
-      adc_sb        = syn_adc_sb#(LB_PKT_T,PCM_PKT_TYPE)::type_id::create("adc_sb",  this);
-      dac_sb        = syn_dac_sb#(LB_PKT_T,PCM_PKT_TYPE)::type_id::create("dac_sb",  this);
+      adc_sb        = syn_adc_sb#(LB_PKT_T,PCM_PKT_TYPE,LB_DATA_W)::type_id::create("adc_sb",  this);
+      dac_sb        = syn_dac_sb#(LB_PKT_T,PCM_PKT_TYPE,LB_DATA_W)::type_id::create("dac_sb",  this);
 
       LB2Env_ff       = new("LB2Env_ff",this);
 
@@ -162,6 +162,8 @@
         codec_agent.i2c_slave.reg_map = this.wm8731_reg_map;
 
         i2c_sb.reg_map        = this.acortex_reg_map;
+        adc_sb.adc_reg_map    = this.acortex_reg_map;
+        dac_sb.dac_reg_map    = this.acortex_reg_map;
 
       ovm_report_info(get_name(),"END of connect ",OVM_LOW);
     endfunction
@@ -287,6 +289,8 @@
  
 
  -- <Log>
+
+[02-11-2014  07:53:10 PM][mammenx] Misc changes for PCM Test
 
 [02-11-2014  01:47:10 PM][mammenx] Modified for syn_env_pkg
 

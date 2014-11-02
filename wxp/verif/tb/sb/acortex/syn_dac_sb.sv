@@ -33,13 +33,13 @@
 `define __SYN_DAC_SB
 
 //Implicit port declarations
-`ovm_analysis_imp_decl(_dac_sb_lb_pkt)
 `ovm_analysis_imp_decl(_dac_sb_rcvd_pkt)
 `ovm_analysis_imp_decl(_dac_sb_sent_pkt)
 
   class syn_dac_sb #(
                       parameter type  LB_PKT_TYPE   = syn_lb_seq_item,
-                      parameter type  PCM_PKT_TYPE  = syn_pcm_seq_item
+                      parameter type  PCM_PKT_TYPE  = syn_pcm_seq_item,
+                      parameter       LB_DATA_W     = 32
                     ) extends ovm_scoreboard;
 
     `include  "acortex_regmap.svh"
@@ -47,20 +47,19 @@
     `include  "ssm2603_drvr_regmap.svh"
 
     /*  Register with Factory */
-    `ovm_component_param_utils(syn_dac_sb#(LB_PKT_TYPE, PCM_PKT_TYPE))
+    `ovm_component_param_utils(syn_dac_sb#(LB_PKT_TYPE, PCM_PKT_TYPE, LB_DATA_W))
 
     //Queue to hold the sent pkts, till rcvd pkts come
     PCM_PKT_TYPE sent_que[$];
     PCM_PKT_TYPE rcvd_que[$];
 
     //Ports
-    ovm_analysis_imp_dac_sb_lb_pkt   #(LB_PKT_TYPE,syn_dac_sb#(LB_PKT_TYPE,PCM_PKT_TYPE))   Mon_lb_2Sb_port;
-    ovm_analysis_imp_dac_sb_sent_pkt #(PCM_PKT_TYPE,syn_dac_sb#(LB_PKT_TYPE,PCM_PKT_TYPE))  Mon_sent_2Sb_port;
-    ovm_analysis_imp_dac_sb_rcvd_pkt #(PCM_PKT_TYPE,syn_dac_sb#(LB_PKT_TYPE,PCM_PKT_TYPE))  Mon_rcvd_2Sb_port;
+    ovm_analysis_imp_dac_sb_sent_pkt #(PCM_PKT_TYPE,syn_dac_sb#(LB_PKT_TYPE,PCM_PKT_TYPE,LB_DATA_W))  Mon_sent_2Sb_port;
+    ovm_analysis_imp_dac_sb_rcvd_pkt #(PCM_PKT_TYPE,syn_dac_sb#(LB_PKT_TYPE,PCM_PKT_TYPE,LB_DATA_W))  Mon_rcvd_2Sb_port;
 
     OVM_FILE  f;
 
-    syn_reg_map#(16)  dac_reg_map;
+    syn_reg_map#(LB_DATA_W)   dac_reg_map;
 
     /*  Constructor */
     function new(string name = "syn_dac_sb", ovm_component parent);
@@ -82,47 +81,11 @@
 
       ovm_report_info(get_name(),"Start of build ",OVM_LOW);
 
-      Mon_lb_2Sb_port   = new("Mon_lb_2Sb_port", this);
       Mon_sent_2Sb_port = new("Mon_sent_2Sb_port", this);
       Mon_rcvd_2Sb_port = new("Mon_rcvd_2Sb_port", this);
 
-      build_dac_reg_map();
-
       ovm_report_info(get_name(),"End of build ",OVM_LOW);
     endfunction
-
-    /*
-      * This function populates the DAC registers
-    */
-    function  void  build_dac_reg_map();
-
-      dac_reg_map = syn_reg_map#(16)::type_id::create("dac_reg_map",  this);
-      dac_reg_map.create_field("dac_en",      {ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_CONFIG_REG_ADDR},   0,  0);
-      dac_reg_map.create_field("bps",         {ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_CONFIG_REG_ADDR},   2,  2);
-      dac_reg_map.create_field("acache_mode", {ACORTEX_PCM_BFFR_CLK_CODE,PCM_BFFR_CONTROL_REG_ADDR},   0,  0);
-
-    endfunction : build_dac_reg_map
-
-
-    /*
-      * Write LB Pkt
-      * This function will be called each time a pkt is written into [ovm_analysis_imp_dac_sb_lb_pkt]Mon_lb_2Sb_port
-    */
-    virtual function void write_dac_sb_lb_pkt(input LB_PKT_TYPE  pkt);
-      ovm_report_info({get_name(),"[write_dac_sb_lb_pkt]"},$psprintf("Received pkt\n%s",pkt.sprint()),OVM_LOW);
-
-      if((pkt.lb_xtn  ==  WRITE)  ||  (pkt.lb_xtn ==  BURST_WRITE))
-      begin
-        //foreach(pkt.addr[i])
-        for(int i=0; i<pkt.addr.size; i++)
-        begin
-          if(dac_reg_map.set_reg(pkt.addr[i][11:0],  pkt.data[i])  == syn_reg_map#(16)::SUCCESS)
-            ovm_report_info({get_name(),"[write_dac_sb_lb_pkt]"},$psprintf("Updated register [0x%x] to [0x%x]",pkt.addr[i][11:0],pkt.data[i]),OVM_LOW);
-
-        end
-      end
-
-    endfunction : write_dac_sb_lb_pkt
 
 
     /*
@@ -237,6 +200,8 @@
  
 
  -- <Log>
+
+[02-11-2014  07:53:10 PM][mammenx] Misc changes for PCM Test
 
 [16-10-2014  12:52:42 AM][mammenx] Fixed compilation errors
 

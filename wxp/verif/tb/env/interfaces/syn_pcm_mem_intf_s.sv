@@ -67,20 +67,24 @@ interface syn_pcm_mem_intf_s  #(DATA_W=32,ADDR_W=8,RD_DELAY=2) (input logic clk_
 
   /*  Read address delay logic  */
   logic [(ADDR_W*RD_DELAY)-1:0]  pcm_raddr_del;
+  logic [RD_DELAY-1:0]           pcm_rden_del;
 
   always_ff@(posedge clk_ir, negedge rst_il)
   begin
     if(~rst_il)
     begin
       pcm_raddr_del <=  0;
+      pcm_rden_del  <=  0;
     end
     else
     begin
       pcm_raddr_del <=  {pcm_raddr_del[(ADDR_W*(RD_DELAY-1))-1:0],pcm_addr};
+      pcm_rden_del  <=  {pcm_rden_del[RD_DELAY-2:0],pcm_rden};
     end
   end
 
-  assign  pcm_raddr = pcm_raddr_del[(ADDR_W*(RD_DELAY-1)) +:  ADDR_W];
+  assign  pcm_raddr     = pcm_raddr_del[(ADDR_W*(RD_DELAY-1)) +:  ADDR_W];
+  assign  pcm_rd_valid  = pcm_rden_del[RD_DELAY-1];
 
 
   //Modports
@@ -97,6 +101,8 @@ endinterface  //  syn_pcm_mem_intf_s
  
 
  -- <Log>
+
+[02-11-2014  07:53:10 PM][mammenx] Misc changes for PCM Test
 
 [16-10-2014  09:46:11 PM][mammenx] Split into seperate interfaces for master & slave
 

@@ -138,7 +138,7 @@ class syn_acortex_base_test extends ovm_test;
     endtask : run 
 
 
-    virtual task  setup_codec(int bps = 32);
+    virtual task  setup_codec(int bps = 32, dac_en = 0, adc_en = 0);
       int bps_val;
 
       if(bps  ==  32)
@@ -171,6 +171,8 @@ endclass : syn_acortex_base_test
  
 
  -- <Log>
+
+[02-11-2014  07:53:10 PM][mammenx] Misc changes for PCM Test
 
 [02-11-2014  12:18:06 PM][mammenx] Added setup_codec task
 
