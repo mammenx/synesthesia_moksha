@@ -138,6 +138,30 @@ class syn_acortex_base_test extends ovm_test;
     endtask : run 
 
 
+    virtual task  setup_codec(int bps = 32);
+      int bps_val;
+
+      if(bps  ==  32)
+        bps_val = 'b11;
+      else
+        bps_val = 'd0;
+
+      if(this.env.wm8731_reg_map.set_field("iwl", bps_val)  !=  syn_reg_map#(CODEC_REG_MAP_W)::SUCCESS)
+      begin
+        ovm_report_fatal(get_name(),{"Could not find field \"iwl\" !!!"},OVM_LOW);
+      end
+
+      i2c_config_seq.poll_en  = 1;
+      i2c_config_seq.i2c_data = ((this.env.wm8731_reg_map.get_addr("iwl") & 'h7f) <<  9) +
+                                (this.env.wm8731_reg_map.get_reg("iwl") & 'h1ff);
+      i2c_config_seq.start(this.env.lb_agent.seqr);
+
+      #1;
+
+    endtask : setup_codec
+
+
+
 endclass : syn_acortex_base_test
 
 /*
@@ -147,6 +171,8 @@ endclass : syn_acortex_base_test
  
 
  -- <Log>
+
+[02-11-2014  12:18:06 PM][mammenx] Added setup_codec task
 
 [16-10-2014  12:52:42 AM][mammenx] Fixed compilation errors
 
