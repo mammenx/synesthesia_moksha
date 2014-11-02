@@ -1,5 +1,6 @@
-TEST_NAME=syn_acortex_base_test
+#TEST_NAME=syn_acortex_base_test
 #TEST_NAME=syn_acortex_i2c_test
+TEST_NAME=syn_acortex_pcm_test
 
 TB_TOP=syn_acortex_tb_top
 
