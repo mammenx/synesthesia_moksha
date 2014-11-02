@@ -33,7 +33,7 @@ class syn_acortex_pcm_test extends syn_acortex_base_test;
     `ovm_component_utils(syn_acortex_pcm_test)
 
     //Sequences
-    syn_codec_adc_load_seq#(super.PCM_SEQ_ITEM_T,super.ADC_SEQR_T)    codec_adc_load_seq;
+    syn_codec_adc_load_seq#(super.PCM_SEQ_ITEM_T,super.ADC_SEQR_T)    codec_adc_config_seq;
     syn_ssm2603_drvr_config_seq#(super.LB_SEQ_ITEM_T,super.LB_SEQR_T) drvr_config_seq;
 
 
@@ -60,7 +60,7 @@ class syn_acortex_pcm_test extends syn_acortex_base_test;
 
       ovm_report_info(get_full_name(),"Start of build",OVM_LOW);
 
-      codec_adc_load_seq  = syn_codec_adc_load_seq#(super.PCM_SEQ_ITEM_T,super.ADC_SEQR_T)::type_id::create("codec_adc_config_seq");
+      codec_adc_config_seq= syn_codec_adc_load_seq#(super.PCM_SEQ_ITEM_T,super.ADC_SEQR_T)::type_id::create("codec_adc_config_seq");
       drvr_config_seq     = syn_ssm2603_drvr_config_seq#(super.LB_SEQ_ITEM_T,super.LB_SEQR_T)::type_id::create("drvr_config_seq");
 
       ovm_report_info(get_full_name(),"End of build",OVM_LOW);
@@ -91,13 +91,18 @@ class syn_acortex_pcm_test extends syn_acortex_base_test;
 
       super.env.sprint();
 
-      #500;
-
       super.setup_codec(32);
 
-      #100ns;
+      #500;
 
       codec_adc_config_seq.pcm_pkt.fill_inc(128,0,1);
+
+      drvr_config_seq.bclk_div_val  = 10;
+      drvr_config_seq.fs_div_val    = 75;
+      drvr_config_seq.dac_en        = 1;
+      drvr_config_seq.adc_en        = 1;
+      drvr_config_seq.bps           = 2'b11;
+      drvr_config_seq.mclk_sel      = 0;
 
       fork
         begin
@@ -133,6 +138,8 @@ endclass : syn_acortex_pcm_test
  
 
  -- <Log>
+
+[02-11-2014  01:48:33 PM][mammenx] Fixed misc issues from simulation
 
 [02-11-2014  12:16:37 PM][mammenx] Initial Commit
 

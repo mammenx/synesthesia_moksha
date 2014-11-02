@@ -32,6 +32,7 @@
 `define __SYN_SSM2603_DRVR_CONFIG_SEQ
 
   import  syn_audio_pkg::*;
+  import  syn_env_pkg::build_addr;
 
   class syn_ssm2603_drvr_config_seq  #(
                                       parameter type  PKT_TYPE  = syn_lb_seq_item,
@@ -83,16 +84,16 @@
       pkt.data  = new[4];
       pkt.lb_xtn= BURST_WRITE;
 
-      $cast(pkt.addr[0],  {ACORTEX_BLK,ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_BCLK_DIV_REG_ADDR});
+      $cast(pkt.addr[0],  build_addr(ACORTEX_BLK,ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_BCLK_DIV_REG_ADDR));
       pkt.data[0] = bclk_div_val;
 
-      $cast(pkt.addr[1],  {ACORTEX_BLK,ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_FS_VAL_REG_ADDR});
+      $cast(pkt.addr[1],  build_addr(ACORTEX_BLK,ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_FS_VAL_REG_ADDR));
       pkt.data[1] = fs_div_val;
 
-      $cast(pkt.addr[2],  {ACORTEX_BLK,ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_MCLK_SEL_REG_ADDR});
+      $cast(pkt.addr[2],  build_addr(ACORTEX_BLK,ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_MCLK_SEL_REG_ADDR));
       pkt.data[2] = mclk_sel;
 
-      $cast(pkt.addr[3],  {ACORTEX_BLK,ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_CONFIG_REG_ADDR});
+      $cast(pkt.addr[3],  build_addr(ACORTEX_BLK,ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_CONFIG_REG_ADDR));
       pkt.data[3][0]    = dac_en;
       pkt.data[3][1]    = adc_en;
       pkt.data[3][3:2]  = bps;
@@ -118,6 +119,8 @@
  
 
  -- <Log>
+
+[02-11-2014  01:48:33 PM][mammenx] Fixed misc issues from simulation
 
 [02-11-2014  12:16:37 PM][mammenx] Initial Commit
 
