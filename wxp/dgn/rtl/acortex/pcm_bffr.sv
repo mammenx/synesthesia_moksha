@@ -92,6 +92,7 @@ module pcm_bffr #(
 
 //----------------------- Internal Register Declarations ------------------
   reg                         bffr_mode;
+  reg                         cap_done;
 
   reg                         adc_pcm_valid_1d;
   reg                         dac_data_rdy_1d;
@@ -129,6 +130,7 @@ module pcm_bffr #(
       lb_rd_data              <=  0;
 
       bffr_mode               <=  0;
+      cap_done                <=  0;
     end
     else
     begin
@@ -140,9 +142,16 @@ module pcm_bffr #(
           PCM_BFFR_CONTROL_REG_ADDR :
           begin
             bffr_mode         <=  lb_wr_data[0];
+            cap_done          <=  lb_wr_data[0] ? 1'b0  : cap_done;
           end
 
         endcase
+      end
+      else
+      begin
+        bffr_mode             <=  bffr_mode;
+
+        cap_done              <=  bffr_mode ? cap_done  | switch_banks  : 1'b0;
       end
 
       lb_wr_valid             <=  lb_wr_en;
@@ -159,6 +168,11 @@ module pcm_bffr #(
           end
 
           PCM_BFFR_STATUS_REG_ADDR  :
+          begin
+            lb_rd_data        <=  {{(LB_DATA_W-1){1'b0}},cap_done};
+          end
+
+          PCM_BFFR_CAP_DATA_REG_ADDR  :
           begin
             lb_rd_data        <=  bffr_pcm_rdata;
           end
@@ -348,6 +362,8 @@ endmodule // pcm_bffr
  
 
  -- <Log>
+
+[03-11-2014  06:26:27 PM][mammenx] Added cap_done status
 
 [02-11-2014  07:52:04 PM][mammenx] Fixed issues found in PCM Test
 
