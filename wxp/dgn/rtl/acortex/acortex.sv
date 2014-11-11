@@ -36,13 +36,14 @@
 
 module acortex #(
   //----------------- Parameters  -----------------------
-  parameter MODULE_NAME   = "ACORTEX",
-  parameter LB_DATA_W     = 32,
-  parameter LB_ADDR_W     = 12,
-  parameter LB_ADDR_BLK_W = 4,
-  parameter NUM_MCLKS     = 2,
-  parameter NUM_SAMPLES   = 128,
-  parameter MEM_ADDR_W    = $clog2(NUM_SAMPLES) + 1   //Not intended to be overriden
+  parameter MODULE_NAME       = "ACORTEX",
+  parameter LB_DATA_W         = 32,
+  parameter LB_ADDR_W         = 12,
+  parameter LB_ADDR_BLK_W     = 4,
+  parameter NUM_MCLKS         = 2,
+  parameter NUM_SAMPLES       = 128,
+  parameter MEM_ADDR_W        = $clog2(NUM_SAMPLES) + 1,  //Not intended to be overriden
+  parameter DEFAULT_DATA_VAL  = 'hdeadbabe
 
 ) (
 
@@ -126,16 +127,16 @@ module acortex #(
     .LB_CHLD_ADDR_W    (CHILD_LB_ADDR_W),
     .NUM_CHILDREN      (NUM_LB_CHILDREN),
     .REGISTER_OUTPUTS  (0),
-    .DEFAULT_DATA_VAL  ('hdeadbabe)
+    .DEFAULT_DATA_VAL  (DEFAULT_DATA_VAL)
 
   ) lb_splitter_inst  (
 
     .clk                      (clk),
     .rst_n                    (rst_n),
 
-    `drop_lb_ports(lb_,,lb_,)
+    `drop_lb_ports(lb_, ,lb_, )
     ,
-    `drop_lb_ports(chld_lb_,,lb_chld_,_w)
+    `drop_lb_ports(chld_lb_, ,lb_chld_,_w)
 
   );
 
@@ -152,7 +153,7 @@ module acortex #(
     .clk                      (clk),
     .rst_n                    (rst_n),
 
-    `drop_lb_ports_split(ACORTEX_I2C_BLK_CODE,lb_,,lb_chld_,_w)
+    `drop_lb_ports_split(ACORTEX_I2C_BLK_CODE,lb_, ,lb_chld_,_w)
     ,
 
     .scl                      (scl),
@@ -174,7 +175,7 @@ module acortex #(
     .rst_n                    (rst_n),
 
 
-    `drop_lb_ports_split(ACORTEX_DRVR_BLK_CODE,lb_,,lb_chld_,_w)
+    `drop_lb_ports_split(ACORTEX_DRVR_BLK_CODE,lb_, ,lb_chld_,_w)
     ,
 
     .mclk_vec                 (mclk_vec),
@@ -210,7 +211,7 @@ module acortex #(
     .rst_n                    (rst_n),
 
 
-    `drop_lb_ports_split(ACORTEX_PCM_BFFR_CLK_CODE,lb_,,lb_chld_,_w)
+    `drop_lb_ports_split(ACORTEX_PCM_BFFR_CLK_CODE,lb_, ,lb_chld_,_w)
     ,
 
     .adc_pcm_valid            (adc_pcm_valid),
@@ -238,6 +239,8 @@ endmodule // acortex
  
 
  -- <Log>
+
+[11-11-2014  07:53:04 PM][mammenx] Fixed synthesis errors
 
 [11-11-2014  07:52:04 PM][mammenx] Moving to single clock domain
 

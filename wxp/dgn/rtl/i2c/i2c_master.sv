@@ -105,7 +105,7 @@ module i2c_master #(
 
 
 //----------------------- FSM Declarations --------------------------------
-enum  logic [2:0] { IDLE_S  = 0,
+enum  logic [2:0] { IDLE_S  = 3'd0,
                     START_S,
                     ACK_S,
                     ADDR_S,
@@ -137,7 +137,7 @@ enum  logic [2:0] { IDLE_S  = 0,
       i2c_start_en            <=  0;
       i2c_stop_en             <=  0;
       i2c_init                <=  0;
-      data_cache              <=  {0};
+      data_cache              <=  '{I2C_MAX_DATA_BYTES{0}};
     end
     else
     begin
@@ -178,7 +178,7 @@ enum  logic [2:0] { IDLE_S  = 0,
 
         if(i2c_rd_n_wr  & (fsm_pstate ==  DATA_S) & tck_by_2_valid)
         begin
-          data_cache[data_cntr_bytes  - 1'b1] = {data_cache[data_cntr_bytes - 1'b1][6:1],sda_i};
+          data_cache[data_cntr_bytes  - 1'b1] <=  {data_cache[data_cntr_bytes - 1'b1][6:1],sda_i};
         end
       end
 
@@ -456,6 +456,8 @@ endmodule // i2c_master
  
 
  -- <Log>
+
+[11-11-2014  12:47:57 AM][mammenx] Fixed synthesis errors
 
 [14-10-2014  12:47:57 AM][mammenx] Fixed compilation errors & warnings
 

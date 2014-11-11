@@ -83,7 +83,7 @@ module lb_splitter #(
 
 
 //----------------------- Internal Register Declarations ------------------
-  reg   [LB_DATA_W-1:0]       lb_rd_data_nxt;
+  reg   [LB_DATA_W-1:0]       lb_rd_data_nxt  [NUM_CHILDREN-1:0];
 
 
 //----------------------- Internal Wire Declarations ----------------------
@@ -92,7 +92,6 @@ module lb_splitter #(
   wire  [NUM_CHILDREN-1:0]    blk_sel_vec;
 
   genvar  i;
-  integer n;
 
 //----------------------- Internal Interface Declarations -----------------
 
@@ -128,26 +127,34 @@ module lb_splitter #(
           lb_wr_valid_reg     <=  0;
           lb_rd_valid_reg     <=  0;
           lb_rd_data          <=  0;
-
-          chld_lb_wr_en       <=  0;
-          chld_lb_rd_en       <=  0;
-          chld_lb_addr        <=  {0};
-          chld_lb_wr_data     <=  {0};
         end
         else
         begin
           lb_wr_valid_reg     <=  |chld_lb_wr_valid;
           lb_rd_valid_reg     <=  |chld_lb_rd_valid;
 
-          for(n=0;  n<NUM_CHILDREN; n++)
-          begin
-            chld_lb_wr_en[n]  <=  blk_sel_vec[n]  & lb_wr_en;
-            chld_lb_rd_en[n]  <=  blk_sel_vec[n]  & lb_rd_en;
-            chld_lb_addr[n]   <=  lb_child_addr;
-            chld_lb_wr_data[n]<=  lb_wr_data;
-          end
+          lb_rd_data          <=  lb_rd_data_nxt[NUM_CHILDREN-1];
+        end
+      end
 
-          lb_rd_data          <=  lb_rd_data_nxt;
+      for(i=0;  i<NUM_CHILDREN; i++)
+      begin : gen_child
+        always@(posedge clk,  negedge rst_n)
+        begin
+          if(~rst_n)
+          begin
+            chld_lb_wr_en[i]    <=  0;
+            chld_lb_rd_en[i]    <=  0;
+            chld_lb_addr[i]     <=  0;
+            chld_lb_wr_data[i]  <=  0;
+          end
+          else
+          begin
+            chld_lb_wr_en[i]  <=  blk_sel_vec[i]  & lb_wr_en;
+            chld_lb_rd_en[i]  <=  blk_sel_vec[i]  & lb_rd_en;
+            chld_lb_addr[i]   <=  lb_child_addr;
+            chld_lb_wr_data[i]<=  lb_wr_data;
+          end
         end
       end
 
@@ -156,42 +163,62 @@ module lb_splitter #(
     end
     else  //~REGISTER_OUTPUTS
     begin
-      always@(*)
-      begin
-        for(n=0;  n<NUM_CHILDREN; n++)
-        begin : gen_child
-          chld_lb_wr_en[n]    = blk_sel_vec[n]  & lb_wr_en;
-          chld_lb_rd_en[n]    = blk_sel_vec[n]  & lb_rd_en;
-          chld_lb_addr[n]     = lb_child_addr;
-          chld_lb_wr_data[n]  = lb_wr_data;
+      for(i=0;  i<NUM_CHILDREN; i++)
+      begin : gen_child
+        always@(*)
+        begin
+          chld_lb_wr_en[i]    = blk_sel_vec[i]  & lb_wr_en;
+          chld_lb_rd_en[i]    = blk_sel_vec[i]  & lb_rd_en;
+          chld_lb_addr[i]     = lb_child_addr;
+          chld_lb_wr_data[i]  = lb_wr_data;
         end
       end
 
       assign  lb_wr_valid         =   |chld_lb_wr_valid;
       assign  lb_rd_valid         =   |chld_lb_rd_valid;
 
-      assign  lb_rd_data          =   lb_rd_data_nxt;
+      always@(*)
+      begin
+        lb_rd_data            =   lb_rd_data_nxt[NUM_CHILDREN-1];
+      end
     end
   end
   endgenerate
 
-  always@(*)
-  begin
-    if(blk_sel_vec  ==  0)
-    begin
-      lb_rd_data_nxt  = DEFAULT_DATA_VAL;
-    end
-    else
-    begin
-      lb_rd_data_nxt  = 0;
-
-      for(n=0;  n<NUM_CHILDREN; n++)
+  generate
+    for(i=0;  i<NUM_CHILDREN; i++)
+    begin : build_lb_rd_data_nxt
+      if(i  ==  0)
       begin
-        lb_rd_data_nxt  = lb_rd_data_nxt  | (chld_lb_rd_data[n] & {LB_DATA_W{blk_sel_vec[n]}});
+        always@(*)
+        begin
+          lb_rd_data_nxt[i] = (chld_lb_rd_data[i] & {LB_DATA_W{blk_sel_vec[i]}});
+        end
+      end
+      else if(i ==  NUM_CHILDREN-1)
+      begin
+        always@(*)
+        begin
+          if(blk_sel_vec  ==  0)
+          begin
+            lb_rd_data_nxt[i] = DEFAULT_DATA_VAL;
+          end
+          else
+          begin
+            lb_rd_data_nxt[i] = lb_rd_data_nxt[i-1] | (chld_lb_rd_data[i] & {LB_DATA_W{blk_sel_vec[i]}});
+          end
+        end
+      end
+      else
+      begin
+        always@(*)
+        begin
+          lb_rd_data_nxt[i] = lb_rd_data_nxt[i-1] | (chld_lb_rd_data[i] & {LB_DATA_W{blk_sel_vec[i]}});
+        end
       end
     end
-  end
- 
+  endgenerate
+
 endmodule // lb_splitter
 
 /*
@@ -201,6 +228,8 @@ endmodule // lb_splitter
  
 
  -- <Log>
+
+[11-11-2014  12:47:57 AM][mammenx] Fixed synthesis errors
 
 [14-10-2014  12:47:57 AM][mammenx] Fixed compilation errors & warnings
 

@@ -127,7 +127,7 @@ module ssm2603_drvr #(
 
 
 //----------------------- FSM Declarations --------------------------------
-  enum  logic [2:0] { IDLE_S=0,
+  enum  logic [2:0] { IDLE_S= 3'd0,
                       LRCK_S,
                       LCHANNEL_S,
                       RCHANNEL_S,
@@ -557,6 +557,8 @@ endmodule // ssm2603_drvr
  
 
  -- <Log>
+
+[02-11-2014  07:53:04 PM][mammenx] Fixed synthesis errors
 
 [02-11-2014  07:52:04 PM][mammenx] Fixed issues found in PCM Test
 
