@@ -45,11 +45,8 @@ module pcm_bffr #(
 ) (
 
   //--------------------- Ports -------------------------
-  input                       acortex_clk,
-  input                       acortex_rst_n,
-
-  input                       fgyrus_clk,
-  input                       fgyrus_rst_n,
+  input                       clk,
+  input                       rst_n,
 
   input                       lb_wr_en,
   input                       lb_rd_en,
@@ -121,9 +118,9 @@ module pcm_bffr #(
 //----------------------- Start of Code -----------------------------------
 
   /*  LB  Logic */
-  always@(posedge acortex_clk,  negedge acortex_rst_n)
+  always@(posedge clk,  negedge rst_n)
   begin
-    if(~acortex_rst_n)
+    if(~rst_n)
     begin
       lb_wr_valid             <=  0;
       lb_rd_valid             <=  0;
@@ -191,9 +188,9 @@ module pcm_bffr #(
 
 
   /*  Address Logic */
-  always@(posedge acortex_clk,  negedge acortex_rst_n)
+  always@(posedge clk,  negedge rst_n)
   begin
-    if(~acortex_rst_n)
+    if(~rst_n)
     begin
       dac_data_rdy          <=  0;
       dac_lpcm_data         <=  0;
@@ -295,13 +292,26 @@ module pcm_bffr #(
 
   assign  bffr_pcm_rdata          = bffr_a_n_b_sel  ? bffr_b_pcm_mem_rdata  : bffr_a_pcm_mem_rdata;
 
+  /*  Fgyrus  Interface */
+  always@(posedge clk,  negedge rst_n)
+  begin
+    if(~rst_n)
+    begin
+      acortex2fgyrus_pcm_rdy  <=  0;
+    end
+    else
+    begin
+      acortex2fgyrus_pcm_rdy  <=  switch_banks;
+    end
+  end
+
   /*  Instantiate Memory  */
   generate
     if(NUM_SAMPLES  ==  128)
     begin
       sync_dpram_32W_256D   bffr_a_inst
       (
-        .clock              (acortex_clk),
+        .clock              (clk),
         .data               (pcm_mem_wdata),
         .rdaddress          (pcm_raddr),
         .wraddress          (pcm_waddr),
@@ -311,7 +321,7 @@ module pcm_bffr #(
 
       sync_dpram_32W_256D   bffr_b_inst
       (
-        .clock              (acortex_clk),
+        .clock              (clk),
         .data               (pcm_mem_wdata),
         .rdaddress          (pcm_raddr),
         .wraddress          (pcm_waddr),
@@ -319,38 +329,22 @@ module pcm_bffr #(
         .q                  (bffr_b_pcm_mem_rdata)
       );
 
-      async_dpram_32W_256D  acortex2fgyrus_bffr_inst
+      sync_dpram_32W_256D   acortex2fgyrus_bffr_inst
       (
-        .wrclock            (acortex_clk),
-        .wren               (adc_pcm_valid_extended),
-        .wraddress          (pcm_waddr),
+        .clock              (clk),
         .data               (pcm_mem_wdata),
-        .rdclock            (fgyrus_clk),
         .rdaddress          (fgyrus2acortex_addr),
+        .wraddress          (pcm_waddr),
+        .wren               (adc_pcm_valid_extended),
         .q                  (acortex2fgyrus_pcm_data)
       );
+
     end
     else  //Undefined memory
     begin
       undef_mem undef_mem_inst();
     end
   endgenerate
-
-
-  /*  Instantiate Pulse Sync  */
-  pulse_toggle_sync #(.REGISTER_OUTPUT(1))  pulse_sync_inst
-  (
-    .in_clk         (acortex_clk),
-    .in_rst_n       (acortex_rst_n),
-
-    .out_clk        (fgyrus_clk),
-    .out_rst_n      (fgyrus_rst_n),
-
-    .pulse_in       (switch_banks),
-
-    .pulse_out      (acortex2fgyrus_pcm_rdy)
-  );
-
 
 
 endmodule // pcm_bffr
@@ -362,6 +356,8 @@ endmodule // pcm_bffr
  
 
  -- <Log>
+
+[11-11-2014  07:52:04 PM][mammenx] Moving to single clock domain
 
 [03-11-2014  06:26:27 PM][mammenx] Added cap_done status
 

@@ -31,6 +31,8 @@
 
 `timescale 1ns / 10ps
 
+`include  "lb_utils.svh"
+
 
 module acortex #(
   //----------------- Parameters  -----------------------
@@ -45,11 +47,8 @@ module acortex #(
 ) (
 
   //--------------------- Ports -------------------------
-  input                       acortex_clk,
-  input                       acortex_rst_n,
-
-  input                       fgyrus_clk,
-  input                       fgyrus_rst_n,
+  input                       clk,
+  input                       rst_n,
 
   input                       lb_wr_en,
   input                       lb_rd_en,
@@ -79,8 +78,6 @@ module acortex #(
 
 //----------------------- Local Parameters Declarations -------------------
   `include  "acortex_regmap.svh"
-
-  `include  "lb_utils.svh"
 
   localparam  CHILD_LB_DATA_W = LB_DATA_W;
   localparam  CHILD_LB_ADDR_W = LB_ADDR_W - LB_ADDR_BLK_W;
@@ -133,8 +130,8 @@ module acortex #(
 
   ) lb_splitter_inst  (
 
-    .clk                      (acortex_clk),
-    .rst_n                    (acortex_rst_n),
+    .clk                      (clk),
+    .rst_n                    (rst_n),
 
     `drop_lb_ports(lb_,,lb_,)
     ,
@@ -152,8 +149,8 @@ module acortex #(
 
   )   i2c_master_inst  (
 
-    .clk                      (acortex_clk),
-    .rst_n                    (acortex_rst_n),
+    .clk                      (clk),
+    .rst_n                    (rst_n),
 
     `drop_lb_ports_split(ACORTEX_I2C_BLK_CODE,lb_,,lb_chld_,_w)
     ,
@@ -173,8 +170,8 @@ module acortex #(
 
   ) ssm2603_drvr_inst (
 
-    .clk                      (acortex_clk),
-    .rst_n                    (acortex_rst_n),
+    .clk                      (clk),
+    .rst_n                    (rst_n),
 
 
     `drop_lb_ports_split(ACORTEX_DRVR_BLK_CODE,lb_,,lb_chld_,_w)
@@ -209,11 +206,8 @@ module acortex #(
 
   ) pcm_bffr_inst (
 
-    .acortex_clk              (acortex_clk),
-    .acortex_rst_n            (acortex_rst_n),
-
-    .fgyrus_clk               (fgyrus_clk),
-    .fgyrus_rst_n             (fgyrus_rst_n),
+    .clk                      (clk),
+    .rst_n                    (rst_n),
 
 
     `drop_lb_ports_split(ACORTEX_PCM_BFFR_CLK_CODE,lb_,,lb_chld_,_w)
@@ -244,6 +238,8 @@ endmodule // acortex
  
 
  -- <Log>
+
+[11-11-2014  07:52:04 PM][mammenx] Moving to single clock domain
 
 [02-11-2014  07:52:04 PM][mammenx] Fixed issues found in PCM Test
 
