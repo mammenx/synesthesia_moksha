@@ -65,7 +65,7 @@ module pcm_bffr #(
   output  reg [31:0]          dac_lpcm_data,
   output  reg [31:0]          dac_rpcm_data,
 
-  output                      acortex2fgyrus_pcm_rdy,
+  output  reg                 acortex2fgyrus_pcm_rdy,
   input   [MEM_ADDR_W-1:0]    fgyrus2acortex_addr,
   output  [31:0]              acortex2fgyrus_pcm_data
 

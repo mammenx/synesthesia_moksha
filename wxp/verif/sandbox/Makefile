@@ -1,6 +1,6 @@
 #TEST_NAME=syn_acortex_base_test
-#TEST_NAME=syn_acortex_i2c_test
-TEST_NAME=syn_acortex_pcm_test
+TEST_NAME=syn_acortex_i2c_test
+#TEST_NAME=syn_acortex_pcm_test
 
 TB_TOP=syn_acortex_tb_top
 
@@ -45,9 +45,7 @@ dgn_lib:
 	vlog -work $(DGN_LIB) -sv -f dgn.list -timescale "1ns / 10ps" $(LINT_OPT) $(PREPROCESS_OPT) | tee dgn.vlog.log
 
 dgn:
-	echo	"Compiling RTL into $(DGN_LIB) library"
-	vlib dgn.lib
-	vmap dgn.lib work
+	echo	"Compiling RTL"
 	vlog -sv -f dgn.list -timescale "1ns / 10ps" $(LINT_OPT) $(PREPROCESS_OPT) | tee dgn.vlog.log
 
 tb:

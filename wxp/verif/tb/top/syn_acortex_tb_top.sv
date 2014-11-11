@@ -60,7 +60,7 @@
 
 
     //Interfaces
-    syn_lb_tb_intf#(LB_DATA_W,LB_ADDR_W) lb_tb_intf(sys_clk_50,sys_rst);
+    syn_lb_tb_intf#(LB_DATA_W,LB_ADDR_W) lb_tb_intf(sys_clk_100,sys_rst);
 
     syn_wm8731_intf                   wm8731_intf(sys_rst);
 
@@ -114,11 +114,8 @@
 
     ) acortex_inst  (
 
-      .acortex_clk                (sys_clk_50),
-      .acortex_rst_n              (sys_rst),
-
-      .fgyrus_clk                 (sys_clk_100),
-      .fgyrus_rst_n               (sys_rst),
+      .clk                        (sys_clk_100),
+      .rst_n                      (sys_rst),
 
       .lb_wr_en                   (lb_tb_intf.wr_en   ),
       .lb_rd_en                   (lb_tb_intf.rd_en   ),
