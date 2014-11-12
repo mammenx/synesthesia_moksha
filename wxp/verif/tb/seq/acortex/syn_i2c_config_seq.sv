@@ -62,6 +62,8 @@
     bit [I2C_DATA_W-1:0]  i2c_data;
     bit                   poll_en;
     bit                   rd_n_wr;
+    bit                   start_en;
+    bit                   stop_en;
     int                   num_bytes;
 
     /*  Constructor */
@@ -71,6 +73,8 @@
       i2c_data  = 'd0;
       poll_en   =   1;
       rd_n_wr   =   0;
+      start_en  =   1;
+      stop_en   =   1;
       num_bytes =   1;
     endfunction
 
@@ -103,8 +107,8 @@
 
       $cast(pkt.addr[NUM_BYTES+2],  build_addr(ACORTEX_BLK,ACORTEX_I2C_BLK_CODE,I2C_CONFIG_REG_ADDR));
       pkt.data[NUM_BYTES+2]     = num_bytes <<  8;
-      pkt.data[NUM_BYTES+2][0]  = 1;
-      pkt.data[NUM_BYTES+2][1]  = 1;
+      pkt.data[NUM_BYTES+2][0]  = start_en;
+      pkt.data[NUM_BYTES+2][1]  = stop_en;
       pkt.data[NUM_BYTES+2][2]  = 1;
       pkt.data[NUM_BYTES+2][3]  = rd_n_wr;
 

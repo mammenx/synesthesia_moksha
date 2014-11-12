@@ -103,6 +103,8 @@
     end
 
 
+    tri0  sda_debug;
+
 
     /*  DUT */
     acortex #(
@@ -131,8 +133,10 @@
       .fgyrus2acortex_addr        (pcm_mem_intf.pcm_addr),
       .acortex2fgyrus_pcm_data    (pcm_mem_intf.pcm_rdata),
 
-      .scl                        (wm8731_intf.scl),
-      .sda                        (wm8731_intf.sda),
+      //.scl                        (wm8731_intf.scl),
+      //.sda                        (wm8731_intf.sda),
+      .scl                        (),
+      .sda                        (sda_debug),
 
       .AUD_ADCDAT                 (wm8731_intf.adc_dat),
       .AUD_ADCLRCK                (wm8731_intf.adc_lrc),
