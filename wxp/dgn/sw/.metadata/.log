@@ -1,0 +1,336 @@
+!SESSION 2014-11-11 23:29:34.454 -----------------------------------------------
+eclipse.buildId=M20120208-0800
+java.version=1.6.0_23
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_IN
+Framework arguments:  -product org.eclipse.epp.package.cpp.product -perspective com.altera.sbtgui.ui.cPerspective
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.cpp.product -perspective com.altera.sbtgui.ui.cPerspective
+
+!ENTRY org.eclipse.cdt.core 1 0 2014-11-11 23:31:40.850
+!MESSAGE Indexed 'limbus_bsp' (106 sources, 134 headers) in 2.11 sec: 4,284 declarations; 9,307 references; 17 unresolved inclusions; 6 syntax errors; 351 unresolved names (2.52%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2014-11-11 23:32:45.606
+!MESSAGE Indexed 'ledos-lib' (0 sources, 13 headers) in 0.02 sec: 0 declarations; 0 references; 13 unresolved inclusions; 0 syntax errors; 0 unresolved names (0.00%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2014-11-11 23:33:59.599
+!MESSAGE Indexed 'ledos_lib' (0 sources, 13 headers) in 0.00 sec: 0 declarations; 0 references; 13 unresolved inclusions; 0 syntax errors; 0 unresolved names (0.00%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2014-11-11 23:35:52.042
+!MESSAGE Indexed 'ledos_main' (1 sources, 13 headers) in 0.06 sec: 1 declarations; 1 references; 14 unresolved inclusions; 0 syntax errors; 0 unresolved names (0.00%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2014-11-11 23:38:26.136
+!MESSAGE Indexed 'ledos_main' (1 sources, 61 headers) in 1.34 sec: 1,563 declarations; 1,530 references; 0 unresolved inclusions; 2 syntax errors; 6 unresolved names (0.19%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2014-11-11 23:40:02.598
+!MESSAGE Indexed 'ledos_main' (1 sources, 61 headers) in 0.87 sec: 1,563 declarations; 1,530 references; 0 unresolved inclusions; 2 syntax errors; 6 unresolved names (0.19%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2014-11-11 23:45:45.724
+!MESSAGE Indexed 'ledos_main' (1 sources, 61 headers) in 0.87 sec: 1,563 declarations; 1,530 references; 0 unresolved inclusions; 2 syntax errors; 6 unresolved names (0.19%)
+!SESSION 2014-11-12 10:34:10.118 -----------------------------------------------
+eclipse.buildId=M20120208-0800
+java.version=1.6.0_23
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_IN
+Framework arguments:  -product org.eclipse.epp.package.cpp.product -perspective com.altera.sbtgui.ui.cPerspective
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.cpp.product -perspective com.altera.sbtgui.ui.cPerspective
+
+!ENTRY org.eclipse.ltk.ui.refactoring 4 10000 2014-11-12 10:53:07.893
+!MESSAGE Internal Error
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Resource '/ledos_lib/cortex' does not exist.
+	at org.eclipse.core.internal.resources.Resource.checkExists(Resource.java:320)
+	at org.eclipse.core.internal.resources.Resource.checkAccessible(Resource.java:194)
+	at org.eclipse.core.internal.resources.Resource.accept(Resource.java:54)
+	at org.eclipse.core.internal.resources.Resource.accept(Resource.java:104)
+	at org.eclipse.core.internal.resources.Resource.accept(Resource.java:95)
+	at org.eclipse.ltk.internal.core.refactoring.resource.DeleteResourcesProcessor.checkDirtyResources(DeleteResourcesProcessor.java:160)
+	at org.eclipse.ltk.internal.core.refactoring.resource.DeleteResourcesProcessor.checkFinalConditions(DeleteResourcesProcessor.java:136)
+	at org.eclipse.ltk.core.refactoring.participants.ProcessorBasedRefactoring.checkFinalConditions(ProcessorBasedRefactoring.java:224)
+	at org.eclipse.ltk.core.refactoring.CheckConditionsOperation.run(CheckConditionsOperation.java:85)
+	at org.eclipse.ltk.core.refactoring.CreateChangeOperation.run(CreateChangeOperation.java:121)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.run(PerformChangeOperation.java:209)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2344)
+	at org.eclipse.ltk.internal.ui.refactoring.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:87)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:121)
+!SUBENTRY 1 org.eclipse.core.resources 4 368 2014-11-12 10:53:07.893
+!MESSAGE Resource '/ledos_lib/cortex' does not exist.
+!SESSION 2014-11-12 11:02:53.116 -----------------------------------------------
+eclipse.buildId=M20120208-0800
+java.version=1.6.0_23
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_IN
+Framework arguments:  -product org.eclipse.epp.package.cpp.product -perspective com.altera.sbtgui.ui.cPerspective
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.cpp.product -perspective com.altera.sbtgui.ui.cPerspective
+
+!ENTRY org.eclipse.cdt.core 1 0 2014-11-12 11:04:32.108
+!MESSAGE Indexed 'limbus_bsp' (106 sources, 90 headers) in 1.64 sec: 2,137 declarations; 7,489 references; 127 unresolved inclusions; 5 syntax errors; 479 unresolved names (4.74%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2014-11-12 11:05:34.693
+!MESSAGE Indexed 'limbus_bsp' (106 sources, 142 headers) in 2.25 sec: 3,922 declarations; 9,520 references; 54 unresolved inclusions; 372 syntax errors; 515 unresolved names (3.69%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2014-11-12 11:06:08.795
+!MESSAGE Indexed 'ledos_lib' (0 sources, 13 headers) in 0.05 sec: 0 declarations; 0 references; 13 unresolved inclusions; 0 syntax errors; 0 unresolved names (0.00%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2014-11-12 11:06:57.953
+!MESSAGE Indexed 'ledos_main' (1 sources, 59 headers) in 0.76 sec: 1,556 declarations; 1,532 references; 1 unresolved inclusions; 2 syntax errors; 6 unresolved names (0.19%)
+!SESSION 2014-11-12 11:28:46.205 -----------------------------------------------
+eclipse.buildId=M20120208-0800
+java.version=1.6.0_23
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_IN
+Framework arguments:  -product org.eclipse.epp.package.cpp.product -perspective com.altera.sbtgui.ui.cPerspective
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.cpp.product -perspective com.altera.sbtgui.ui.cPerspective
+
+!ENTRY org.eclipse.cdt.core 1 0 2014-11-12 12:09:21.637
+!MESSAGE Indexed 'ledos_lib' (0 sources, 59 headers) in 1.59 sec: 1,555 declarations; 1,525 references; 0 unresolved inclusions; 2 syntax errors; 6 unresolved names (0.19%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2014-11-12 12:12:56.986
+!MESSAGE Indexed 'ledos_lib' (0 sources, 59 headers) in 1.12 sec: 1,555 declarations; 1,525 references; 0 unresolved inclusions; 2 syntax errors; 6 unresolved names (0.19%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2014-11-12 13:04:44.694
+!MESSAGE Indexed 'limbus_bsp' (106 sources, 143 headers) in 1.72 sec: 3,761 declarations; 9,285 references; 69 unresolved inclusions; 445 syntax errors; 602 unresolved names (4.41%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2014-11-12 13:06:47.684
+!MESSAGE Indexed 'ledos_main' (1 sources, 13 headers) in 0.03 sec: 1 declarations; 1 references; 14 unresolved inclusions; 0 syntax errors; 0 unresolved names (0.00%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2014-11-12 13:08:23.329
+!MESSAGE Indexed 'ledos_main' (1 sources, 101 headers) in 1.37 sec: 2,454 declarations; 2,495 references; 0 unresolved inclusions; 2 syntax errors; 6 unresolved names (0.12%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2014-11-12 13:10:33.511
+!MESSAGE Indexed 'ledos_main' (1 sources, 101 headers) in 1.25 sec: 2,454 declarations; 2,495 references; 0 unresolved inclusions; 2 syntax errors; 6 unresolved names (0.12%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2014-11-12 13:13:58.590
+!MESSAGE Indexed 'ledos_main' (1 sources, 97 headers) in 1.23 sec: 2,428 declarations; 2,474 references; 1 unresolved inclusions; 2 syntax errors; 6 unresolved names (0.12%)
+
+!ENTRY org.eclipse.ltk.ui.refactoring 4 10000 2014-11-12 13:21:14.388
+!MESSAGE Internal Error
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Problems encountered while deleting resources.
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:793)
+	at org.eclipse.core.internal.resources.Project.delete(Project.java:344)
+	at org.eclipse.ltk.core.refactoring.resource.DeleteResourceChange.perform(DeleteResourceChange.java:132)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation$1.run(PerformChangeOperation.java:258)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2344)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.executeChange(PerformChangeOperation.java:306)
+	at org.eclipse.ltk.internal.ui.refactoring.UIPerformChangeOperation.executeChange(UIPerformChangeOperation.java:92)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.run(PerformChangeOperation.java:218)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2344)
+	at org.eclipse.ltk.internal.ui.refactoring.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:87)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:121)
+Contains: Could not delete 'G:\WorK\github\synesthesia_moksha\wxp\dgn\sw\limbus_bsp\Makefile'.
+org.eclipse.core.runtime.CoreException: Problems encountered while deleting files.
+	at org.eclipse.core.internal.filesystem.local.LocalFile.delete(LocalFile.java:125)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFile(ResourceTree.java:304)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteProject(ResourceTree.java:384)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteProject(ResourceTree.java:837)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1945)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:780)
+	at org.eclipse.core.internal.resources.Project.delete(Project.java:344)
+	at org.eclipse.ltk.core.refactoring.resource.DeleteResourceChange.perform(DeleteResourceChange.java:132)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation$1.run(PerformChangeOperation.java:258)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2344)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.executeChange(PerformChangeOperation.java:306)
+	at org.eclipse.ltk.internal.ui.refactoring.UIPerformChangeOperation.executeChange(UIPerformChangeOperation.java:92)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.run(PerformChangeOperation.java:218)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2344)
+	at org.eclipse.ltk.internal.ui.refactoring.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:87)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:121)
+Contains: Could not delete: G:\WorK\github\synesthesia_moksha\wxp\dgn\sw\limbus_bsp\Makefile.
+Contains: Could not delete 'G:\WorK\github\synesthesia_moksha\wxp\dgn\sw\limbus_bsp'.
+!SUBENTRY 1 org.eclipse.core.resources 4 273 2014-11-12 13:21:14.388
+!MESSAGE Problems encountered while deleting resources.
+!SUBENTRY 2 org.eclipse.core.resources 4 273 2014-11-12 13:21:14.388
+!MESSAGE Could not delete 'G:\WorK\github\synesthesia_moksha\wxp\dgn\sw\limbus_bsp\Makefile'.
+!STACK 1
+org.eclipse.core.runtime.CoreException: Problems encountered while deleting files.
+	at org.eclipse.core.internal.filesystem.local.LocalFile.delete(LocalFile.java:125)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFile(ResourceTree.java:304)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteProject(ResourceTree.java:384)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteProject(ResourceTree.java:837)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1945)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:780)
+	at org.eclipse.core.internal.resources.Project.delete(Project.java:344)
+	at org.eclipse.ltk.core.refactoring.resource.DeleteResourceChange.perform(DeleteResourceChange.java:132)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation$1.run(PerformChangeOperation.java:258)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2344)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.executeChange(PerformChangeOperation.java:306)
+	at org.eclipse.ltk.internal.ui.refactoring.UIPerformChangeOperation.executeChange(UIPerformChangeOperation.java:92)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.run(PerformChangeOperation.java:218)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2344)
+	at org.eclipse.ltk.internal.ui.refactoring.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:87)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:121)
+Contains: Could not delete: G:\WorK\github\synesthesia_moksha\wxp\dgn\sw\limbus_bsp\Makefile.
+!SUBENTRY 3 org.eclipse.core.filesystem 4 273 2014-11-12 13:21:14.388
+!MESSAGE Problems encountered while deleting files.
+!SUBENTRY 4 org.eclipse.core.filesystem 4 273 2014-11-12 13:21:14.388
+!MESSAGE Could not delete: G:\WorK\github\synesthesia_moksha\wxp\dgn\sw\limbus_bsp\Makefile.
+!SUBENTRY 2 org.eclipse.core.resources 4 273 2014-11-12 13:21:14.388
+!MESSAGE Could not delete 'G:\WorK\github\synesthesia_moksha\wxp\dgn\sw\limbus_bsp'.
+
+!ENTRY org.eclipse.core.resources 4 273 2014-11-12 13:21:14.388
+!MESSAGE Problems encountered while deleting resources.
+!SUBENTRY 1 org.eclipse.core.resources 4 273 2014-11-12 13:21:14.388
+!MESSAGE Could not delete 'G:\WorK\github\synesthesia_moksha\wxp\dgn\sw\limbus_bsp\Makefile'.
+!STACK 1
+org.eclipse.core.runtime.CoreException: Problems encountered while deleting files.
+	at org.eclipse.core.internal.filesystem.local.LocalFile.delete(LocalFile.java:125)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFile(ResourceTree.java:304)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteProject(ResourceTree.java:384)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteProject(ResourceTree.java:837)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1945)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:780)
+	at org.eclipse.core.internal.resources.Project.delete(Project.java:344)
+	at org.eclipse.ltk.core.refactoring.resource.DeleteResourceChange.perform(DeleteResourceChange.java:132)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation$1.run(PerformChangeOperation.java:258)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2344)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.executeChange(PerformChangeOperation.java:306)
+	at org.eclipse.ltk.internal.ui.refactoring.UIPerformChangeOperation.executeChange(UIPerformChangeOperation.java:92)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.run(PerformChangeOperation.java:218)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2344)
+	at org.eclipse.ltk.internal.ui.refactoring.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:87)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:121)
+Contains: Could not delete: G:\WorK\github\synesthesia_moksha\wxp\dgn\sw\limbus_bsp\Makefile.
+!SUBENTRY 2 org.eclipse.core.filesystem 4 273 2014-11-12 13:21:14.388
+!MESSAGE Problems encountered while deleting files.
+!SUBENTRY 3 org.eclipse.core.filesystem 4 273 2014-11-12 13:21:14.388
+!MESSAGE Could not delete: G:\WorK\github\synesthesia_moksha\wxp\dgn\sw\limbus_bsp\Makefile.
+!SUBENTRY 1 org.eclipse.core.resources 4 273 2014-11-12 13:21:14.388
+!MESSAGE Could not delete 'G:\WorK\github\synesthesia_moksha\wxp\dgn\sw\limbus_bsp'.
+
+!ENTRY org.eclipse.cdt.core 1 0 2014-11-12 13:22:42.879
+!MESSAGE Indexed 'limbus_bsp' (106 sources, 142 headers) in 1.40 sec: 3,728 declarations; 9,360 references; 70 unresolved inclusions; 445 syntax errors; 581 unresolved names (4.25%)
+
+!ENTRY org.eclipse.core.jobs 4 2 2014-11-12 13:23:09.508
+!MESSAGE An internal error occurred during: "Nios II BSP Editor (ledos_main)".
+!STACK 0
+java.lang.NullPointerException
+	at com.altera.sbtgui.core.commandline.Executor.exec(Executor.java:72)
+	at com.altera.sbtgui.core.commandline.ExecutableJob.run(ExecutableJob.java:27)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.cdt.core 1 0 2014-11-12 13:25:01.551
+!MESSAGE Indexed 'ledos_bkp' (0 sources, 59 headers) in 0.80 sec: 1,555 declarations; 1,525 references; 0 unresolved inclusions; 2 syntax errors; 6 unresolved names (0.19%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2014-11-12 13:25:49.552
+!MESSAGE Indexed 'ledos_main' (1 sources, 13 headers) in 0.02 sec: 1 declarations; 1 references; 14 unresolved inclusions; 0 syntax errors; 0 unresolved names (0.00%)
+!SESSION 2014-11-12 13:30:57.585 -----------------------------------------------
+eclipse.buildId=M20120208-0800
+java.version=1.6.0_23
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_IN
+Framework arguments:  -product org.eclipse.epp.package.cpp.product -perspective com.altera.sbtgui.ui.cPerspective
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.cpp.product -perspective com.altera.sbtgui.ui.cPerspective
+
+!ENTRY org.eclipse.cdt.core 1 0 2014-11-12 13:31:55.619
+!MESSAGE Indexed 'limbus_bsp' (106 sources, 137 headers) in 2.17 sec: 3,507 declarations; 9,171 references; 16 unresolved inclusions; 492 syntax errors; 477 unresolved names (3.63%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2014-11-12 13:32:33.389
+!MESSAGE Indexed 'leos_main' (1 sources, 13 headers) in 0.02 sec: 1 declarations; 1 references; 14 unresolved inclusions; 0 syntax errors; 0 unresolved names (0.00%)
+
+!ENTRY org.eclipse.ui 4 0 2014-11-12 13:33:57.790
+!MESSAGE Unhandled event loop exception
+!STACK 0
+java.lang.NullPointerException
+	at com.altera.sbtgui.project.makefile.AddToBuildHandler.execute(AddToBuildHandler.java:155)
+	at org.eclipse.ui.internal.handlers.HandlerProxy.execute(HandlerProxy.java:293)
+	at org.eclipse.core.commands.Command.executeWithChecks(Command.java:476)
+	at org.eclipse.core.commands.ParameterizedCommand.executeWithChecks(ParameterizedCommand.java:508)
+	at org.eclipse.ui.internal.handlers.HandlerService.executeCommand(HandlerService.java:169)
+	at org.eclipse.ui.internal.handlers.SlaveHandlerService.executeCommand(SlaveHandlerService.java:241)
+	at org.eclipse.ui.internal.handlers.SlaveHandlerService.executeCommand(SlaveHandlerService.java:241)
+	at org.eclipse.ui.menus.CommandContributionItem.handleWidgetSelection(CommandContributionItem.java:829)
+	at org.eclipse.ui.menus.CommandContributionItem.access$19(CommandContributionItem.java:815)
+	at org.eclipse.ui.menus.CommandContributionItem$5.handleEvent(CommandContributionItem.java:805)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:84)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1053)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:4165)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3754)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2701)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2665)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2499)
+	at org.eclipse.ui.internal.Workbench$7.run(Workbench.java:679)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:332)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:668)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:123)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:196)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:110)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:79)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:344)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:179)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:622)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:577)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1410)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1386)
+
+!ENTRY org.eclipse.ui 4 0 2014-11-12 13:34:03.952
+!MESSAGE Unhandled event loop exception
+!STACK 0
+java.lang.NullPointerException
+	at com.altera.sbtgui.project.makefile.AddToBuildHandler.execute(AddToBuildHandler.java:155)
+	at org.eclipse.ui.internal.handlers.HandlerProxy.execute(HandlerProxy.java:293)
+	at org.eclipse.core.commands.Command.executeWithChecks(Command.java:476)
+	at org.eclipse.core.commands.ParameterizedCommand.executeWithChecks(ParameterizedCommand.java:508)
+	at org.eclipse.ui.internal.handlers.HandlerService.executeCommand(HandlerService.java:169)
+	at org.eclipse.ui.internal.handlers.SlaveHandlerService.executeCommand(SlaveHandlerService.java:241)
+	at org.eclipse.ui.internal.handlers.SlaveHandlerService.executeCommand(SlaveHandlerService.java:241)
+	at org.eclipse.ui.menus.CommandContributionItem.handleWidgetSelection(CommandContributionItem.java:829)
+	at org.eclipse.ui.menus.CommandContributionItem.access$19(CommandContributionItem.java:815)
+	at org.eclipse.ui.menus.CommandContributionItem$5.handleEvent(CommandContributionItem.java:805)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:84)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1053)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:4165)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3754)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2701)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2665)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2499)
+	at org.eclipse.ui.internal.Workbench$7.run(Workbench.java:679)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:332)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:668)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:123)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:196)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:110)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:79)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:344)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:179)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:622)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:577)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1410)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1386)
+!SESSION 2014-11-12 13:36:07.766 -----------------------------------------------
+eclipse.buildId=M20120208-0800
+java.version=1.6.0_23
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_IN
+Framework arguments:  -product org.eclipse.epp.package.cpp.product -perspective com.altera.sbtgui.ui.cPerspective
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.cpp.product -perspective com.altera.sbtgui.ui.cPerspective
+
+!ENTRY org.eclipse.cdt.core 1 0 2014-11-12 13:36:30.028
+!MESSAGE Indexed 'ledos_main' (0 sources, 59 headers) in 0.87 sec: 1,555 declarations; 1,525 references; 0 unresolved inclusions; 2 syntax errors; 6 unresolved names (0.19%)
+!SESSION 2014-11-12 14:09:43.327 -----------------------------------------------
+eclipse.buildId=M20120208-0800
+java.version=1.6.0_23
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_IN
+Framework arguments:  -product org.eclipse.epp.package.cpp.product -perspective com.altera.sbtgui.ui.cPerspective
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.cpp.product -perspective com.altera.sbtgui.ui.cPerspective
+
+!ENTRY org.eclipse.cdt.core 1 0 2014-11-12 15:05:18.228
+!MESSAGE Indexed 'ledos_main' (1 sources, 13 headers) in 0.02 sec: 1 declarations; 1 references; 14 unresolved inclusions; 0 syntax errors; 0 unresolved names (0.00%)
