@@ -15,7 +15,6 @@
   </columns>
  </clocktable>
  <window width="1382" height="744" x="-8" y="-8" />
- <library
-   expandedCategories="Library/Embedded Processors,Library/Peripherals/Debug and Performance,Library/Peripherals,Library,Library/Verification,Library/Verification/Debug &amp; Performance,Project" />
+ <library expandedCategories="Library,Project" />
  <generation block_symbol_file="0" />
 </preferences>

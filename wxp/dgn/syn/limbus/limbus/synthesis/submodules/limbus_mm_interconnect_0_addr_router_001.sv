@@ -44,19 +44,19 @@
 
 module limbus_mm_interconnect_0_addr_router_001_default_decode
   #(
-     parameter DEFAULT_CHANNEL = 1,
+     parameter DEFAULT_CHANNEL = 6,
                DEFAULT_WR_CHANNEL = -1,
                DEFAULT_RD_CHANNEL = -1,
-               DEFAULT_DESTID = 3 
+               DEFAULT_DESTID = 0 
    )
-  (output [83 - 81 : 0] default_destination_id,
+  (output [84 - 82 : 0] default_destination_id,
    output [7-1 : 0] default_wr_channel,
    output [7-1 : 0] default_rd_channel,
    output [7-1 : 0] default_src_channel
   );
 
   assign default_destination_id = 
-    DEFAULT_DESTID[83 - 81 : 0];
+    DEFAULT_DESTID[84 - 82 : 0];
 
   generate begin : default_decode
     if (DEFAULT_CHANNEL == -1) begin
@@ -95,7 +95,7 @@ module limbus_mm_interconnect_0_addr_router_001
     // Command Sink (Input)
     // -------------------
     input                       sink_valid,
-    input  [97-1 : 0]    sink_data,
+    input  [98-1 : 0]    sink_data,
     input                       sink_startofpacket,
     input                       sink_endofpacket,
     output                      sink_ready,
@@ -104,7 +104,7 @@ module limbus_mm_interconnect_0_addr_router_001
     // Command Source (Output)
     // -------------------
     output                          src_valid,
-    output reg [97-1    : 0] src_data,
+    output reg [98-1    : 0] src_data,
     output reg [7-1 : 0] src_channel,
     output                          src_startofpacket,
     output                          src_endofpacket,
@@ -114,18 +114,18 @@ module limbus_mm_interconnect_0_addr_router_001
     // -------------------------------------------------------
     // Local parameters and variables
     // -------------------------------------------------------
-    localparam PKT_ADDR_H = 56;
+    localparam PKT_ADDR_H = 57;
     localparam PKT_ADDR_L = 36;
-    localparam PKT_DEST_ID_H = 83;
-    localparam PKT_DEST_ID_L = 81;
-    localparam PKT_PROTECTION_H = 87;
-    localparam PKT_PROTECTION_L = 85;
-    localparam ST_DATA_W = 97;
+    localparam PKT_DEST_ID_H = 84;
+    localparam PKT_DEST_ID_L = 82;
+    localparam PKT_PROTECTION_H = 88;
+    localparam PKT_PROTECTION_L = 86;
+    localparam ST_DATA_W = 98;
     localparam ST_CHANNEL_W = 7;
     localparam DECODER_TYPE = 0;
 
-    localparam PKT_TRANS_WRITE = 59;
-    localparam PKT_TRANS_READ  = 60;
+    localparam PKT_TRANS_WRITE = 60;
+    localparam PKT_TRANS_READ  = 61;
 
     localparam PKT_ADDR_W = PKT_ADDR_H-PKT_ADDR_L + 1;
     localparam PKT_DEST_ID_W = PKT_DEST_ID_H-PKT_DEST_ID_L + 1;
@@ -136,19 +136,19 @@ module limbus_mm_interconnect_0_addr_router_001
     // Figure out the number of bits to mask off for each slave span
     // during address decoding
     // -------------------------------------------------------
-    localparam PAD0 = log2ceil(64'h100000 - 64'h80000); 
-    localparam PAD1 = log2ceil(64'h140000 - 64'h100000); 
-    localparam PAD2 = log2ceil(64'h141000 - 64'h140800); 
-    localparam PAD3 = log2ceil(64'h141020 - 64'h141000); 
-    localparam PAD4 = log2ceil(64'h141040 - 64'h141020); 
-    localparam PAD5 = log2ceil(64'h141048 - 64'h141040); 
-    localparam PAD6 = log2ceil(64'h141050 - 64'h141048); 
+    localparam PAD0 = log2ceil(64'h100000 - 64'h0); 
+    localparam PAD1 = log2ceil(64'h200000 - 64'h180000); 
+    localparam PAD2 = log2ceil(64'h201000 - 64'h200800); 
+    localparam PAD3 = log2ceil(64'h201020 - 64'h201000); 
+    localparam PAD4 = log2ceil(64'h201040 - 64'h201020); 
+    localparam PAD5 = log2ceil(64'h201048 - 64'h201040); 
+    localparam PAD6 = log2ceil(64'h201050 - 64'h201048); 
     // -------------------------------------------------------
     // Work out which address bits are significant based on the
     // address range of the slaves. If the required width is too
     // large or too small, we use the address field width instead.
     // -------------------------------------------------------
-    localparam ADDR_RANGE = 64'h141050;
+    localparam ADDR_RANGE = 64'h201050;
     localparam RANGE_ADDR_WIDTH = log2ceil(ADDR_RANGE);
     localparam OPTIMIZED_ADDR_H = (RANGE_ADDR_WIDTH > PKT_ADDR_W) ||
                                   (RANGE_ADDR_WIDTH == 0) ?
@@ -201,44 +201,44 @@ module limbus_mm_interconnect_0_addr_router_001
         // Sets the channel and destination ID based on the address
         // --------------------------------------------------
 
-    // ( 0x80000 .. 0x100000 )
-    if ( {address[RG:PAD0],{PAD0{1'b0}}} == 21'h80000   ) begin
-            src_channel = 7'b0000010;
-            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 3;
-    end
-
-    // ( 0x100000 .. 0x140000 )
-    if ( {address[RG:PAD1],{PAD1{1'b0}}} == 21'h100000   ) begin
+    // ( 0x0 .. 0x100000 )
+    if ( {address[RG:PAD0],{PAD0{1'b0}}} == 22'h0   ) begin
             src_channel = 7'b1000000;
             src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 0;
     end
 
-    // ( 0x140800 .. 0x141000 )
-    if ( {address[RG:PAD2],{PAD2{1'b0}}} == 21'h140800   ) begin
+    // ( 0x180000 .. 0x200000 )
+    if ( {address[RG:PAD1],{PAD1{1'b0}}} == 22'h180000   ) begin
+            src_channel = 7'b0000010;
+            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 3;
+    end
+
+    // ( 0x200800 .. 0x201000 )
+    if ( {address[RG:PAD2],{PAD2{1'b0}}} == 22'h200800   ) begin
             src_channel = 7'b0000001;
             src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 1;
     end
 
-    // ( 0x141000 .. 0x141020 )
-    if ( {address[RG:PAD3],{PAD3{1'b0}}} == 21'h141000   ) begin
+    // ( 0x201000 .. 0x201020 )
+    if ( {address[RG:PAD3],{PAD3{1'b0}}} == 22'h201000   ) begin
             src_channel = 7'b0010000;
             src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 6;
     end
 
-    // ( 0x141020 .. 0x141040 )
-    if ( {address[RG:PAD4],{PAD4{1'b0}}} == 21'h141020   ) begin
+    // ( 0x201020 .. 0x201040 )
+    if ( {address[RG:PAD4],{PAD4{1'b0}}} == 22'h201020   ) begin
             src_channel = 7'b0001000;
             src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 5;
     end
 
-    // ( 0x141040 .. 0x141048 )
-    if ( {address[RG:PAD5],{PAD5{1'b0}}} == 21'h141040  && read_transaction  ) begin
+    // ( 0x201040 .. 0x201048 )
+    if ( {address[RG:PAD5],{PAD5{1'b0}}} == 22'h201040  && read_transaction  ) begin
             src_channel = 7'b0100000;
             src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 4;
     end
 
-    // ( 0x141048 .. 0x141050 )
-    if ( {address[RG:PAD6],{PAD6{1'b0}}} == 21'h141048   ) begin
+    // ( 0x201048 .. 0x201050 )
+    if ( {address[RG:PAD6],{PAD6{1'b0}}} == 22'h201048   ) begin
             src_channel = 7'b0000100;
             src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 2;
     end

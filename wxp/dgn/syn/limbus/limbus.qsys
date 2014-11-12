@@ -6,7 +6,7 @@
    version="1.0"
    description=""
    tags=""
-   categories="" />
+   categories="System" />
  <parameter name="bonusData"><![CDATA[bonusData 
 {
    element $${FILENAME}
@@ -16,7 +16,7 @@
    {
       datum baseAddress
       {
-         value = "1314888";
+         value = "2101320";
          type = "String";
       }
    }
@@ -32,7 +32,7 @@
    {
       datum baseAddress
       {
-         value = "1314880";
+         value = "2101312";
          type = "String";
       }
    }
@@ -56,7 +56,7 @@
    {
       datum baseAddress
       {
-         value = "1312768";
+         value = "2099200";
          type = "String";
       }
    }
@@ -80,7 +80,7 @@
    {
       datum baseAddress
       {
-         value = "1314816";
+         value = "2101248";
          type = "String";
       }
    }
@@ -88,7 +88,7 @@
    {
       datum baseAddress
       {
-         value = "1314848";
+         value = "2101280";
          type = "String";
       }
    }
@@ -149,7 +149,7 @@
       }
       datum baseAddress
       {
-         value = "524288";
+         value = "1572864";
          type = "String";
       }
    }
@@ -292,8 +292,8 @@
   <parameter name="ocimem_ramBlockType" value="Automatic" />
   <parameter name="mmu_ramBlockType" value="Automatic" />
   <parameter name="bht_ramBlockType" value="Automatic" />
-  <parameter name="instAddrWidth" value="21" />
-  <parameter name="dataAddrWidth" value="21" />
+  <parameter name="instAddrWidth" value="22" />
+  <parameter name="dataAddrWidth" value="22" />
   <parameter name="tightlyCoupledDataMaster0AddrWidth" value="1" />
   <parameter name="tightlyCoupledDataMaster1AddrWidth" value="1" />
   <parameter name="tightlyCoupledDataMaster2AddrWidth" value="1" />
@@ -302,8 +302,8 @@
   <parameter name="tightlyCoupledInstructionMaster1AddrWidth" value="1" />
   <parameter name="tightlyCoupledInstructionMaster2AddrWidth" value="1" />
   <parameter name="tightlyCoupledInstructionMaster3AddrWidth" value="1" />
-  <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='sram_cntrlr.uas' start='0x80000' end='0x100000' /><slave name='cpu.jtag_debug_module' start='0x140800' end='0x141000' /></address-map>]]></parameter>
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='sram_cntrlr.uas' start='0x80000' end='0x100000' /><slave name='cortex.s0' start='0x100000' end='0x140000' /><slave name='cpu.jtag_debug_module' start='0x140800' end='0x141000' /><slave name='uart_0.s1' start='0x141000' end='0x141020' /><slave name='timer_0.s1' start='0x141020' end='0x141040' /><slave name='sysid.control_slave' start='0x141040' end='0x141048' /><slave name='jtag_uart.avalon_jtag_slave' start='0x141048' end='0x141050' /></address-map>]]></parameter>
+  <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='sram_cntrlr.uas' start='0x180000' end='0x200000' /><slave name='cpu.jtag_debug_module' start='0x200800' end='0x201000' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='cortex.s0' start='0x0' end='0x100000' /><slave name='sram_cntrlr.uas' start='0x180000' end='0x200000' /><slave name='cpu.jtag_debug_module' start='0x200800' end='0x201000' /><slave name='uart_0.s1' start='0x201000' end='0x201020' /><slave name='timer_0.s1' start='0x201020' end='0x201040' /><slave name='sysid.control_slave' start='0x201040' end='0x201048' /><slave name='jtag_uart.avalon_jtag_slave' start='0x201048' end='0x201050' /></address-map>]]></parameter>
   <parameter name="clockFrequency" value="100000000" />
   <parameter name="deviceFamilyName" value="Cyclone V" />
   <parameter name="internalIrqMaskSystemInfo" value="15" />
@@ -465,7 +465,7 @@
    start="cpu.instruction_master"
    end="cpu.jtag_debug_module">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00140800" />
+  <parameter name="baseAddress" value="0x00200800" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -474,7 +474,7 @@
    start="cpu.data_master"
    end="cpu.jtag_debug_module">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00140800" />
+  <parameter name="baseAddress" value="0x00200800" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection kind="clock" version="13.1" start="clk_100.clk" end="cpu.clk" />
@@ -485,7 +485,7 @@
    start="cpu.data_master"
    end="jtag_uart.avalon_jtag_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00141048" />
+  <parameter name="baseAddress" value="0x00201048" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -530,7 +530,7 @@
    start="cpu.data_master"
    end="sram_cntrlr.uas">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00080000" />
+  <parameter name="baseAddress" value="0x00180000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -539,7 +539,7 @@
    start="cpu.instruction_master"
    end="sram_cntrlr.uas">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00080000" />
+  <parameter name="baseAddress" value="0x00180000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -589,7 +589,7 @@
    end="timer_0.reset" />
  <connection kind="avalon" version="13.1" start="cpu.data_master" end="timer_0.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00141020" />
+  <parameter name="baseAddress" value="0x00201020" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection kind="interrupt" version="13.1" start="cpu.d_irq" end="timer_0.irq">
@@ -598,7 +598,7 @@
  <connection kind="clock" version="13.1" start="clk_100.clk" end="uart_0.clk" />
  <connection kind="avalon" version="13.1" start="cpu.data_master" end="uart_0.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00141000" />
+  <parameter name="baseAddress" value="0x00201000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection kind="clock" version="13.1" start="clk_100.clk" end="sysid.clk" />
@@ -608,7 +608,7 @@
    start="cpu.data_master"
    end="sysid.control_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00141040" />
+  <parameter name="baseAddress" value="0x00201040" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -636,7 +636,7 @@
  </connection>
  <connection kind="avalon" version="13.1" start="cpu.data_master" end="cortex.s0">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00100000" />
+  <parameter name="baseAddress" value="0x0000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection kind="clock" version="13.1" start="clk_100.clk" end="cortex.clock" />

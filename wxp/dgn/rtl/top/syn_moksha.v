@@ -165,6 +165,7 @@ wire              cortex_clk;
 wire              cortex_rst_n;
 
 wire              sram_addr_dummy;
+wire  [1:0]       cortex_lb_addr_dummy;
 
 wire              cortex_lb_wr_en;
 wire              cortex_lb_rd_en;
@@ -207,7 +208,7 @@ wire  [1:0]       mclk_vec;
     /*  input  wire         */  .uart_0_rxd(UART_RX),
     /*  output wire         */  .uart_0_txd(UART_TX),
 
-    /*  output wire [15:0]  */  .cortex_s_address(cortex_lb_addr),
+    /*  output wire [17:0]  */  .cortex_s_address({cortex_lb_addr,cortex_lb_addr_dummy}),
     /*  output wire         */  .cortex_s_read(cortex_lb_rd_en),
     /*  input  wire [31:0]  */  .cortex_s_readdata(cortex_lb_rd_data),
     /*  output wire         */  .cortex_s_write(cortex_lb_wr_en),

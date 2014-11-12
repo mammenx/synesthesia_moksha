@@ -28,7 +28,7 @@
 // ------------------------------------------
 // Generation parameters:
 //   output_name:         limbus_mm_interconnect_0_cmd_xbar_demux
-//   ST_DATA_W:           97
+//   ST_DATA_W:           98
 //   ST_CHANNEL_W:        7
 //   NUM_OUTPUTS:         2
 //   VALID_WIDTH:         1
@@ -46,7 +46,7 @@ module limbus_mm_interconnect_0_cmd_xbar_demux
     // Sink
     // -------------------
     input  [1-1      : 0]   sink_valid,
-    input  [97-1    : 0]   sink_data, // ST_DATA_W=97
+    input  [98-1    : 0]   sink_data, // ST_DATA_W=98
     input  [7-1 : 0]   sink_channel, // ST_CHANNEL_W=7
     input                         sink_startofpacket,
     input                         sink_endofpacket,
@@ -56,14 +56,14 @@ module limbus_mm_interconnect_0_cmd_xbar_demux
     // Sources 
     // -------------------
     output reg                      src0_valid,
-    output reg [97-1    : 0] src0_data, // ST_DATA_W=97
+    output reg [98-1    : 0] src0_data, // ST_DATA_W=98
     output reg [7-1 : 0] src0_channel, // ST_CHANNEL_W=7
     output reg                      src0_startofpacket,
     output reg                      src0_endofpacket,
     input                           src0_ready,
 
     output reg                      src1_valid,
-    output reg [97-1    : 0] src1_data, // ST_DATA_W=97
+    output reg [98-1    : 0] src1_data, // ST_DATA_W=98
     output reg [7-1 : 0] src1_channel, // ST_CHANNEL_W=7
     output reg                      src1_startofpacket,
     output reg                      src1_endofpacket,
