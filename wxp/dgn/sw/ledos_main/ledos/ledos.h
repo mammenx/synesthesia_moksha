@@ -32,6 +32,7 @@
 #define LEDOS_H_
 
 #include "cortex/cortex.h"
+#include "aud_codec/aud_codec.h"
 
 
 #endif /* LEDOS_H_ */

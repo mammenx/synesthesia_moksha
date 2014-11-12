@@ -30,13 +30,18 @@
 <folder appearance="1" expanded="2">
 <presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
 <part id="0"/>
+<part id="1"/>
 </presentation>
 </folder>
 </info>
 </editorArea>
-<editor activePart="true" focus="true" id="org.eclipse.cdt.ui.editor.CEditor" name="hello_world_small.c" partName="hello_world_small.c" path="G:/WorK/github/synesthesia_moksha/wxp/dgn/sw/ledos_main/hello_world_small.c" title="hello_world_small.c" tooltip="ledos_main/hello_world_small.c" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/ledos_main/hello_world_small.c"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="3713" selectionTopPixel="1055"/>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="aud_codec.h" partName="aud_codec.h" path="G:/WorK/github/synesthesia_moksha/wxp/dgn/sw/ledos_main/ledos/aud_codec/aud_codec.h" title="aud_codec.h" tooltip="ledos_main/ledos/aud_codec/aud_codec.h" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/ledos_main/ledos/aud_codec/aud_codec.h"/>
+<editorState selectionHorizontalPixel="0" selectionLength="18" selectionOffset="1525" selectionTopPixel="398"/>
+</editor>
+<editor activePart="true" focus="true" id="org.eclipse.cdt.ui.editor.CEditor" name="aud_codec.c" partName="aud_codec.c" path="G:/WorK/github/synesthesia_moksha/wxp/dgn/sw/ledos_main/ledos/aud_codec/aud_codec.c" title="aud_codec.c" tooltip="ledos_main/ledos/aud_codec/aud_codec.c" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/ledos_main/ledos/aud_codec/aud_codec.c"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2035" selectionTopPixel="530"/>
 </editor>
 </editors>
 <views>
@@ -48,7 +53,8 @@
 <view id="org.eclipse.ui.views.ProblemView" partName="Problems">
 <viewState PRIMARY_SORT_FIELD="org.eclipse.ui.ide.severityAndDescriptionField" categoryGroup="org.eclipse.ui.ide.severity" markerContentGenerator="org.eclipse.ui.ide.problemsGenerator" partName="Problems">
 <expanded>
-<category IMemento.internal.id="Warnings (11 items)"/>
+<category IMemento.internal.id="Warnings"/>
+<category IMemento.internal.id="Errors"/>
 </expanded>
 <columnWidths org.eclipse.ui.ide.locationField="75" org.eclipse.ui.ide.markerType="75" org.eclipse.ui.ide.pathField="100" org.eclipse.ui.ide.resourceField="75" org.eclipse.ui.ide.severityAndDescriptionField="250"/>
 <visible IMemento.internal.id="org.eclipse.ui.ide.severityAndDescriptionField"/>
@@ -67,7 +73,7 @@
 <viewState/>
 </view>
 </views>
-<perspectives activePart="org.eclipse.cdt.ui.editor.CEditor" activePerspective="com.altera.sbtgui.ui.cPerspective">
+<perspectives activePart="org.eclipse.ui.navigator.ProjectExplorer" activePerspective="com.altera.sbtgui.ui.cPerspective">
 <perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
 <descriptor class="org.eclipse.cdt.internal.ui.CPerspectiveFactory" id="org.eclipse.cdt.ui.CPerspective" label="C/C++"/>
 <alwaysOnActionSet id="org.eclipse.mylyn.context.ui.actionSet"/>
@@ -270,163 +276,163 @@
 <workingSets/>
 <navigationHistory>
 <editors>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/ledos_main/ledos/cortex/acortex/pcm_bffr/pcm_bffr.h"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/ledos_main/ledos/cortex/acortex/ssm2603_drvr/ssm2603_drvr.h"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/ledos_main/ledos/aud_codec/aud_codec.h"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/ledos_main/ledos/cortex/acortex/i2c/i2c.h"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/ledos_main/ledos/cortex/acortex/pcm_bffr/pcm_bffr.c"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/ledos_main/hello_world_small.c"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/ledos_main/ledos/cortex/acortex/acortex.h"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/limbus_bsp/system.h"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/ledos_main/ledos/aud_codec/aud_codec.c"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/ledos_main/ledos/cortex/acortex/i2c/i2c.c"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/ledos_main/ledos/ledos.h"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/ledos_main/ledos/aud_codec/aud_codec.h"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/ledos_main/ledos/aud_codec/aud_codec.c"/>
 </editors>
-<item historyLabel="ssm2603_drvr.h" index="1">
-<position info="not_deleted" x="2531" y="109"/>
+<item historyLabel="aud_codec.c" index="2">
+<position info="not_deleted" x="1673" y="0"/>
 </item>
-<item historyLabel="pcm_bffr.h" index="0">
-<position info="not_deleted" x="2539" y="0"/>
+<item historyLabel="i2c.h" index="1">
+<position info="not_deleted" x="3485" y="13"/>
 </item>
-<item historyLabel="pcm_bffr.c" index="3">
-<position info="not_deleted" x="1311" y="0"/>
+<item historyLabel="aud_codec.c" index="2">
+<position info="not_deleted" x="1673" y="0"/>
 </item>
-<item historyLabel="i2c.h" index="2">
-<position info="not_deleted" x="2878" y="0"/>
+<item historyLabel="aud_codec.h" index="0">
+<position info="not_deleted" x="1561" y="21"/>
 </item>
-<item historyLabel="pcm_bffr.c" index="3">
-<position/>
+<item historyLabel="aud_codec.c" index="2">
+<position info="not_deleted" x="1673" y="0"/>
 </item>
-<item historyLabel="pcm_bffr.h" index="0">
-<position info="not_deleted" x="2539" y="0"/>
+<item historyLabel="i2c.h" index="1">
+<position info="not_deleted" x="3485" y="13"/>
 </item>
-<item historyLabel="pcm_bffr.c" index="3">
-<position/>
+<item historyLabel="aud_codec.c" index="2">
+<position info="not_deleted" x="1435" y="0"/>
 </item>
-<item historyLabel="pcm_bffr.h" index="0">
-<position info="not_deleted" x="2242" y="21"/>
+<item historyLabel="aud_codec.h" index="0">
+<position info="not_deleted" x="8209" y="18"/>
 </item>
-<item historyLabel="pcm_bffr.c" index="3">
-<position/>
+<item historyLabel="aud_codec.c" index="2">
+<position info="not_deleted" x="1994" y="0"/>
 </item>
-<item historyLabel="pcm_bffr.h" index="0">
-<position info="not_deleted" x="1694" y="17"/>
+<item historyLabel="i2c.h" index="1">
+<position info="not_deleted" x="3581" y="12"/>
 </item>
-<item historyLabel="pcm_bffr.c" index="3">
-<position/>
+<item historyLabel="aud_codec.c" index="2">
+<position info="not_deleted" x="1994" y="0"/>
 </item>
-<item historyLabel="pcm_bffr.c" index="3">
-<position/>
+<item historyLabel="i2c.h" index="1">
+<position info="not_deleted" x="3581" y="12"/>
 </item>
-<item historyLabel="pcm_bffr.h" index="0">
-<position info="not_deleted" x="2242" y="21"/>
+<item historyLabel="aud_codec.c" index="2">
+<position info="not_deleted" x="1992" y="0"/>
 </item>
-<item historyLabel="pcm_bffr.c" index="3">
-<position/>
+<item historyLabel="i2c.h" index="1">
+<position info="not_deleted" x="3581" y="12"/>
 </item>
-<item historyLabel="pcm_bffr.h" index="0">
-<position info="not_deleted" x="2242" y="21"/>
+<item historyLabel="aud_codec.c" index="2">
+<position info="not_deleted" x="1992" y="0"/>
 </item>
-<item historyLabel="pcm_bffr.c" index="3">
-<position/>
+<item historyLabel="aud_codec.h" index="0">
+<position info="not_deleted" x="1376" y="23"/>
 </item>
-<item historyLabel="pcm_bffr.h" index="0">
-<position info="not_deleted" x="2587" y="0"/>
+<item historyLabel="aud_codec.c" index="2">
+<position info="not_deleted" x="1992" y="0"/>
 </item>
-<item historyLabel="pcm_bffr.c" index="3">
-<position info="not_deleted" x="1701" y="0"/>
+<item historyLabel="i2c.h" index="1">
+<position info="not_deleted" x="3581" y="12"/>
 </item>
-<item historyLabel="pcm_bffr.h" index="0">
-<position info="not_deleted" x="2587" y="0"/>
+<item historyLabel="aud_codec.c" index="2">
+<position info="not_deleted" x="1992" y="0"/>
 </item>
-<item historyLabel="pcm_bffr.c" index="3">
-<position info="not_deleted" x="1415" y="0"/>
+<item historyLabel="i2c.h" index="1">
+<position info="not_deleted" x="3581" y="12"/>
 </item>
-<item historyLabel="pcm_bffr.h" index="0">
-<position info="not_deleted" x="2242" y="21"/>
+<item historyLabel="aud_codec.c" index="2">
+<position info="not_deleted" x="1992" y="0"/>
 </item>
-<item historyLabel="pcm_bffr.c" index="3">
-<position info="not_deleted" x="1413" y="0"/>
+<item historyLabel="aud_codec.h" index="0">
+<position info="not_deleted" x="8173" y="23"/>
 </item>
-<item historyLabel="pcm_bffr.h" index="0">
-<position info="not_deleted" x="1694" y="17"/>
+<item historyLabel="aud_codec.c" index="2">
+<position info="not_deleted" x="1992" y="0"/>
 </item>
-<item historyLabel="pcm_bffr.c" index="3">
-<position info="not_deleted" x="1413" y="0"/>
+<item historyLabel="i2c.h" index="1">
+<position info="not_deleted" x="3581" y="12"/>
 </item>
-<item historyLabel="pcm_bffr.c" index="3">
-<position info="not_deleted" x="1701" y="0"/>
+<item historyLabel="aud_codec.c" index="2">
+<position info="not_deleted" x="1805" y="0"/>
 </item>
-<item historyLabel="pcm_bffr.h" index="0">
-<position info="not_deleted" x="1694" y="17"/>
+<item historyLabel="i2c.h" index="1">
+<position info="not_deleted" x="3588" y="0"/>
 </item>
-<item historyLabel="pcm_bffr.c" index="3">
-<position info="not_deleted" x="1315" y="0"/>
+<item historyLabel="i2c.c" index="3">
+<position info="not_deleted" x="2594" y="12"/>
 </item>
-<item historyLabel="pcm_bffr.h" index="0">
-<position info="not_deleted" x="2649" y="0"/>
+<item historyLabel="i2c.h" index="1">
+<position info="not_deleted" x="3588" y="0"/>
 </item>
-<item historyLabel="pcm_bffr.c" index="3">
-<position info="not_deleted" x="1535" y="0"/>
+<item historyLabel="aud_codec.c" index="2">
+<position info="not_deleted" x="1796" y="0"/>
 </item>
-<item historyLabel="pcm_bffr.h" index="0">
-<position info="not_deleted" x="1395" y="20"/>
+<item historyLabel="i2c.c" index="3">
+<position info="not_deleted" x="2594" y="12"/>
 </item>
-<item historyLabel="pcm_bffr.c" index="3">
-<position info="not_deleted" x="1535" y="0"/>
+<item historyLabel="i2c.h" index="1">
+<position info="not_deleted" x="3588" y="0"/>
 </item>
-<item historyLabel="pcm_bffr.c" index="3">
-<position info="not_deleted" x="1701" y="0"/>
+<item historyLabel="aud_codec.c" index="2">
+<position info="not_deleted" x="1897" y="0"/>
 </item>
-<item historyLabel="pcm_bffr.c" index="3">
-<position info="not_deleted" x="1700" y="0"/>
+<item historyLabel="i2c.h" index="1">
+<position info="not_deleted" x="3588" y="0"/>
 </item>
-<item historyLabel="pcm_bffr.h" index="0">
-<position info="not_deleted" x="2347" y="22"/>
+<item historyLabel="i2c.c" index="3">
+<position info="not_deleted" x="2594" y="12"/>
 </item>
-<item historyLabel="pcm_bffr.c" index="3">
-<position info="not_deleted" x="1700" y="0"/>
+<item historyLabel="aud_codec.c" index="2">
+<position info="not_deleted" x="1897" y="0"/>
 </item>
-<item historyLabel="pcm_bffr.c" index="3">
-<position info="not_deleted" x="1700" y="0"/>
+<item historyLabel="i2c.c" index="3">
+<position info="not_deleted" x="2594" y="12"/>
 </item>
-<item historyLabel="pcm_bffr.h" index="0">
-<position info="not_deleted" x="2115" y="22"/>
+<item historyLabel="i2c.h" index="1">
+<position info="not_deleted" x="3254" y="9"/>
 </item>
-<item historyLabel="pcm_bffr.c" index="3">
-<position info="not_deleted" x="1700" y="0"/>
+<item historyLabel="aud_codec.c" index="2">
+<position info="not_deleted" x="1917" y="0"/>
 </item>
-<item historyLabel="pcm_bffr.h" index="0">
-<position info="not_deleted" x="2115" y="22"/>
+<item historyLabel="i2c.h" index="1">
+<position info="not_deleted" x="3254" y="9"/>
 </item>
-<item historyLabel="pcm_bffr.c" index="3">
-<position info="not_deleted" x="1701" y="0"/>
+<item historyLabel="aud_codec.c" index="2">
+<position info="not_deleted" x="1239" y="0"/>
 </item>
-<item historyLabel="pcm_bffr.h" index="0">
-<position info="not_deleted" x="2546" y="18"/>
+<item historyLabel="ledos.h" index="4">
+<position info="not_deleted" x="1271" y="0"/>
 </item>
-<item historyLabel="hello_world_small.c" index="4">
-<position info="not_deleted" x="3781" y="0"/>
-</item>
-<item historyLabel="pcm_bffr.h" index="0">
-<position info="not_deleted" x="2493" y="21"/>
-</item>
-<item historyLabel="hello_world_small.c" index="4">
-<position info="not_deleted" x="3781" y="0"/>
-</item>
-<item historyLabel="acortex.h" index="5">
+<item historyLabel="aud_codec.h" index="5">
 <position info="not_deleted" x="0" y="0"/>
 </item>
-<item historyLabel="acortex.h" index="5">
-<position info="not_deleted" x="1371" y="0"/>
+<item historyLabel="aud_codec.h" index="5">
+<position info="not_deleted" x="8355" y="0"/>
 </item>
-<item historyLabel="hello_world_small.c" index="4">
-<position info="not_deleted" x="3781" y="0"/>
+<item historyLabel="aud_codec.c" index="6">
+<position info="not_deleted" x="2126" y="0"/>
 </item>
-<item historyLabel="system.h" index="6">
-<position info="not_deleted" x="0" y="0"/>
+<item historyLabel="aud_codec.h" index="5">
+<position info="not_deleted" x="8355" y="0"/>
 </item>
-<item historyLabel="system.h" index="6">
-<position info="not_deleted" x="6211" y="0"/>
+<item historyLabel="aud_codec.c" index="6">
+<position info="not_deleted" x="2126" y="0"/>
 </item>
-<item active="true" historyLabel="hello_world_small.c" index="4">
-<position info="not_deleted" x="3845" y="0"/>
+<item historyLabel="aud_codec.h" index="5">
+<position info="not_deleted" x="8355" y="0"/>
+</item>
+<item historyLabel="aud_codec.c" index="6">
+<position info="not_deleted" x="2126" y="0"/>
+</item>
+<item historyLabel="aud_codec.h" index="5">
+<position info="not_deleted" x="1525" y="18"/>
+</item>
+<item active="true" historyLabel="aud_codec.c" index="6">
+<position info="not_deleted" x="2126" y="0"/>
 </item>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
@@ -446,14 +452,26 @@
 </trimLayout>
 </window>
 <mruList>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="system.h" tooltip="limbus_bsp/system.h">
-<persistable path="/limbus_bsp/system.h"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="aud_codec.c" tooltip="ledos_main/ledos/aud_codec/aud_codec.c">
+<persistable path="/ledos_main/ledos/aud_codec/aud_codec.c"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="aud_codec.h" tooltip="ledos_main/ledos/aud_codec/aud_codec.h">
+<persistable path="/ledos_main/ledos/aud_codec/aud_codec.h"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="ledos.h" tooltip="ledos_main/ledos/ledos.h">
+<persistable path="/ledos_main/ledos/ledos.h"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="i2c.c" tooltip="ledos_main/ledos/cortex/acortex/i2c/i2c.c">
+<persistable path="/ledos_main/ledos/cortex/acortex/i2c/i2c.c"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="i2c.h" tooltip="ledos_main/ledos/cortex/acortex/i2c/i2c.h">
+<persistable path="/ledos_main/ledos/cortex/acortex/i2c/i2c.h"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="acortex.h" tooltip="ledos_main/ledos/cortex/acortex/acortex.h">
 <persistable path="/ledos_main/ledos/cortex/acortex/acortex.h"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="i2c.h" tooltip="ledos_main/ledos/cortex/acortex/i2c/i2c.h">
-<persistable path="/ledos_main/ledos/cortex/acortex/i2c/i2c.h"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="system.h" tooltip="limbus_bsp/system.h">
+<persistable path="/limbus_bsp/system.h"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="pcm_bffr.c" tooltip="ledos_main/ledos/cortex/acortex/pcm_bffr/pcm_bffr.c">
 <persistable path="/ledos_main/ledos/cortex/acortex/pcm_bffr/pcm_bffr.c"/>
@@ -478,18 +496,6 @@
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="hello_world_small.c" tooltip="leos_main/hello_world_small.c">
 <persistable path="/leos_main/hello_world_small.c"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="ch.h" tooltip="limbus_bsp/ChibiOS_v263/kernel/include/ch.h">
-<persistable path="/limbus_bsp/ChibiOS_v263/kernel/include/ch.h"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="cortex.h" tooltip="ledos_main/ledos/cortex/cortex.h">
-<persistable path="/ledos_main/ledos/cortex/cortex.h"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="ledos.h" tooltip="ledos_main/ledos/ledos.h">
-<persistable path="/ledos_main/ledos/ledos.h"/>
-</file>
-<file factoryID="org.eclipse.cdt.ui.ExternalEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="io.h" tooltip="C:\altera\13.1\quartus\bin\cygwin\usr\include\io.h">
-<persistable path="C:\altera\13.1\quartus\bin\cygwin\usr\include\io.h" project="ledos_lib"/>
 </file>
 </mruList>
 </workbench>
