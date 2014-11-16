@@ -1,0 +1,110 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 1991-2013 Altera Corporation
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, Altera MegaCore Function License 
+Agreement, or other applicable license agreement, including, 
+without limitation, that your use is for the sole purpose of 
+programming logic devices manufactured by Altera and sold by 
+Altera or its authorized distributors.  Please refer to the 
+applicable agreement for further details.
+*/
+(header "symbol" (version "1.1"))
+(symbol
+	(rect 0 0 864 264)
+	(text "limbus" (rect 414 -1 438 11)(font "Arial" (font_size 10)))
+	(text "inst" (rect 8 248 20 260)(font "Arial" ))
+	(port
+		(pt 0 72)
+		(input)
+		(text "clk_100_clk" (rect 0 0 46 12)(font "Arial" (font_size 8)))
+		(text "clk_100_clk" (rect 4 61 70 72)(font "Arial" (font_size 8)))
+		(line (pt 0 72)(pt 352 72)(line_width 1))
+	)
+	(port
+		(pt 0 112)
+		(input)
+		(text "reset_100_reset_n" (rect 0 0 75 12)(font "Arial" (font_size 8)))
+		(text "reset_100_reset_n" (rect 4 101 106 112)(font "Arial" (font_size 8)))
+		(line (pt 0 112)(pt 352 112)(line_width 1))
+	)
+	(port
+		(pt 0 168)
+		(output)
+		(text "tristate_conduit_bridge_sram_out_sram_tcm_address_out[18..0]" (rect 0 0 260 12)(font "Arial" (font_size 8)))
+		(text "tristate_conduit_bridge_sram_out_sram_tcm_address_out[18..0]" (rect 4 157 364 168)(font "Arial" (font_size 8)))
+		(line (pt 0 168)(pt 352 168)(line_width 3))
+	)
+	(port
+		(pt 0 184)
+		(output)
+		(text "tristate_conduit_bridge_sram_out_sram_tcm_outputenable_n_out" (rect 0 0 264 12)(font "Arial" (font_size 8)))
+		(text "tristate_conduit_bridge_sram_out_sram_tcm_outputenable_n_out" (rect 4 173 364 184)(font "Arial" (font_size 8)))
+		(line (pt 0 184)(pt 352 184)(line_width 1))
+	)
+	(port
+		(pt 0 200)
+		(output)
+		(text "tristate_conduit_bridge_sram_out_sram_tcm_chipselect_n_out" (rect 0 0 253 12)(font "Arial" (font_size 8)))
+		(text "tristate_conduit_bridge_sram_out_sram_tcm_chipselect_n_out" (rect 4 189 352 200)(font "Arial" (font_size 8)))
+		(line (pt 0 200)(pt 352 200)(line_width 1))
+	)
+	(port
+		(pt 0 216)
+		(output)
+		(text "tristate_conduit_bridge_sram_out_sram_tcm_byteenable_n_out[1..0]" (rect 0 0 277 12)(font "Arial" (font_size 8)))
+		(text "tristate_conduit_bridge_sram_out_sram_tcm_byteenable_n_out[1..0]" (rect 4 205 388 216)(font "Arial" (font_size 8)))
+		(line (pt 0 216)(pt 352 216)(line_width 3))
+	)
+	(port
+		(pt 0 232)
+		(output)
+		(text "tristate_conduit_bridge_sram_out_sram_tcm_write_n_out" (rect 0 0 233 12)(font "Arial" (font_size 8)))
+		(text "tristate_conduit_bridge_sram_out_sram_tcm_write_n_out" (rect 4 221 322 232)(font "Arial" (font_size 8)))
+		(line (pt 0 232)(pt 352 232)(line_width 1))
+	)
+	(port
+		(pt 0 152)
+		(bidir)
+		(text "tristate_conduit_bridge_sram_out_sram_tcm_data_out[15..0]" (rect 0 0 245 12)(font "Arial" (font_size 8)))
+		(text "tristate_conduit_bridge_sram_out_sram_tcm_data_out[15..0]" (rect 4 141 346 152)(font "Arial" (font_size 8)))
+		(line (pt 0 152)(pt 352 152)(line_width 3))
+	)
+	(drawing
+		(text "clk_100" (rect 310 43 662 99)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "clk" (rect 357 67 732 144)(font "Arial" (color 0 0 0)))
+		(text "reset_100" (rect 296 83 646 179)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "reset_n" (rect 357 107 756 224)(font "Arial" (color 0 0 0)))
+		(text "tristate_conduit_bridge_sram_out" (rect 155 123 502 259)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "sram_tcm_data_out" (rect 357 147 816 304)(font "Arial" (color 0 0 0)))
+		(text "sram_tcm_address_out" (rect 357 163 834 336)(font "Arial" (color 0 0 0)))
+		(text "sram_tcm_outputenable_n_out" (rect 357 179 876 368)(font "Arial" (color 0 0 0)))
+		(text "sram_tcm_chipselect_n_out" (rect 357 195 864 400)(font "Arial" (color 0 0 0)))
+		(text "sram_tcm_byteenable_n_out" (rect 357 211 864 432)(font "Arial" (color 0 0 0)))
+		(text "sram_tcm_write_n_out" (rect 357 227 834 464)(font "Arial" (color 0 0 0)))
+		(text " limbus " (rect 834 248 1716 506)(font "Arial" ))
+		(line (pt 353 52)(pt 353 76)(line_width 1))
+		(line (pt 354 52)(pt 354 76)(line_width 1))
+		(line (pt 353 92)(pt 353 116)(line_width 1))
+		(line (pt 354 92)(pt 354 116)(line_width 1))
+		(line (pt 353 132)(pt 353 236)(line_width 1))
+		(line (pt 354 132)(pt 354 236)(line_width 1))
+		(line (pt 352 32)(pt 512 32)(line_width 1))
+		(line (pt 512 32)(pt 512 248)(line_width 1))
+		(line (pt 352 248)(pt 512 248)(line_width 1))
+		(line (pt 352 32)(pt 352 248)(line_width 1))
+		(line (pt 0 0)(pt 864 0)(line_width 1))
+		(line (pt 864 0)(pt 864 264)(line_width 1))
+		(line (pt 0 264)(pt 864 264)(line_width 1))
+		(line (pt 0 0)(pt 0 264)(line_width 1))
+	)
+)

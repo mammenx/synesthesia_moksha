@@ -55,6 +55,8 @@
     //Clock Reset signals
     logic   sys_clk_50;
     logic   sys_clk_100;
+    logic   sys_clk_24;
+    logic   sys_clk_12;
     logic   sys_rst;
 
 
@@ -70,6 +72,24 @@
     /////////////////////////////////////////////////////
     // Clock, Reset Generation                         //
     /////////////////////////////////////////////////////
+    initial
+    begin
+      sys_clk_24    = 1;
+
+      #111;
+
+      forever #42ns sys_clk_24  = ~sys_clk_24;
+    end
+
+    initial
+    begin
+      sys_clk_12    = 1;
+
+      #111;
+
+      forever #83ns sys_clk_12  = ~sys_clk_12;
+    end
+
     initial
     begin
       sys_clk_50    = 1;
@@ -127,7 +147,7 @@
       .lb_rd_valid                (lb_tb_intf.rd_valid),
       .lb_rd_data                 (lb_tb_intf.rd_data ),
 
-      .mclk_vec                   (),
+      .mclk_vec                   ({sys_clk_24,sys_clk_12}),
 
       .acortex2fgyrus_pcm_rdy     (pcm_mem_intf.pcm_data_rdy),
       .fgyrus2acortex_addr        (pcm_mem_intf.pcm_addr),

@@ -39,7 +39,8 @@ module i2c_master #(
   parameter LB_ADDR_W           = 8,
   parameter CLK_DIV_CNT_W       = 8,
   parameter I2C_MAX_DATA_BYTES  = 4,
-  parameter ACK_VAL             = 1'b0
+  parameter ACK_VAL             = 1'b0,
+  parameter NACK_VAL            = 1'b1
 ) (
 
   //--------------------- Ports -----------
@@ -65,7 +66,6 @@ module i2c_master #(
   localparam  NUM_BYTES_IDX   = $clog2(I2C_MAX_DATA_BYTES)    + 1;
   localparam  DATA_CNTR_W     = $clog2(I2C_MAX_DATA_BYTES*8)  + 1;
   localparam  I2C_SEQ_W       = 8 + (I2C_MAX_DATA_BYTES*8);
-  localparam  NACK_VAL        = ~ACK_VAL;
 
 
 //----------------------- Output Register Declaration ---------------------
@@ -77,7 +77,7 @@ module i2c_master #(
   reg   [NUM_BYTES_IDX-1:0]   i2c_num_bytes;
   reg                         i2c_rd_n_wr,i2c_start_en,i2c_stop_en,i2c_init;
   reg   [7:0]                 data_cache  [I2C_MAX_DATA_BYTES-1:0];
-  reg                         i2c_nack_det;
+  reg                         i2c_nack_det /*synthesis preserve*/;
   reg                         rel_i2c_bus,rel_i2c_bus_next;
 
   reg   [CLK_DIV_CNT_W-1:0]   tck_cntr;
@@ -91,12 +91,12 @@ module i2c_master #(
   wire  [NUM_BYTES_IDX-1:0]   data_cache_idx;
 
   wire  [CLK_DIV_CNT_W-1:0]   i2c_clk_div_val_by_2,i2c_clk_div_val_by_4,i2c_clk_div_val_3_by_4;
-  wire                        tck_valid,tck_by_2_valid,tck_by_4_valid;
+  wire                        tck_valid,tck_by_2_valid/*synthesis keep*/,tck_by_4_valid;
   wire  [(DATA_CNTR_W-3)-1:0] data_cntr_bytes;
 
   wire  [I2C_SEQ_W-1:0]       i2c_seq_bits;
 
-  wire                        sda_i;
+  wire                        sda_i/*synthesis keep*/;
 
 
   genvar  i,j;
@@ -111,7 +111,7 @@ enum  logic [2:0] { IDLE_S  = 3'd0,
                     ADDR_S,
                     DATA_S,
                     STOP_S
-                  } fsm_pstate, next_state;
+                  } fsm_pstate/*synthesis preserve*/, next_state;
 
 
 
@@ -267,7 +267,7 @@ enum  logic [2:0] { IDLE_S  = 3'd0,
       end
       else if(fsm_pstate  ==  ACK_S)
       begin
-        i2c_nack_det          <= i2c_nack_det | ((sda_i ==  NACK_VAL) & tck_by_2_valid);
+        i2c_nack_det          <= i2c_nack_det | ((sda_i ==  NACK_VAL) & tck_by_2_valid  & scl);
       end
     end
   end

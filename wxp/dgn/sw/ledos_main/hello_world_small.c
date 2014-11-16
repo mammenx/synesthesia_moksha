@@ -86,9 +86,14 @@ int main()
 { 
   alt_putstr("Hello from Nios II!\n");
 
-  get_i2c_status();
-  enable_dac_drvr();
-  update_acache_mode(PCM_BFFR_MODE_CAPTURE);
+  init_ledos();
+
+  if(aud_codec_read_reg(0x1))	{
+	  alt_printf("I2C error!\n");
+  } else {
+	  alt_printf("data read : 0x%x\n",aud_codec_i2c_bffr.val);
+  }
+
 
   /* Event loop never exits. */
   while (1);

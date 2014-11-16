@@ -40,7 +40,6 @@ module cortex #(
   parameter LB_DATA_W         = 32,
   parameter LB_ADDR_W         = 16,
   parameter LB_ADDR_BLK_W     = 4,
-  parameter NUM_MCLKS         = 2,
   parameter NUM_AUD_SAMPLES   = 128,
   parameter DEFAULT_DATA_VAL  = 'hdeadbabe
 
@@ -58,8 +57,6 @@ module cortex #(
     output                      lb_rd_valid,
     output  [LB_DATA_W-1:0]     lb_rd_data,
 
-    input   [NUM_MCLKS-1:0]     mclk_vec,
-
     output                      scl,
     inout                       sda,
 
@@ -67,9 +64,7 @@ module cortex #(
     output                      AUD_ADCLRCK,
     output                      AUD_BCLK,
     output                      AUD_DACDAT,
-    output                      AUD_DACLRCK,
-    output                      AUD_XCK
-
+    output                      AUD_DACLRCK
 
 
 );
@@ -78,9 +73,9 @@ module cortex #(
   `include  "cortex_regmap.svh"
 
   localparam  LB_CHLD_DATA_W      = LB_DATA_W;
-  localparam  LB_CHLD_ADDR_W      = LB_DATA_W - LB_ADDR_BLK_W;
+  localparam  LB_CHLD_ADDR_W      = LB_ADDR_W - LB_ADDR_BLK_W;
   localparam  LB_CHLD_ADDR_BLK_W  = 4;
-  localparam  NUM_LB_CHILDREN     = 3;
+  localparam  NUM_LB_CHILDREN     = 2;
 
 //----------------------- Input Declarations ------------------------------
 
@@ -100,6 +95,7 @@ module cortex #(
 //----------------------- Internal Wire Declarations ----------------------
   `drop_lb_splitter_wires(LB_CHLD_DATA_W,LB_CHLD_ADDR_W,NUM_LB_CHILDREN,lb_chld_,_w)
 
+  wire  [NUM_LB_CHILDREN-2:0] cortex_rst_vec;
 
 //----------------------- Internal Interface Declarations -----------------
 
@@ -130,24 +126,39 @@ module cortex #(
 
   );
 
+  rst_cntrl #(
+    .NUM_RESETS       (NUM_LB_CHILDREN-1),
+    .LB_DATA_W        (LB_CHLD_DATA_W),
+    .LB_ADDR_W        (LB_CHLD_ADDR_W),
+    .DEFAULT_REG_VAL  (DEFAULT_DATA_VAL)
+
+  ) rst_cntrl_inst  (
+
+    .rst_n            (rst_n),
+    .clk              (clk),
+
+    `drop_lb_ports_split(RST_SYNC_BLK,lb_, ,lb_chld_,_w)
+    ,
+
+    .cntrl_rst_n      (cortex_rst_vec)
+
+  );
+
   /*  Instantiate Acortex */
   acortex #(
-    .LB_DATA_W          (LB_DATA_W           ),
+    .LB_DATA_W          (LB_CHLD_DATA_W      ),
     .LB_ADDR_W          (LB_CHLD_ADDR_W      ),
     .LB_ADDR_BLK_W      (LB_CHLD_ADDR_BLK_W  ),
-    .NUM_MCLKS          (NUM_MCLKS           ),
     .NUM_SAMPLES        (NUM_AUD_SAMPLES     ),
     .DEFAULT_DATA_VAL   (DEFAULT_DATA_VAL    )
 
   ) acortex_inst  (
 
     .clk                      (clk),
-    .rst_n                    (rst_n),
+    .rst_n                    (cortex_rst_vec[ACORTEX_BLK]),
                                                         
     `drop_lb_ports_split(ACORTEX_BLK,lb_, ,lb_chld_,_w)
     ,
-
-    .mclk_vec                 (mclk_vec),
 
     .acortex2fgyrus_pcm_rdy   (),
     .fgyrus2acortex_addr      (0),
@@ -160,8 +171,7 @@ module cortex #(
     .AUD_ADCLRCK              (AUD_ADCLRCK),
     .AUD_BCLK                 (AUD_BCLK),
     .AUD_DACDAT               (AUD_DACDAT),
-    .AUD_DACLRCK              (AUD_DACLRCK),
-    .AUD_XCK                  (AUD_XCK)
+    .AUD_DACLRCK              (AUD_DACLRCK)
 
   );
 

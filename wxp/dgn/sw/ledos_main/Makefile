@@ -143,10 +143,12 @@ ELF := ledos_main.elf
 
 # Paths to C, C++, and assembly source files.
 C_SRCS += hello_world_small.c
-C_SRCS += ledos/cortex/acortex/i2c/i2c.c
-C_SRCS += ledos/cortex/acortex/ssm2603_drvr/ssm2603_drvr.c
-C_SRCS += ledos/cortex/acortex/pcm_bffr/pcm_bffr.c
 C_SRCS += ledos/aud_codec/aud_codec.c
+C_SRCS += ledos/cortex/acortex/i2c/i2c.c
+C_SRCS += ledos/cortex/acortex/pcm_bffr/pcm_bffr.c
+C_SRCS += ledos/cortex/acortex/ssm2603_drvr/ssm2603_drvr.c
+C_SRCS += ledos/cortex/cortex.c
+C_SRCS += ledos/ledos.c
 CXX_SRCS :=
 ASM_SRCS :=
 

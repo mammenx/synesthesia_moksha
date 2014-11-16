@@ -23,11 +23,6 @@ module syn_moksha(
   //////////// SW //////////
   SW,
 
-  //////////// SEG7 //////////
-  HEX0,
-  HEX1,
-  HEX2,
-  HEX3,
 
   //////////// HDMI-TX //////////
   HDMI_TX_CLK,
@@ -72,7 +67,8 @@ module syn_moksha(
   DDR2LP_DQ,
   DDR2LP_DQS_n,
   DDR2LP_DQS_p,
-  DDR2LP_OCT_RZQ 
+  DDR2LP_OCT_RZQ
+
 );
 
 //=======================================================
@@ -102,11 +98,6 @@ input      [3:0]  KEY;
 //////////// SW //////////
 input      [9:0]  SW;
 
-//////////// SEG7 //////////
-output     [6:0]  HEX0;
-output     [6:0]  HEX1;
-output     [6:0]  HEX2;
-output     [6:0]  HEX3;
 
 //////////// HDMI-TX //////////
 output            HDMI_TX_CLK;
@@ -125,8 +116,8 @@ output            AUD_DACLRCK;
 output            AUD_XCK;
 
 //////////// I2C for Audio/HDMI-TX/Si5338/HSMC //////////
-output            I2C_SCL;
-inout             I2C_SDA;
+output            I2C_SCL /*synthesis keep*/;
+inout             I2C_SDA /*synthesis keep*/;
 
 //////////// Uart to USB //////////
 input             UART_RX;
@@ -158,24 +149,22 @@ input             DDR2LP_OCT_RZQ;
 //  REG/WIRE declarations
 //=======================================================
 
-wire              sys_clk_100,sys_clk_24,sys_clk_12;
+wire              sys_clk_100/*synthesis keep*/;
+wire              sys_clk_12;
 wire              sys_rst_n;
 
-wire              cortex_clk;
-wire              cortex_rst_n;
+wire              cortex_rst_n  /*synthesis keep*/;
 
 wire              sram_addr_dummy;
 wire  [1:0]       cortex_lb_addr_dummy;
 
-wire              cortex_lb_wr_en;
-wire              cortex_lb_rd_en;
-wire  [15:0]      cortex_lb_addr;
-wire  [31:0]      cortex_lb_wr_data;
-wire              cortex_lb_wr_valid;
-wire              cortex_lb_rd_valid;
-wire  [31:0]      cortex_lb_rd_data;
-
-wire  [1:0]       mclk_vec;
+wire              cortex_lb_wr_en/*synthesis keep*/;
+wire              cortex_lb_rd_en/*synthesis keep*/;
+wire  [15:0]      cortex_lb_addr/*synthesis keep*/;
+wire  [31:0]      cortex_lb_wr_data/*synthesis keep*/;
+wire              cortex_lb_wr_valid/*synthesis keep*/;
+wire              cortex_lb_rd_valid/*synthesis keep*/;
+wire  [31:0]      cortex_lb_rd_data/*synthesis keep*/;
 
 //=======================================================
 //  Structural coding
@@ -184,29 +173,25 @@ wire  [1:0]       mclk_vec;
 
   /*  Sys PLL */
   sys_pll sys_pll_inst  (
-    /*  input  wire */  .refclk(CLOCK_50_B5B),
-    /*  input  wire */  .rst(KEY[0]),
+    /*  input  wire */  .refclk(CLOCK_50_B6A),
+    /*  input  wire */  .rst(~KEY[0]),
     /*  output wire */  .outclk_0(sys_clk_100),
     /*  output wire */  .outclk_1(sys_clk_12),
-    /*  output wire */  .outclk_2(sys_clk_24),
     /*  output wire */  .locked(sys_rst_n)
   );
 
 
   /*  Limbus  */
-  limbus  limbus_inst (
-    /*  input  wire         */  .clk_clk(sys_clk_100),
-    /*  input  wire         */  .reset_reset_n(sys_rst_n),
+  limbus limbus_inst  (
+    /*  input  wire         */  .clk_100_clk(sys_clk_100),                                                  //                          clk_100.clk
+    /*  input  wire         */  .reset_100_reset_n(sys_rst_n),                                            //                        reset_100.reset_n
 
-    /*  output wire [0:0]   */  .sram_bridge_sram_cntrlr_tcm_chipselect_n_out(SRAM_CE_n),
-    /*  output wire [1:0]   */  .sram_bridge_sram_cntrlr_tcm_byteenable_n_out({SRAM_UB_n,SRAM_LB_n}),
-    /*  output wire [18:0]  */  .sram_bridge_sram_cntrlr_tcm_address_out({SRAM_A,sram_addr_dummy}),
-    /*  output wire [0:0]   */  .sram_bridge_sram_cntrlr_tcm_write_n_out(SRAM_WE_n),
-    /*  inout  wire [15:0]  */  .sram_bridge_sram_cntrlr_tcm_data_out(SRAM_D),
-    /*  output wire [0:0]   */  .sram_bridge_sram_cntrlr_tcm_outputenable_n_out(SRAM_OE_n),
-
-    /*  input  wire         */  .uart_0_rxd(UART_RX),
-    /*  output wire         */  .uart_0_txd(UART_TX),
+    /*  output wire [0:0]   */  .tristate_conduit_bridge_sram_out_sram_tcm_chipselect_n_out(SRAM_CE_n),
+    /*  output wire [1:0]   */  .tristate_conduit_bridge_sram_out_sram_tcm_byteenable_n_out({SRAM_UB_n,SRAM_LB_n}),
+    /*  output wire [18:0]  */  .tristate_conduit_bridge_sram_out_sram_tcm_address_out({SRAM_A,sram_addr_dummy}),
+    /*  output wire [0:0]   */  .tristate_conduit_bridge_sram_out_sram_tcm_write_n_out(SRAM_WE_n),
+    /*  inout  wire [15:0]  */  .tristate_conduit_bridge_sram_out_sram_tcm_data_out(SRAM_D),
+    /*  output wire [0:0]   */  .tristate_conduit_bridge_sram_out_sram_tcm_outputenable_n_out(SRAM_OE_n),
 
     /*  output wire [17:0]  */  .cortex_s_address({cortex_lb_addr,cortex_lb_addr_dummy}),
     /*  output wire         */  .cortex_s_read(cortex_lb_rd_en),
@@ -215,31 +200,28 @@ wire  [1:0]       mclk_vec;
     /*  output wire [31:0]  */  .cortex_s_writedata(cortex_lb_wr_data),
     /*  input  wire         */  .cortex_s_readdatavalid(cortex_lb_rd_valid),
 
-    /*  output wire         */  .cortex_reset_reset(cortex_rst_n),
+    /*  output wire         */  .cortex_reset_reset_n(cortex_rst_n),
 
-    /*  input  wire         */  .cortex_irq_irq(0)
+		/*  input  wire         */  .cortex_irq_irq(0)
+
   );
 
 
+
   /*  Cortex  */
-  assign  cortex_clk    =   sys_clk_100;
-
-  assign  mclk_vec      =   {sys_clk_24,sys_clk_12};
-
   cortex #(
     //----------------- Parameters  -----------------------
     .LB_DATA_W         (32),
     .LB_ADDR_W         (16),
     .LB_ADDR_BLK_W     (4),
-    .NUM_MCLKS         (2),
     .NUM_AUD_SAMPLES   (128),
     .DEFAULT_DATA_VAL  ('hdeadbabe)
 
   ) cortex_inst (
 
     //--------------------- Ports -------------------------
-      /*  input                   */  .clk(cortex_clk),
-      /*  input                   */  .rst_n(cortex_rst_n),
+      /*  input                   */  .clk(sys_clk_100),
+      /*  input                   */  .rst_n(sys_rst_n),
 
       /*  input                   */  .lb_wr_en(cortex_lb_wr_en),
       /*  input                   */  .lb_rd_en(cortex_lb_rd_en),
@@ -249,8 +231,6 @@ wire  [1:0]       mclk_vec;
       /*  output                  */  .lb_rd_valid(cortex_lb_rd_valid),
       /*  output  [LB_DATA_W-1:0] */  .lb_rd_data(cortex_lb_rd_data),
 
-      /*  input   [NUM_MCLKS-1:0] */  .mclk_vec(mclk_vec),
-
       /*  output                  */  .scl(I2C_SCL),
       /*  inout                   */  .sda(I2C_SDA),
 
@@ -258,10 +238,11 @@ wire  [1:0]       mclk_vec;
       /*  output                  */  .AUD_ADCLRCK(AUD_ADCLRCK),
       /*  output                  */  .AUD_BCLK(AUD_BCLK),
       /*  output                  */  .AUD_DACDAT(AUD_DACDAT),
-      /*  output                  */  .AUD_DACLRCK(AUD_DACLRCK),
-      /*  output                  */  .AUD_XCK(AUD_XCK)
+      /*  output                  */  .AUD_DACLRCK(AUD_DACLRCK)
 
   );
+
+  assign  AUD_XCK = sys_clk_12;
 
 
   /*  LED Assignments */

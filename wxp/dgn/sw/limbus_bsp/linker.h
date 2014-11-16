@@ -4,7 +4,7 @@
  * Machine generated for CPU 'cpu' in SOPC Builder design 'limbus'
  * SOPC Builder design path: ../../syn/limbus.sopcinfo
  *
- * Generated: Wed Nov 12 16:08:44 IST 2014
+ * Generated: Sat Nov 15 19:38:08 IST 2014
  */
 
 /*
@@ -67,8 +67,8 @@
 
 #define RESET_REGION_BASE 0x180000
 #define RESET_REGION_SPAN 32
-#define SRAM_CNTRLR_REGION_BASE 0x180020
-#define SRAM_CNTRLR_REGION_SPAN 524256
+#define SRAM_REGION_BASE 0x180020
+#define SRAM_REGION_SPAN 524256
 
 
 /*
@@ -76,11 +76,11 @@
  *
  */
 
-#define ALT_EXCEPTIONS_DEVICE SRAM_CNTRLR
-#define ALT_RESET_DEVICE SRAM_CNTRLR
-#define ALT_RODATA_DEVICE SRAM_CNTRLR
-#define ALT_RWDATA_DEVICE SRAM_CNTRLR
-#define ALT_TEXT_DEVICE SRAM_CNTRLR
+#define ALT_EXCEPTIONS_DEVICE SRAM
+#define ALT_RESET_DEVICE SRAM
+#define ALT_RODATA_DEVICE SRAM
+#define ALT_RWDATA_DEVICE SRAM
+#define ALT_TEXT_DEVICE SRAM
 
 
 /*

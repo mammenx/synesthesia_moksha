@@ -3,7 +3,7 @@
 # Machine generated for CPU 'cpu' in SOPC Builder design 'limbus'
 # SOPC Builder design path: ../../syn/limbus.sopcinfo
 #
-# Generated: Wed Nov 12 16:08:44 IST 2014
+# Generated: Sat Nov 15 19:38:08 IST 2014
 
 # DO NOT MODIFY THIS FILE
 #
@@ -46,5 +46,5 @@
 # The cache attribute is specified which improves GDB performance
 # by allowing GDB to cache memory contents on the host.
 
-# sram_cntrlr
+# sram
 memory 0x180000 0x200000 cache

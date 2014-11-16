@@ -161,9 +161,9 @@ RESET_ADDRESS ?= 0x00180000
 # Pre-Initialized Memory Descriptions
 #-------------------------------------
 
-# Memory: sram_cntrlr
-MEM_0 := sram_cntrlr
-$(MEM_0)_NAME := sram_cntrlr
+# Memory: sram
+MEM_0 := sram
+$(MEM_0)_NAME := sram
 $(MEM_0)_MEM_INIT_FILE_PARAM_NAME := INIT_FILE
 DAT_FILES += $(HDL_SIM_DIR)/$(MEM_0).dat
 HDL_SIM_INSTALL_FILES += $(HDL_SIM_INSTALL_DIR)/$(MEM_0).dat
@@ -173,13 +173,13 @@ SYM_FILES += $(HDL_SIM_DIR)/$(MEM_0).sym
 HDL_SIM_INSTALL_FILES += $(HDL_SIM_INSTALL_DIR)/$(MEM_0).sym
 $(MEM_0)_START := 0x00180000
 $(MEM_0)_END := 0x001fffff
-$(MEM_0)_HIERARCHICAL_PATH := sram_cntrlr
+$(MEM_0)_HIERARCHICAL_PATH := sram
 $(MEM_0)_WIDTH := 16
 $(MEM_0)_ENDIANNESS := --little-endian-mem
 $(MEM_0)_CREATE_LANES := 1
 
-.PHONY: sram_cntrlr
-sram_cntrlr: check_elf_exists $(HDL_SIM_DIR)/$(MEM_0).dat $(HDL_SIM_DIR)/$(MEM_0).sym
+.PHONY: sram
+sram: check_elf_exists $(HDL_SIM_DIR)/$(MEM_0).dat $(HDL_SIM_DIR)/$(MEM_0).sym
 
 
 #END OF BSP SPECIFIC

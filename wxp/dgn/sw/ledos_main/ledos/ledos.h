@@ -34,6 +34,7 @@
 #include "cortex/cortex.h"
 #include "aud_codec/aud_codec.h"
 
+void init_ledos();
 
 #endif /* LEDOS_H_ */
 

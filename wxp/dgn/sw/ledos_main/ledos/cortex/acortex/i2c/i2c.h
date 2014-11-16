@@ -49,7 +49,7 @@
 
 //Field Masks
 #define I2C_ADDR_MSK				0x000000ff
-#define I2C_CLK_DIV_MSK				0x000000ff
+#define I2C_CLK_DIV_MSK				0x0000ffff
 #define	I2C_START_EN_MSK			0x00000001
 #define	I2C_STOP_EN_MSK				0x00000002
 #define	I2C_INIT_MSK				0x00000004
@@ -75,7 +75,7 @@
 		IORD_32DIRECT(CORTEX_BASE, I2C_FSM_REG_ADDR)
 
 #define	IORD_I2C_DATA_CACHE(OFFSET)			\
-		IORD_32DIRECT(CORTEX_BASE, I2C_DATA_CACHE_BASE_ADDR+OFFSET)
+		IORD_32DIRECT(CORTEX_BASE, I2C_DATA_CACHE_BASE_ADDR+(OFFSET<<4))
 
 
 //Write I2C Registers
@@ -89,7 +89,7 @@
 		IOWR_32DIRECT(CORTEX_BASE, I2C_CONFIG_REG_ADDR, data)
 
 #define	IOWR_I2C_DATA_CACHE(OFFSET,data)		\
-		IOWR_32DIRECT(CORTEX_BASE, I2C_DATA_CACHE_BASE_ADDR+OFFSET, data)
+		IOWR_32DIRECT(CORTEX_BASE, I2C_DATA_CACHE_BASE_ADDR+(OFFSET<<4), data)
 
 #endif /* I2C_H_ */
 
@@ -109,4 +109,4 @@ void 	configure_i2c_addr(alt_u8 addr_val);
 alt_u8 	get_i2c_addr();
 I2C_RES	i2c_xtn_write(alt_u8 addr, alt_u8 *data, alt_u8 num_bytes, alt_u8 start, alt_u8 stop);
 I2C_RES	i2c_xtn_read(alt_u8 addr, alt_u8 *bffr, alt_u8 num_bytes, alt_u8 start, alt_u8 stop);
-
+void	byte_rev_i2c_arry(alt_u8 *bffr,alt_u32 size);

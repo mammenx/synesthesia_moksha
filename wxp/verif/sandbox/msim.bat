@@ -4,7 +4,8 @@
 SETLOCAL
 
 rem set TEST_NAME=syn_acortex_base_test
-set TEST_NAME=syn_acortex_i2c_test
+rem set TEST_NAME=syn_acortex_i2c_test
+set TEST_NAME=syn_acortex_mclk_test
 
 set TB_TOP=syn_acortex_tb_top
 

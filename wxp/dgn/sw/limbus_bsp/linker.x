@@ -4,7 +4,7 @@
  * Machine generated for CPU 'cpu' in SOPC Builder design 'limbus'
  * SOPC Builder design path: ../../syn/limbus.sopcinfo
  *
- * Generated: Wed Nov 12 16:08:44 IST 2014
+ * Generated: Sat Nov 15 19:38:08 IST 2014
  */
 
 /*
@@ -51,11 +51,11 @@
 MEMORY
 {
     reset : ORIGIN = 0x180000, LENGTH = 32
-    sram_cntrlr : ORIGIN = 0x180020, LENGTH = 524256
+    sram : ORIGIN = 0x180020, LENGTH = 524256
 }
 
 /* Define symbols for each memory base-address */
-__alt_mem_sram_cntrlr = 0x180000;
+__alt_mem_sram = 0x180000;
 
 OUTPUT_FORMAT( "elf32-littlenios2",
                "elf32-littlenios2",
@@ -111,7 +111,7 @@ SECTIONS
         KEEP (*(.exceptions.exit));
         KEEP (*(.exceptions));
         PROVIDE (__ram_exceptions_end = ABSOLUTE(.));
-    } > sram_cntrlr
+    } > sram
 
     PROVIDE (__flash_exceptions_start = LOADADDR(.exceptions));
 
@@ -207,7 +207,7 @@ SECTIONS
         PROVIDE (__DTOR_END__ = ABSOLUTE(.));
         KEEP (*(.jcr))
         . = ALIGN(4);
-    } > sram_cntrlr = 0x3a880100 /* NOP instruction (always in big-endian byte ordering) */
+    } > sram = 0x3a880100 /* NOP instruction (always in big-endian byte ordering) */
 
     .rodata :
     {
@@ -217,7 +217,7 @@ SECTIONS
         *(.rodata1)
         . = ALIGN(4);
         PROVIDE (__ram_rodata_end = ABSOLUTE(.));
-    } > sram_cntrlr
+    } > sram
 
     PROVIDE (__flash_rodata_start = LOADADDR(.rodata));
 
@@ -251,7 +251,7 @@ SECTIONS
         _edata = ABSOLUTE(.);
         PROVIDE (edata = ABSOLUTE(.));
         PROVIDE (__ram_rwdata_end = ABSOLUTE(.));
-    } > sram_cntrlr
+    } > sram
 
     PROVIDE (__flash_rwdata_start = LOADADDR(.rwdata));
 
@@ -282,7 +282,7 @@ SECTIONS
 
         . = ALIGN(4);
         __bss_end = ABSOLUTE(.);
-    } > sram_cntrlr
+    } > sram
 
     /*
      *
@@ -307,18 +307,18 @@ SECTIONS
      *
      */
 
-    .sram_cntrlr LOADADDR (.bss) + SIZEOF (.bss) : AT ( LOADADDR (.bss) + SIZEOF (.bss) )
+    .sram LOADADDR (.bss) + SIZEOF (.bss) : AT ( LOADADDR (.bss) + SIZEOF (.bss) )
     {
-        PROVIDE (_alt_partition_sram_cntrlr_start = ABSOLUTE(.));
-        *(.sram_cntrlr .sram_cntrlr. sram_cntrlr.*)
+        PROVIDE (_alt_partition_sram_start = ABSOLUTE(.));
+        *(.sram .sram. sram.*)
         . = ALIGN(4);
-        PROVIDE (_alt_partition_sram_cntrlr_end = ABSOLUTE(.));
+        PROVIDE (_alt_partition_sram_end = ABSOLUTE(.));
         _end = ABSOLUTE(.);
         end = ABSOLUTE(.);
         __alt_stack_base = ABSOLUTE(.);
-    } > sram_cntrlr
+    } > sram
 
-    PROVIDE (_alt_partition_sram_cntrlr_load_addr = LOADADDR(.sram_cntrlr));
+    PROVIDE (_alt_partition_sram_load_addr = LOADADDR(.sram));
 
     /*
      * Stabs debugging sections.

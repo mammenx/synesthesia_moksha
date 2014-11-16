@@ -105,65 +105,6 @@ set_instance_assignment -name IO_STANDARD "1.2 V" -to SW[8]
 set_location_assignment PIN_AE19 -to SW[9]
 set_instance_assignment -name IO_STANDARD "1.2 V" -to SW[9]
 
-#============================================================
-# SEG7
-#============================================================
-set_location_assignment PIN_V19 -to HEX0[0]
-set_instance_assignment -name IO_STANDARD "1.2 V" -to HEX0[0]
-set_location_assignment PIN_V18 -to HEX0[1]
-set_instance_assignment -name IO_STANDARD "1.2 V" -to HEX0[1]
-set_location_assignment PIN_V17 -to HEX0[2]
-set_instance_assignment -name IO_STANDARD "1.2 V" -to HEX0[2]
-set_location_assignment PIN_W18 -to HEX0[3]
-set_instance_assignment -name IO_STANDARD "1.2 V" -to HEX0[3]
-set_location_assignment PIN_Y20 -to HEX0[4]
-set_instance_assignment -name IO_STANDARD "1.2 V" -to HEX0[4]
-set_location_assignment PIN_Y19 -to HEX0[5]
-set_instance_assignment -name IO_STANDARD "1.2 V" -to HEX0[5]
-set_location_assignment PIN_Y18 -to HEX0[6]
-set_instance_assignment -name IO_STANDARD "1.2 V" -to HEX0[6]
-set_location_assignment PIN_AA18 -to HEX1[0]
-set_instance_assignment -name IO_STANDARD "1.2 V" -to HEX1[0]
-set_location_assignment PIN_AD26 -to HEX1[1]
-set_instance_assignment -name IO_STANDARD "1.2 V" -to HEX1[1]
-set_location_assignment PIN_AB19 -to HEX1[2]
-set_instance_assignment -name IO_STANDARD "1.2 V" -to HEX1[2]
-set_location_assignment PIN_AE26 -to HEX1[3]
-set_instance_assignment -name IO_STANDARD "1.2 V" -to HEX1[3]
-set_location_assignment PIN_AE25 -to HEX1[4]
-set_instance_assignment -name IO_STANDARD "1.2 V" -to HEX1[4]
-set_location_assignment PIN_AC19 -to HEX1[5]
-set_instance_assignment -name IO_STANDARD "1.2 V" -to HEX1[5]
-set_location_assignment PIN_AF24 -to HEX1[6]
-set_instance_assignment -name IO_STANDARD "1.2 V" -to HEX1[6]
-set_location_assignment PIN_AD7 -to HEX2[0]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HEX2[0]
-set_location_assignment PIN_AD6 -to HEX2[1]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HEX2[1]
-set_location_assignment PIN_U20 -to HEX2[2]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HEX2[2]
-set_location_assignment PIN_V22 -to HEX2[3]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HEX2[3]
-set_location_assignment PIN_V20 -to HEX2[4]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HEX2[4]
-set_location_assignment PIN_W21 -to HEX2[5]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HEX2[5]
-set_location_assignment PIN_W20 -to HEX2[6]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HEX2[6]
-set_location_assignment PIN_Y24 -to HEX3[0]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HEX3[0]
-set_location_assignment PIN_Y23 -to HEX3[1]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HEX3[1]
-set_location_assignment PIN_AA23 -to HEX3[2]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HEX3[2]
-set_location_assignment PIN_AA22 -to HEX3[3]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HEX3[3]
-set_location_assignment PIN_AC24 -to HEX3[4]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HEX3[4]
-set_location_assignment PIN_AC23 -to HEX3[5]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HEX3[5]
-set_location_assignment PIN_AC22 -to HEX3[6]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HEX3[6]
 
 #============================================================
 # HDMI-TX
@@ -340,6 +281,7 @@ set_location_assignment PIN_M22 -to SRAM_OE_n
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to SRAM_OE_n
 set_location_assignment PIN_G25 -to SRAM_WE_n
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to SRAM_WE_n
+
 
 #============================================================
 # LPDDR2
@@ -641,15 +583,17 @@ set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to SRAM_WE_n
 # Search Paths
 set_global_assignment -name SEARCH_PATH ../../dgn/rtl/altera/
 set_global_assignment -name SEARCH_PATH ../../dgn/rtl/altera/sys_pll/
+set_global_assignment -name SEARCH_PATH ../../dgn/rtl/altera/sys_pll/sys_pll/
 set_global_assignment -name SEARCH_PATH ../../dgn/rtl/common/
+set_global_assignment -name SEARCH_PATH ../../dgn/rtl/rst_cntrl/
 set_global_assignment -name SEARCH_PATH ../../dgn/rtl/i2c/
 set_global_assignment -name SEARCH_PATH ../../dgn/rtl/acortex/
 set_global_assignment -name SEARCH_PATH ../../dgn/rtl/cortex/
-set_global_assignment -name SEARCH_PATH ../../dgn/syn/limbus/limbus/synthesis/
-set_global_assignment -name SEARCH_PATH ../../dgn/syn/limbus/limbus/synthesis/submodules/
+set_global_assignment -name SEARCH_PATH ../../dgn/syn/limbus/synthesis/
+set_global_assignment -name SEARCH_PATH ../../dgn/syn/limbus/synthesis/submodules/
 
 # Altera Megafunctions
-set_global_assignment -name VERILOG_FILE ../../dgn/rtl/altera/sys_pll/sys_pll.v
+#set_global_assignment -name VERILOG_FILE ../../dgn/rtl/altera/sys_pll/sys_pll.v
 set_global_assignment -name VERILOG_FILE ../../dgn/rtl/altera/async_dpram_32W_256D.v
 set_global_assignment -name VERILOG_FILE ../../dgn/rtl/altera/sync_dpram_32W_256D.v
 
@@ -658,6 +602,9 @@ set_global_assignment -name SYSTEMVERILOG_FILE ../../dgn/rtl/common/clk_mux.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../../dgn/rtl/common/dd_sync.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../../dgn/rtl/common/pulse_toggle_sync.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../../dgn/rtl/common/lb_splitter.sv
+
+# Reset Sync Control
+set_global_assignment -name SYSTEMVERILOG_FILE ../../dgn/rtl/rst_cntrl/rst_cntrl.sv
 
 # I2C
 set_global_assignment -name SYSTEMVERILOG_FILE ../../dgn/rtl/i2c/i2c_master.sv
@@ -671,7 +618,7 @@ set_global_assignment -name SYSTEMVERILOG_FILE ../../dgn/rtl/acortex/acortex.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../../dgn/rtl/cortex/cortex.sv
 
 # Limbus
-set_global_assignment -name QSYS_FILE ../../dgn/syn/limbus/limbus.qsys
+set_global_assignment -name QSYS_FILE ../../dgn/syn/limbus.qsys
 
 # Top
 set_global_assignment -name VERILOG_FILE ../../dgn/rtl/top/syn_moksha.v
@@ -690,6 +637,68 @@ set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 
-set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "2.5 V"
 
+
+set_global_assignment -name ENABLE_SIGNALTAP ON
+set_global_assignment -name USE_SIGNALTAP_FILE stp1.stp
+set_global_assignment -name SIGNALTAP_FILE stp1.stp
+set_global_assignment -name SLD_NODE_CREATOR_ID 110 -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_ENTITY_NAME sld_signaltap -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_clk -to sys_clk_100 -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_RAM_BLOCK_TYPE=AUTO" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_NODE_INFO=805334528" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_POWER_UP_TRIGGER=0" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_SEGMENT_SIZE=65536" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_ATTRIBUTE_MEM_MODE=OFF" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_TRIGGER_LEVEL=1" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_SAMPLE_DEPTH=65536" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_TRIGGER_IN_ENABLED=0" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_TRIGGER_LEVEL_PIPELINE=1" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[0] -to "cortex:cortex_inst|acortex:acortex_inst|i2c_master:i2c_master_inst|fsm_pstate[0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[1] -to "cortex:cortex_inst|acortex:acortex_inst|i2c_master:i2c_master_inst|fsm_pstate[1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[2] -to "cortex:cortex_inst|acortex:acortex_inst|i2c_master:i2c_master_inst|fsm_pstate[2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[3] -to "cortex:cortex_inst|acortex:acortex_inst|i2c_master:i2c_master_inst|i2c_nack_det" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[4] -to "cortex:cortex_inst|acortex:acortex_inst|i2c_master:i2c_master_inst|sda_i" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[5] -to "cortex:cortex_inst|acortex:acortex_inst|i2c_master:i2c_master_inst|tck_by_2_valid" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[6] -to "cortex:cortex_inst|acortex:acortex_inst|i2c_master:i2c_master_inst|tck_by_4_valid" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[7] -to I2C_SCL -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[8] -to I2C_SDA -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[0] -to "cortex:cortex_inst|acortex:acortex_inst|i2c_master:i2c_master_inst|fsm_pstate[0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[1] -to "cortex:cortex_inst|acortex:acortex_inst|i2c_master:i2c_master_inst|fsm_pstate[1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[2] -to "cortex:cortex_inst|acortex:acortex_inst|i2c_master:i2c_master_inst|fsm_pstate[2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[3] -to "cortex:cortex_inst|acortex:acortex_inst|i2c_master:i2c_master_inst|i2c_nack_det" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[4] -to "cortex:cortex_inst|acortex:acortex_inst|i2c_master:i2c_master_inst|sda_i" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[5] -to "cortex:cortex_inst|acortex:acortex_inst|i2c_master:i2c_master_inst|tck_by_2_valid" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[6] -to "cortex:cortex_inst|acortex:acortex_inst|i2c_master:i2c_master_inst|tck_by_4_valid" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[7] -to I2C_SCL -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[8] -to I2C_SDA -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_DATA_BITS=9" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_TRIGGER_BITS=9" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_NODE_CRC_LOWORD=27886" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_storage_qualifier_in[0] -to "cortex:cortex_inst|acortex:acortex_inst|i2c_master:i2c_master_inst|fsm_pstate[0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_storage_qualifier_in[1] -to "cortex:cortex_inst|acortex:acortex_inst|i2c_master:i2c_master_inst|fsm_pstate[1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_storage_qualifier_in[2] -to "cortex:cortex_inst|acortex:acortex_inst|i2c_master:i2c_master_inst|fsm_pstate[2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_storage_qualifier_in[3] -to "cortex:cortex_inst|acortex:acortex_inst|i2c_master:i2c_master_inst|i2c_nack_det" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_storage_qualifier_in[4] -to "cortex:cortex_inst|acortex:acortex_inst|i2c_master:i2c_master_inst|sda_i" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_storage_qualifier_in[5] -to "cortex:cortex_inst|acortex:acortex_inst|i2c_master:i2c_master_inst|tck_by_2_valid" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_storage_qualifier_in[6] -to "cortex:cortex_inst|acortex:acortex_inst|i2c_master:i2c_master_inst|tck_by_4_valid" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_storage_qualifier_in[7] -to I2C_SCL -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_storage_qualifier_in[8] -to I2C_SDA -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_STORAGE_QUALIFIER_BITS=9" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_INVERSION_MASK=0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_INVERSION_MASK_LENGTH=112" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_STORAGE_QUALIFIER_INVERSION_MASK_LENGTH=55" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_STATE_FLOW_USE_GENERATED=0" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_STATE_BITS=11" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_BUFFER_FULL_STOP=1" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_CURRENT_RESOURCE_WIDTH=1" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_STORAGE_QUALIFIER_GAP_RECORD=1" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_STORAGE_QUALIFIER_MODE=START_STOP" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_NODE_CRC_HIWORD=26335" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_ADVANCED_TRIGGER_ENTITY=basic,1," -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_ENABLE_ADVANCED_TRIGGER=0" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_STORAGE_QUALIFIER_ADVANCED_CONDITION_ENTITY=basic,1,basic,1," -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_STORAGE_QUALIFIER_PIPELINE=1" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_STORAGE_QUALIFIER_ENABLE_ADVANCED_CONDITION=0" -section_id auto_signaltap_0
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
+set_global_assignment -name SLD_FILE db/stp1_auto_stripped.stp

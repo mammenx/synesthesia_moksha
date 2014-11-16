@@ -4,7 +4,7 @@
  * Machine generated for CPU 'cpu' in SOPC Builder design 'limbus'
  * SOPC Builder design path: ../../syn/limbus.sopcinfo
  *
- * Generated: Wed Nov 12 16:08:44 IST 2014
+ * Generated: Sat Nov 15 19:38:08 IST 2014
  */
 
 /*
@@ -124,9 +124,7 @@
  */
 
 #define __ALTERA_AVALON_JTAG_UART
-#define __ALTERA_AVALON_SYSID_QSYS
 #define __ALTERA_AVALON_TIMER
-#define __ALTERA_AVALON_UART
 #define __ALTERA_GENERIC_TRISTATE_CONTROLLER
 #define __ALTERA_NIOS2_QSYS
 #define __CORTEX
@@ -147,21 +145,21 @@
 #define ALT_NUM_EXTERNAL_INTERRUPT_CONTROLLERS 0
 #define ALT_NUM_INTERNAL_INTERRUPT_CONTROLLERS 1
 #define ALT_NUM_INTERRUPT_CONTROLLERS 1
-#define ALT_STDERR "/dev/jtag_uart"
-#define ALT_STDERR_BASE 0x201048
-#define ALT_STDERR_DEV jtag_uart
+#define ALT_STDERR "/dev/jtag_uart_0"
+#define ALT_STDERR_BASE 0x201028
+#define ALT_STDERR_DEV jtag_uart_0
 #define ALT_STDERR_IS_JTAG_UART
 #define ALT_STDERR_PRESENT
 #define ALT_STDERR_TYPE "altera_avalon_jtag_uart"
-#define ALT_STDIN "/dev/jtag_uart"
-#define ALT_STDIN_BASE 0x201048
-#define ALT_STDIN_DEV jtag_uart
+#define ALT_STDIN "/dev/jtag_uart_0"
+#define ALT_STDIN_BASE 0x201028
+#define ALT_STDIN_DEV jtag_uart_0
 #define ALT_STDIN_IS_JTAG_UART
 #define ALT_STDIN_PRESENT
 #define ALT_STDIN_TYPE "altera_avalon_jtag_uart"
-#define ALT_STDOUT "/dev/jtag_uart"
-#define ALT_STDOUT_BASE 0x201048
-#define ALT_STDOUT_DEV jtag_uart
+#define ALT_STDOUT "/dev/jtag_uart_0"
+#define ALT_STDOUT_BASE 0x201028
+#define ALT_STDOUT_DEV jtag_uart_0
 #define ALT_STDOUT_IS_JTAG_UART
 #define ALT_STDOUT_PRESENT
 #define ALT_STDOUT_TYPE "altera_avalon_jtag_uart"
@@ -213,7 +211,7 @@
 
 #define ALT_MODULE_CLASS_cortex cortex
 #define CORTEX_BASE 0x0
-#define CORTEX_IRQ 3
+#define CORTEX_IRQ 2
 #define CORTEX_IRQ_INTERRUPT_CONTROLLER_ID 0
 #define CORTEX_NAME "/dev/cortex"
 #define CORTEX_SPAN 1048576
@@ -231,54 +229,39 @@
 
 
 /*
- * jtag_uart configuration
+ * jtag_uart_0 configuration
  *
  */
 
-#define ALT_MODULE_CLASS_jtag_uart altera_avalon_jtag_uart
-#define JTAG_UART_BASE 0x201048
-#define JTAG_UART_IRQ 0
-#define JTAG_UART_IRQ_INTERRUPT_CONTROLLER_ID 0
-#define JTAG_UART_NAME "/dev/jtag_uart"
-#define JTAG_UART_READ_DEPTH 64
-#define JTAG_UART_READ_THRESHOLD 8
-#define JTAG_UART_SPAN 8
-#define JTAG_UART_TYPE "altera_avalon_jtag_uart"
-#define JTAG_UART_WRITE_DEPTH 64
-#define JTAG_UART_WRITE_THRESHOLD 8
+#define ALT_MODULE_CLASS_jtag_uart_0 altera_avalon_jtag_uart
+#define JTAG_UART_0_BASE 0x201028
+#define JTAG_UART_0_IRQ 0
+#define JTAG_UART_0_IRQ_INTERRUPT_CONTROLLER_ID 0
+#define JTAG_UART_0_NAME "/dev/jtag_uart_0"
+#define JTAG_UART_0_READ_DEPTH 64
+#define JTAG_UART_0_READ_THRESHOLD 8
+#define JTAG_UART_0_SPAN 8
+#define JTAG_UART_0_TYPE "altera_avalon_jtag_uart"
+#define JTAG_UART_0_WRITE_DEPTH 64
+#define JTAG_UART_0_WRITE_THRESHOLD 8
 
 
 /*
- * sram_cntrlr configuration
+ * sram configuration
  *
  */
 
-#define ALT_MODULE_CLASS_sram_cntrlr altera_generic_tristate_controller
-#define SRAM_CNTRLR_BASE 0x180000
-#define SRAM_CNTRLR_IRQ -1
-#define SRAM_CNTRLR_IRQ_INTERRUPT_CONTROLLER_ID -1
-#define SRAM_CNTRLR_NAME "/dev/sram_cntrlr"
-#define SRAM_CNTRLR_SIZE 524288
-#define SRAM_CNTRLR_SPAN 524288
-#define SRAM_CNTRLR_SRAM_DATA_WIDTH 16
-#define SRAM_CNTRLR_SRAM_MEMORY_UNITS 1
-#define SRAM_CNTRLR_TYPE "altera_generic_tristate_controller"
-
-
-/*
- * sysid configuration
- *
- */
-
-#define ALT_MODULE_CLASS_sysid altera_avalon_sysid_qsys
-#define SYSID_BASE 0x201040
-#define SYSID_ID 0
-#define SYSID_IRQ -1
-#define SYSID_IRQ_INTERRUPT_CONTROLLER_ID -1
-#define SYSID_NAME "/dev/sysid"
-#define SYSID_SPAN 8
-#define SYSID_TIMESTAMP 1415787611
-#define SYSID_TYPE "altera_avalon_sysid_qsys"
+#define ALT_MODULE_CLASS_sram altera_generic_tristate_controller
+#define SRAM_BASE 0x180000
+#define SRAM_IRQ -1
+#define SRAM_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define SRAM_NAME "/dev/sram"
+#define SRAM_SIZE 524288
+#define SRAM_SPAN 524288
+#define SRAM_SRAM_DATA_WIDTH 16
+#define SRAM_SRAM_MEMORY_SIZE 524288
+#define SRAM_SRAM_MEMORY_UNITS 1
+#define SRAM_TYPE "altera_generic_tristate_controller"
 
 
 /*
@@ -288,7 +271,7 @@
 
 #define ALT_MODULE_CLASS_timer_0 altera_avalon_timer
 #define TIMER_0_ALWAYS_RUN 0
-#define TIMER_0_BASE 0x201020
+#define TIMER_0_BASE 0x201000
 #define TIMER_0_COUNTER_SIZE 32
 #define TIMER_0_FIXED_PERIOD 0
 #define TIMER_0_FREQ 100000000
@@ -305,30 +288,5 @@
 #define TIMER_0_TICKS_PER_SEC 1000.0
 #define TIMER_0_TIMEOUT_PULSE_OUTPUT 0
 #define TIMER_0_TYPE "altera_avalon_timer"
-
-
-/*
- * uart_0 configuration
- *
- */
-
-#define ALT_MODULE_CLASS_uart_0 altera_avalon_uart
-#define UART_0_BASE 0x201000
-#define UART_0_BAUD 115200
-#define UART_0_DATA_BITS 8
-#define UART_0_FIXED_BAUD 1
-#define UART_0_FREQ 100000000
-#define UART_0_IRQ 2
-#define UART_0_IRQ_INTERRUPT_CONTROLLER_ID 0
-#define UART_0_NAME "/dev/uart_0"
-#define UART_0_PARITY 'N'
-#define UART_0_SIM_CHAR_STREAM ""
-#define UART_0_SIM_TRUE_BAUD 0
-#define UART_0_SPAN 32
-#define UART_0_STOP_BITS 1
-#define UART_0_SYNC_REG_DEPTH 2
-#define UART_0_TYPE "altera_avalon_uart"
-#define UART_0_USE_CTS_RTS 0
-#define UART_0_USE_EOP_REGISTER 0
 
 #endif /* __SYSTEM_H_ */

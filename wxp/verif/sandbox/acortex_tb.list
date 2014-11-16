@@ -45,3 +45,4 @@
 `include  "syn_acortex_base_test.sv"
 `include  "syn_acortex_i2c_test.sv"
 `include  "syn_acortex_pcm_test.sv"
+`include  "syn_acortex_mclk_test.sv"

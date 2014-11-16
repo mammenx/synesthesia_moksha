@@ -64,7 +64,7 @@ alt_u8 	get_i2c_addr()	{
 }
 
 I2C_RES	i2c_xtn_write(alt_u8 addr, alt_u8 *data, alt_u8 num_bytes, alt_u8 start, alt_u8 stop)	{
-	alt_u32 i;
+	alt_u32 i,fsm;
 
 	if(num_bytes > I2C_MAX_XTN_LEN)	{
 		alt_printf("[i2c_xtn_write] ERROR num_bytes(0x%x) > I2C_MAX_XTN_LEN(0x%x)\n",num_bytes,I2C_MAX_XTN_LEN);
@@ -77,13 +77,26 @@ I2C_RES	i2c_xtn_write(alt_u8 addr, alt_u8 *data, alt_u8 num_bytes, alt_u8 start,
 		IOWR_I2C_DATA_CACHE(i,data[i]);
 	}
 
+	//alt_printf("[i2c_xtn_write] Bffr[0] : 0x%x\n",IORD_I2C_DATA_CACHE(0));
+	//alt_printf("[i2c_xtn_write] Bffr[1] : 0x%x\n",IORD_I2C_DATA_CACHE(1));
+	//alt_printf("[i2c_xtn_write] Bffr[2] : 0x%x\n",IORD_I2C_DATA_CACHE(2));
+	//alt_printf("[i2c_xtn_write] Bffr[3] : 0x%x\n",IORD_I2C_DATA_CACHE(3));
+
 	IOWR_I2C_CONFIG((num_bytes << I2C_NUM_BYTES_OFFSET) + I2C_INIT_MSK + ((stop & 0x1) << 1) + (start & 0x1));
+
+	fsm = 0xfffff;
 
 	while(IORD_I2C_STATUS & I2C_BUSY_MSK){
 		chThdSleepMilliseconds(1);	//wait for I2C driver to be free
+		//if(fsm != IORD_I2C_FSM) {
+		//	fsm = IORD_I2C_FSM;
+		//	alt_printf("[i2c_xtn_write] FSM : 0x%x\n",fsm);
+		//	alt_printf("[i2c_xtn_write] STATUS : 0x%x\n",IORD_I2C_STATUS);
+		//}
 	}
 
 	if(IORD_I2C_STATUS	&	I2C_NACK_DET_MSK){
+		alt_printf("[i2c_xtn_write] NACK Detected : 0x%x\n",IORD_I2C_STATUS);
 		return I2C_NACK_DETECTED;
 	}
 
@@ -108,12 +121,26 @@ I2C_RES	i2c_xtn_read(alt_u8 addr, alt_u8 *bffr, alt_u8 num_bytes, alt_u8 start, 
 	}
 
 	if(IORD_I2C_STATUS	&	I2C_NACK_DET_MSK){
+		alt_printf("[i2c_xtn_read] NACK Detected : 0x%x\n",IORD_I2C_STATUS);
 		return I2C_NACK_DETECTED;
 	}
 
 	for(i=0; i<num_bytes;i++)	{
+	//for(i=0; i<4;i++)	{
+		alt_printf("[i2c_xtn_read] Cache[0x%x] : 0x%x\n",i,IORD_I2C_DATA_CACHE(i));
 		bffr[i]	=	IORD_I2C_DATA_CACHE(i)	&	0xff;
 	}
 
 	return I2C_OK;
+}
+
+void	byte_rev_i2c_arry(alt_u8 *bffr,alt_u32 size)	{
+	alt_u8	temp;
+	alt_u16 i;
+
+	for(i=0;i<(size>>1);i++)	{
+		temp = bffr[i];
+		bffr[i] = bffr[size-i-1];
+		bffr[size-i-1] = temp;
+	}
 }

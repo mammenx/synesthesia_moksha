@@ -286,8 +286,9 @@ union	AUD_CODEC_I2C_BFFR_T	{
 
 //Function to read/write a register in CODEC
 I2C_RES	aud_codec_write_reg(alt_u8 addr, alt_u16 val);
-I2C_RES	aud_codec_read_reg(alt_u8 addr, alt_u16 *val);
-
+I2C_RES	aud_codec_read_reg(alt_u8 addr);
+void aud_codec_reset();
+void aud_codec_init();
 
 //MACRO to extract field from CODEC register
 #define	AUD_CODEC_EXTRACT_FIELD(offset,msk,data) \

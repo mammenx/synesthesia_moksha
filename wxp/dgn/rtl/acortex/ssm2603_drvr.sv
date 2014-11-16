@@ -42,7 +42,6 @@ module ssm2603_drvr #(
   parameter MODULE_NAME         = "SSM2603_DRVR",
   parameter LB_DATA_W           = 32,
   parameter LB_ADDR_W           = 8,
-  parameter NUM_MCLKS           = 2,
   parameter BCLK_CNTR_W         = 8,
   parameter FS_CNTR_W           = 16
 
@@ -60,8 +59,6 @@ module ssm2603_drvr #(
   output  reg                 lb_rd_valid,
   output  reg [LB_DATA_W-1:0] lb_rd_data,
 
-  input   [NUM_MCLKS-1:0]     mclk_vec,
-
   output  reg                 adc_pcm_valid,
   output  reg [31:0]          adc_lpcm_data,
   output  reg [31:0]          adc_rpcm_data,
@@ -75,15 +72,12 @@ module ssm2603_drvr #(
   output  reg                 AUD_ADCLRCK,
   output  reg                 AUD_BCLK,
   output  reg                 AUD_DACDAT,
-  output  reg                 AUD_DACLRCK,
-  output  reg                 AUD_XCK
+  output  reg                 AUD_DACLRCK
 
 );
 
 //----------------------- Local Parameters Declarations -------------------
   `include  "ssm2603_drvr_regmap.svh"
-
-  localparam  MCLK_SEL_W      = $clog2(NUM_MCLKS);
 
 //----------------------- Input Declarations ------------------------------
 
@@ -102,8 +96,6 @@ module ssm2603_drvr #(
   reg   [FS_CNTR_W-1:0]       fs_val;
   reg                         dac_en,adc_en;
   reg   [1:0]                 bps_val;
-  reg   [MCLK_SEL_W-1:0]      mclk_sel;
-  reg   [NUM_MCLKS-1:0]       mclk_sel_vec;
 
   reg   [BCLK_CNTR_W-1:0]     bclk_cntr;
   reg   [FS_CNTR_W-1:0]       fs_cntr;
@@ -154,7 +146,6 @@ module ssm2603_drvr #(
       dac_en                  <=  0;
       adc_en                  <=  0;
       bps_val                 <=  0;
-      mclk_sel                <=  0;
     end
     else
     begin
@@ -178,11 +169,6 @@ module ssm2603_drvr #(
           SSM2603_DRVR_FS_VAL_REG_ADDR  :
           begin
             fs_val            <=  lb_wr_data[FS_CNTR_W-1:0];
-          end
-
-          SSM2603_DRVR_MCLK_SEL_REG_ADDR  :
-          begin
-            mclk_sel          <=  lb_wr_data[MCLK_SEL_W-1:0];
           end
 
         endcase
@@ -214,11 +200,6 @@ module ssm2603_drvr #(
           SSM2603_DRVR_FS_VAL_REG_ADDR  :
           begin
             lb_rd_data        <=  {{(LB_DATA_W-FS_CNTR_W){1'b0}},fs_val};
-          end
-
-          SSM2603_DRVR_MCLK_SEL_REG_ADDR  :
-          begin
-            lb_rd_data        <=  {{(LB_DATA_W-MCLK_SEL_W){1'b0}},mclk_sel};
           end
 
           default :
@@ -528,24 +509,6 @@ module ssm2603_drvr #(
     end
   end
 
-
-  /*  Instantiate MCLK Mux  */
-  clk_mux  #(.P_NO_CLOCKS(NUM_MCLKS))  mclk_mux_inst
-  (
-      .clk_vec      (mclk_vec),
-      .rst_n        (rst_n),
-
-      .clk_en_vec   (mclk_sel_vec),
-
-      .clk_o        (AUD_XCK)
-  );
-
-  always@(*)  //One hot encode the MCLK select vector
-  begin
-    mclk_sel_vec              =   0;
-
-    mclk_sel_vec[mclk_sel]    =   1'b1;
-  end
 
 
 endmodule // ssm2603_drvr
