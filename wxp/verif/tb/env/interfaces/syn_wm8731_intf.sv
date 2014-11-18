@@ -41,7 +41,7 @@ interface syn_wm8731_intf  (input logic rst_il);
   logic   dac_lrc;
 
   logic   scl;
-  wire    sda;
+  tri1    sda;
   logic   sda_o;
   logic   release_sda;
 
@@ -81,6 +81,8 @@ endinterface  //  syn_wm8731_intf
  
 
  -- <Log>
+
+[18-11-2014  06:03:18 PM][mammenx] Removed MCLK feature testing and updated I2C agents
 
 [15-10-2014  11:44:12 PM][mammenx] Initial Commit
 

@@ -73,7 +73,7 @@ class syn_acortex_pcm_test extends syn_acortex_base_test;
 
       ovm_report_info(get_full_name(),"Start of connect",OVM_LOW);
 
-        super.env.codec_agent.i2c_slave.update_reg_map_en = 1;
+        super.env.codec_agent.i2c.s_drvr.update_reg_map_en = 1;
 
       ovm_report_info(get_full_name(),"End of connect",OVM_LOW);
     endfunction : connect
@@ -102,7 +102,6 @@ class syn_acortex_pcm_test extends syn_acortex_base_test;
       drvr_config_seq.dac_en        = 1;
       drvr_config_seq.adc_en        = 1;
       drvr_config_seq.bps           = 2'b11;
-      drvr_config_seq.mclk_sel      = 0;
 
       fork
         begin
@@ -140,6 +139,8 @@ endclass : syn_acortex_pcm_test
  
 
  -- <Log>
+
+[18-11-2014  06:03:18 PM][mammenx] Removed MCLK feature testing and updated I2C agents
 
 [02-11-2014  07:53:10 PM][mammenx] Misc changes for PCM Test
 

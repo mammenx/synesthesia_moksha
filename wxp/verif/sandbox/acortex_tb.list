@@ -16,6 +16,10 @@
 `include  "syn_pcm_mem_seqr.sv"
 `include  "syn_pcm_mem_agent.sv"
 
+`include  "i2c_s_drvr.sv"
+`include  "i2c_mon.sv"
+`include  "i2c_agent.sv"
+
 `include  "syn_acortex_codec_adc_drvr.sv"
 `include  "syn_acortex_codec_adc_mon.sv"
 `include  "syn_acortex_codec_adc_seqr.sv"
@@ -45,4 +49,3 @@
 `include  "syn_acortex_base_test.sv"
 `include  "syn_acortex_i2c_test.sv"
 `include  "syn_acortex_pcm_test.sv"
-`include  "syn_acortex_mclk_test.sv"

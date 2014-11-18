@@ -1,5 +1,6 @@
 +incdir+../../verif/tb/agents/
 +incdir+../../verif/tb/agents/lb/
++incdir+../../verif/tb/agents/i2c/
 +incdir+../../verif/tb/agents/vcortex/
 +incdir+../../verif/tb/agents/vcortex/sram_agent/
 +incdir+../../verif/tb/agents/vcortex/vga_agent/

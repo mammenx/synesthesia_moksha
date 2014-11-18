@@ -55,8 +55,6 @@
     //Clock Reset signals
     logic   sys_clk_50;
     logic   sys_clk_100;
-    logic   sys_clk_24;
-    logic   sys_clk_12;
     logic   sys_rst;
 
 
@@ -72,24 +70,6 @@
     /////////////////////////////////////////////////////
     // Clock, Reset Generation                         //
     /////////////////////////////////////////////////////
-    initial
-    begin
-      sys_clk_24    = 1;
-
-      #111;
-
-      forever #42ns sys_clk_24  = ~sys_clk_24;
-    end
-
-    initial
-    begin
-      sys_clk_12    = 1;
-
-      #111;
-
-      forever #83ns sys_clk_12  = ~sys_clk_12;
-    end
-
     initial
     begin
       sys_clk_50    = 1;
@@ -131,7 +111,6 @@
       .LB_DATA_W      (LB_DATA_W),
       .LB_ADDR_W      (LB_ADDR_W),
       .LB_ADDR_BLK_W  (4),
-      .NUM_MCLKS      (2),
       .NUM_SAMPLES    (128)
 
     ) acortex_inst  (
@@ -147,23 +126,20 @@
       .lb_rd_valid                (lb_tb_intf.rd_valid),
       .lb_rd_data                 (lb_tb_intf.rd_data ),
 
-      .mclk_vec                   ({sys_clk_24,sys_clk_12}),
-
       .acortex2fgyrus_pcm_rdy     (pcm_mem_intf.pcm_data_rdy),
       .fgyrus2acortex_addr        (pcm_mem_intf.pcm_addr),
       .acortex2fgyrus_pcm_data    (pcm_mem_intf.pcm_rdata),
 
-      //.scl                        (wm8731_intf.scl),
-      //.sda                        (wm8731_intf.sda),
-      .scl                        (),
-      .sda                        (sda_debug),
+      .scl                        (wm8731_intf.scl),
+      .sda                        (wm8731_intf.sda),
+      //.scl                        (),
+      //.sda                        (sda_debug),
 
       .AUD_ADCDAT                 (wm8731_intf.adc_dat),
       .AUD_ADCLRCK                (wm8731_intf.adc_lrc),
       .AUD_BCLK                   (wm8731_intf.bclk),
       .AUD_DACDAT                 (wm8731_intf.dac_dat),
-      .AUD_DACLRCK                (wm8731_intf.dac_lrc),
-      .AUD_XCK                    (wm8731_intf.mclk)
+      .AUD_DACLRCK                (wm8731_intf.dac_lrc)
 
     );
 
@@ -186,6 +162,8 @@
  
 
  -- <Log>
+
+[18-11-2014  06:03:18 PM][mammenx] Removed MCLK feature testing and updated I2C agents
 
 [16-10-2014  09:47:25 PM][mammenx] Misc changes to fix issues found during syn_acortex_base_test
 

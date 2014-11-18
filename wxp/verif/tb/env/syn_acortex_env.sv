@@ -149,7 +149,8 @@
 
         //Ports
         lb_agent.mon.Mon2Sb_port.connect(this.LB2Env_ff.analysis_export);
-        codec_agent.i2c_mon.Mon2Sb_port.connect(i2c_sb.Mon_i2c_2Sb_port);
+        //codec_agent.i2c_mon.Mon2Sb_port.connect(i2c_sb.Mon_i2c_2Sb_port);
+        codec_agent.i2c.mon.Mon2Sb_port.connect(i2c_sb.Mon_i2c_2Sb_port);
         pcm_mem_agent.mon.Mon2Sb_port.connect(adc_sb.Mon_rcvd_2Sb_port);
         codec_agent.adc_mon.Mon2Sb_port.connect(adc_sb.Mon_sent_2Sb_port);
         codec_agent.adc_mon.Mon2Sb_port.connect(dac_sb.Mon_sent_2Sb_port);
@@ -159,7 +160,8 @@
         codec_agent.adc_drvr.reg_map  = this.wm8731_reg_map;
         codec_agent.adc_mon.reg_map   = this.wm8731_reg_map;
         codec_agent.dac_mon.reg_map   = this.wm8731_reg_map;
-        codec_agent.i2c_slave.reg_map = this.wm8731_reg_map;
+        //codec_agent.i2c_slave.reg_map = this.wm8731_reg_map;
+        codec_agent.i2c.s_drvr.reg_map = this.wm8731_reg_map;
 
         i2c_sb.reg_map        = this.acortex_reg_map;
         adc_sb.adc_reg_map    = this.acortex_reg_map;
@@ -273,8 +275,6 @@
       acortex_reg_map.create_field("bps_val",       build_addr(0,ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_CONFIG_REG_ADDR),   2,  3);
       acortex_reg_map.create_field("bclk_div_val",  build_addr(0,ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_BCLK_DIV_REG_ADDR), 0,  LB_DATA_W-1);
       acortex_reg_map.create_field("fs_val",        build_addr(0,ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_FS_VAL_REG_ADDR),   0,  LB_DATA_W-1);
-      acortex_reg_map.create_field("mclk_sel",      build_addr(0,ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_MCLK_SEL_REG_ADDR), 0,  LB_DATA_W-1);
-
       acortex_reg_map.create_field("bffr_mode",     build_addr(0,ACORTEX_PCM_BFFR_CLK_CODE,PCM_BFFR_CONTROL_REG_ADDR),  0,  0);
     endfunction : build_acortex_reg_map
 
@@ -289,6 +289,8 @@
  
 
  -- <Log>
+
+[18-11-2014  06:03:18 PM][mammenx] Removed MCLK feature testing and updated I2C agents
 
 [02-11-2014  07:53:10 PM][mammenx] Misc changes for PCM Test
 

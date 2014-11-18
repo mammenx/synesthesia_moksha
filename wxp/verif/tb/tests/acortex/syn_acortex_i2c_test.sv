@@ -71,8 +71,8 @@ class syn_acortex_i2c_test extends syn_acortex_base_test;
 
       ovm_report_info(get_full_name(),"Start of connect",OVM_LOW);
 
-        super.env.codec_agent.i2c_slave.update_reg_map_en = 0;
-        super.env.codec_agent.disable_agent();
+        super.env.codec_agent.i2c.s_drvr.update_reg_map_en = 1;
+        //super.env.codec_agent.disable_agent();
 
       ovm_report_info(get_full_name(),"End of connect",OVM_LOW);
     endfunction : connect
@@ -92,36 +92,36 @@ class syn_acortex_i2c_test extends syn_acortex_base_test;
 
       #500;
 
-      //  for(int i=0;  i<16; i++)
-      //  begin
-      //    i2c_config_seq.poll_en    = 1;
-      //    i2c_config_seq.rd_n_wr    = 0;
-      //    i2c_config_seq.num_bytes  = 2;
-      //    i2c_config_seq.i2c_data   = $random & 'hffff;
-      //    i2c_config_seq.start(super.env.lb_agent.seqr);
+      for(int i=0;  i<1; i++)
+      begin
+        i2c_config_seq.poll_en    = 1;
+        i2c_config_seq.rd_n_wr    = 0;
+        i2c_config_seq.num_bytes  = 2;
+        i2c_config_seq.i2c_data   = $random & 'h0fff;
+        i2c_config_seq.start(super.env.lb_agent.seqr);
 
-      //    #100ns;
-      //  end
+        #100ns;
+      end
 
-      i2c_config_seq.poll_en    = 1;
-      i2c_config_seq.rd_n_wr    = 0;
-      i2c_config_seq.start_en   = 1;
-      i2c_config_seq.stop_en    = 0;
-      i2c_config_seq.num_bytes  = 1;
-      i2c_config_seq.i2c_data   = $random & 'hffff;
-      i2c_config_seq.start(super.env.lb_agent.seqr);
+      //  i2c_config_seq.poll_en    = 1;
+      //  i2c_config_seq.rd_n_wr    = 0;
+      //  i2c_config_seq.start_en   = 1;
+      //  i2c_config_seq.stop_en    = 0;
+      //  i2c_config_seq.num_bytes  = 1;
+      //  i2c_config_seq.i2c_data   = $random & 'hffff;
+      //  i2c_config_seq.start(super.env.lb_agent.seqr);
 
-      #100ns;
+      //  #100ns;
  
-      i2c_config_seq.poll_en    = 1;
-      i2c_config_seq.rd_n_wr    = 1;
-      i2c_config_seq.start_en   = 1;
-      i2c_config_seq.stop_en    = 1;
-      i2c_config_seq.num_bytes  = 2;
-      i2c_config_seq.i2c_data   = $random & 'hffff;
-      i2c_config_seq.start(super.env.lb_agent.seqr);
+      //  i2c_config_seq.poll_en    = 1;
+      //  i2c_config_seq.rd_n_wr    = 1;
+      //  i2c_config_seq.start_en   = 1;
+      //  i2c_config_seq.stop_en    = 1;
+      //  i2c_config_seq.num_bytes  = 2;
+      //  i2c_config_seq.i2c_data   = $random & 'hffff;
+      //  i2c_config_seq.start(super.env.lb_agent.seqr);
 
-      #100ns;
+      //  #100ns;
 
       ovm_report_info(get_name(),"Calling global_stop_request().....",OVM_LOW);
       global_stop_request();
@@ -139,6 +139,8 @@ endclass : syn_acortex_i2c_test
  
 
  -- <Log>
+
+[18-11-2014  06:03:18 PM][mammenx] Removed MCLK feature testing and updated I2C agents
 
 [15-10-2014  11:44:12 PM][mammenx] Initial Commit
 

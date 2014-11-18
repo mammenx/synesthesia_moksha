@@ -46,8 +46,9 @@
     `ovm_component_param_utils(syn_acortex_codec_agent#(REG_MAP_W,I2C_DATA_W,I2C_INTF_TYPE,I2C_PKT_TYPE,PKT_TYPE,DAC_INTF_TYPE,ADC_INTF_TYPE))
 
     //Declare Seqr, Drvr, Mon, Sb objects
-    syn_acortex_codec_i2c_slave#(REG_MAP_W, I2C_DATA_W, I2C_INTF_TYPE)  i2c_slave;
-    syn_acortex_codec_i2c_mon#(I2C_DATA_W,  I2C_PKT_TYPE,I2C_INTF_TYPE) i2c_mon;
+    //syn_acortex_codec_i2c_slave#(REG_MAP_W, I2C_DATA_W, I2C_INTF_TYPE)  i2c_slave;
+    //syn_acortex_codec_i2c_mon#(I2C_DATA_W,  I2C_PKT_TYPE,I2C_INTF_TYPE) i2c_mon;
+    i2c_agent#(REG_MAP_W,I2C_DATA_W,I2C_PKT_TYPE,I2C_INTF_TYPE)         i2c;
     syn_acortex_codec_dac_mon#(REG_MAP_W, PKT_TYPE, DAC_INTF_TYPE)      dac_mon;
     syn_acortex_codec_adc_drvr#(REG_MAP_W,  PKT_TYPE, ADC_INTF_TYPE)    adc_drvr;
     syn_acortex_codec_adc_mon#(REG_MAP_W, PKT_TYPE, ADC_INTF_TYPE)      adc_mon;
@@ -77,8 +78,9 @@
       ovm_report_info(get_name(),"Start of build ",OVM_LOW);
 
       //Build Seqr, Drvr, Mon, Sb objects using Factory
-      i2c_slave = syn_acortex_codec_i2c_slave#(REG_MAP_W,I2C_DATA_W,I2C_INTF_TYPE)::type_id::create("i2c_slave",  this);
-      i2c_mon   = syn_acortex_codec_i2c_mon#(I2C_DATA_W,I2C_PKT_TYPE,I2C_INTF_TYPE)::type_id::create("i2c_mon",  this);
+      //i2c_slave = syn_acortex_codec_i2c_slave#(REG_MAP_W,I2C_DATA_W,I2C_INTF_TYPE)::type_id::create("i2c_slave",  this);
+      //i2c_mon   = syn_acortex_codec_i2c_mon#(I2C_DATA_W,I2C_PKT_TYPE,I2C_INTF_TYPE)::type_id::create("i2c_mon",  this);
+      i2c       = i2c_agent#(REG_MAP_W,I2C_DATA_W,I2C_PKT_TYPE,I2C_INTF_TYPE)::type_id::create("i2c", this);
       dac_mon   = syn_acortex_codec_dac_mon#(REG_MAP_W,PKT_TYPE,DAC_INTF_TYPE)::type_id::create("dac_mon",  this);
       adc_drvr  = syn_acortex_codec_adc_drvr#(REG_MAP_W,PKT_TYPE,ADC_INTF_TYPE)::type_id::create("adc_drvr",  this);
       adc_mon   = syn_acortex_codec_adc_mon#(REG_MAP_W,PKT_TYPE,ADC_INTF_TYPE)::type_id::create("adc_mon",  this);
@@ -104,8 +106,9 @@
     /*  Disable Agent */
     function  void  disable_agent();
 
-      i2c_slave.enable  = 0;
-      i2c_mon.enable    = 0;
+      //i2c_slave.enable  = 0;
+      //i2c_mon.enable    = 0;
+      i2c.disable_agent();
       dac_mon.enable    = 0;
       adc_drvr.enable   = 0;
       adc_mon.enable    = 0;
@@ -126,6 +129,8 @@
  
 
  -- <Log>
+
+[18-11-2014  06:03:18 PM][mammenx] Removed MCLK feature testing and updated I2C agents
 
 [15-10-2014  11:44:12 PM][mammenx] Initial Commit
 

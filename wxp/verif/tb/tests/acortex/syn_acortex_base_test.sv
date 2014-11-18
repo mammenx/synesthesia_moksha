@@ -104,8 +104,8 @@ class syn_acortex_base_test extends ovm_test;
       this.env.codec_agent.adc_drvr.intf    = $root.syn_acortex_tb_top.wm8731_intf;
       this.env.codec_agent.adc_mon.intf     = $root.syn_acortex_tb_top.wm8731_intf;
       this.env.codec_agent.dac_mon.intf     = $root.syn_acortex_tb_top.wm8731_intf;
-      this.env.codec_agent.i2c_mon.intf     = $root.syn_acortex_tb_top.wm8731_intf;
-      this.env.codec_agent.i2c_slave.intf   = $root.syn_acortex_tb_top.wm8731_intf;
+      this.env.codec_agent.i2c.mon.intf     = $root.syn_acortex_tb_top.wm8731_intf;
+      this.env.codec_agent.i2c.s_drvr.intf  = $root.syn_acortex_tb_top.wm8731_intf;
 
       this.env.pcm_mem_agent.drvr.intf  = $root.syn_acortex_tb_top.pcm_mem_intf;
       this.env.pcm_mem_agent.mon.intf   = $root.syn_acortex_tb_top.pcm_mem_intf;
@@ -171,6 +171,8 @@ endclass : syn_acortex_base_test
  
 
  -- <Log>
+
+[18-11-2014  06:03:18 PM][mammenx] Removed MCLK feature testing and updated I2C agents
 
 [02-11-2014  07:53:10 PM][mammenx] Misc changes for PCM Test
 
