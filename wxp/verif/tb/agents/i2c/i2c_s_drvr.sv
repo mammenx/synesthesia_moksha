@@ -50,11 +50,9 @@
     /*  Register Map to hold registers  */
     syn_reg_map#(REG_MAP_W)   reg_map;  //must be connected from above
 
-    mailbox start_det_sm,stop_det_sm,read_det_sm,write_det_sm;
+    process look_for_start_proc,look_for_stop_proc,get_address_proc,drive_write_proc,drive_read_proc;
 
-    mailbox is_ack_phase_sm;
-
-    int t;
+    semaphore halt_drive_write_sm;
 
     /*  Register with factory */
     `ovm_component_param_utils_begin(i2c_s_drvr#(REG_MAP_W,DATA_W,INTF_TYPE))
@@ -90,12 +88,7 @@
       update_reg_map_en  = 1;
       dev_addr  = 'h34;
 
-      start_det_sm  = new(1);
-      stop_det_sm   = new(1);
-      read_det_sm   = new(1);
-      write_det_sm  = new(1);
-
-      is_ack_phase_sm = new(1);
+      halt_drive_write_sm = new(0);
 
       ovm_report_info(get_name(),"End of build ",OVM_LOW);
     endfunction : build
@@ -121,6 +114,21 @@
         #1us;
 
         fork
+          begin
+            ovm_report_info({get_name(),"[run]"},"Waiting for processes to start",OVM_LOW);
+            wait(look_for_start_proc  !=  null);
+            wait(look_for_stop_proc   !=  null);
+            wait(get_address_proc     !=  null);
+            wait(drive_write_proc     !=  null);
+            wait(drive_read_proc      !=  null);
+
+            ovm_report_info({get_name(),"[run]"},"Suspending all but look_for_start_proc",OVM_LOW);
+            look_for_stop_proc.suspend();
+            get_address_proc.suspend();
+            drive_write_proc.suspend();
+            drive_read_proc.suspend();
+          end
+
           begin
             look_for_start();
           end
@@ -151,35 +159,45 @@
 
 
     task  look_for_start();
+      look_for_start_proc = process::self();
 
       ovm_report_info({get_name(),"[look_for_start]"},"Start of look_for_start",OVM_LOW);
 
       forever
       begin
+        #1;
         ovm_report_info({get_name(),"[look_for_start]"},"Looking for START",OVM_LOW);
         @(negedge intf.sda  iff (intf.scl ==  1));
-        if(!is_ack_phase_sm.num())
+
+        ovm_report_info({get_name(),"[look_for_start]"},"Detected START",OVM_LOW);
+
+        if(drive_write_proc.status  !=  process::SUSPENDED)
         begin
-          ovm_report_info({get_name(),"[look_for_start]"},"Detected START",OVM_LOW);
-          start_det_sm.put(1);
+          ovm_report_info({get_name(),"[look_for_start]"},"Halting drive_write",OVM_LOW);
+          halt_drive_write_sm.put(1);
+          #1;
         end
+
+        get_address_proc.resume();
+        look_for_start_proc.suspend();
       end
 
     endtask : look_for_start
 
     task  look_for_stop();
+      look_for_stop_proc  = process::self();
 
       ovm_report_info({get_name(),"[look_for_stop]"},"Start of look_for_stop",OVM_LOW);
 
       forever
       begin
+        #1;
         ovm_report_info({get_name(),"[look_for_stop]"},"Looking for STOP",OVM_LOW);
         @(posedge intf.sda  iff (intf.scl ==  1));
-        if(!is_ack_phase_sm.num())
-        begin
-          ovm_report_info({get_name(),"[look_for_stop]"},"Detected STOP",OVM_LOW);
-          stop_det_sm.put(1);
-        end
+
+        ovm_report_info({get_name(),"[look_for_stop]"},"Detected STOP",OVM_LOW);
+        look_for_start_proc.resume();
+        look_for_stop_proc.suspend();
       end
 
     endtask : look_for_stop
@@ -187,13 +205,14 @@
     task  get_address();
       bit [7:0] addr;
 
+      get_address_proc    = process::self();
+
       ovm_report_info({get_name(),"[get_address]"},"Start of get_address",OVM_LOW);
 
       forever
       begin
-        ovm_report_info({get_name(),"[get_address]"},"Waiting for START",OVM_LOW);
-        start_det_sm.get(t);
-        ovm_report_info({get_name(),"[get_address]"},"Got START",OVM_LOW);
+        #1;
+        ovm_report_info({get_name(),"[get_address]"},"Start of Address Phase",OVM_LOW);
 
         addr  = 'd0;
 
@@ -206,7 +225,6 @@
         end
 
         ovm_report_info({get_name(),"[get_address]"},$psprintf("Got address : 0x%x",addr),OVM_LOW);
-        is_ack_phase_sm.put(1);
 
         @(posedge intf.scl);
 
@@ -224,11 +242,11 @@
 
           if(addr[0]) //Read
           begin
-            read_det_sm.put(1);
+            drive_read_proc.resume();
           end
           else  //Write
           begin
-            write_det_sm.put(1);
+            drive_write_proc.resume();
           end
         end
         else
@@ -242,35 +260,37 @@
           intf.sda_o      <=  1;
           intf.release_sda<=  1;
 
-          ovm_report_info({get_name(),"[get_address]"},$psprintf("Waiting for STOP"),OVM_LOW);
-          stop_det_sm.get(t);
+          look_for_stop_proc.resume();
         end
 
-        #1;
-        is_ack_phase_sm.get(t);
+        get_address_proc.suspend();
       end
     endtask : get_address
 
     task  drive_write();
       bit[DATA_W-1:0] data;
-      bit stop_det_f,start_det_f;
       int num_bytes;
+      bit start_det_f = 1;
+      process chld_proc[2];
+
+      drive_write_proc    = process::self();
 
       ovm_report_info({get_name(),"[drive_write]"},$psprintf("Start of drive_write"),OVM_LOW);
+      look_for_start_proc.resume();
 
       forever
       begin
-        ovm_report_info({get_name(),"[drive_write]"},$psprintf("Waiting on write_det_sm"),OVM_LOW);
-        write_det_sm.get(t);
+        #1;
         ovm_report_info({get_name(),"[drive_write]"},$psprintf("Receiving write data"),OVM_LOW);
 
         data  = 'd0;
-        stop_det_f  = 0;
-        start_det_f = 0;
+        start_det_f   = 0;
         num_bytes = 0;
 
         fork
           begin
+            chld_proc[0]  = process::self();
+
             repeat(DATA_W / 8)
             begin
               for(int i=0;i<8;i++)
@@ -283,10 +303,10 @@
 
               ovm_report_info({get_name(),"[drive_write]"},$psprintf("Data : 0x%x",data),OVM_LOW);
               num_bytes++;
-              is_ack_phase_sm.put(1);
               @(posedge intf.scl);
 
               ovm_report_info({get_name(),"[drive_write]"},$psprintf("Driving ACK"),OVM_LOW);
+              look_for_start_proc.suspend();
 
               intf.sda_o      <=  0;
               intf.release_sda<=  0;
@@ -298,7 +318,7 @@
 
               #1;
               ovm_report_info({get_name(),"[drive_write]"},$psprintf("End of ACK"),OVM_LOW);
-              is_ack_phase_sm.get(t);
+              look_for_start_proc.resume();
             end
 
             regmap_addr = data[DATA_W-1:REG_MAP_W];
@@ -308,52 +328,44 @@
           end
 
           begin
-            do
-            begin
-              @(intf.scl);
+            chld_proc[1]  = process::self();
 
-              if(start_det_sm.num())
-              begin
-                start_det_sm.get(t);
-                start_det_f = 1;
-              end
-
-              if(stop_det_sm.num())
-              begin
-                stop_det_sm.get(t);
-                stop_det_f  = 1;
-              end
-            end
-            while(!start_det_f  &&  ~stop_det_f);
+            halt_drive_write_sm.get(1);
+            ovm_report_info({get_name(),"[drive_write]"},$psprintf("Got interrupt"),OVM_LOW);
+            start_det_f = 1;
           end
         join_any
+
+        foreach(chld_proc[i])
+        begin
+          chld_proc[i].kill();
+        end
 
         if(start_det_f)
         begin
           data  = data  >>  1;  //Discard last bit read
           regmap_addr = data  >>  (REG_MAP_W  % 8);
           ovm_report_info({get_name(),"[drive_write]"},$psprintf("Updated regmap_addr to 0x%x",regmap_addr),OVM_LOW);
-          continue;
         end
-        else if(stop_det_f)
+        else
         begin
-          continue;
-        end
-        else if(update_reg_map_en)
-        begin
-          if(reg_map.chk_addr_exist(regmap_addr) ==  syn_reg_map#(REG_MAP_W)::SUCCESS)
+          if(update_reg_map_en)
           begin
-            reg_map.set_reg(regmap_addr, regmap_data);
-            ovm_report_info({get_name(),"[drive_write]"},$psprintf("Configured reg_map addr[0x%x] to 0x%x",regmap_addr,regmap_data),OVM_LOW);
+            if(reg_map.chk_addr_exist(regmap_addr) ==  syn_reg_map#(REG_MAP_W)::SUCCESS)
+            begin
+              reg_map.set_reg(regmap_addr, regmap_data);
+              ovm_report_info({get_name(),"[drive_write]"},$psprintf("Configured reg_map addr[0x%x] to 0x%x",regmap_addr,regmap_data),OVM_LOW);
+            end
+            else
+            begin
+              ovm_report_error({get_name(),"[drive_write]"},$psprintf("Invalid Regmap address 0x%x",regmap_addr),OVM_LOW);
+            end
           end
-          else
-          begin
-            ovm_report_error({get_name(),"[drive_write]"},$psprintf("Invalid Regmap address 0x%x",regmap_addr),OVM_LOW);
-          end
+
+          look_for_stop_proc.resume();
         end
 
-        ovm_report_info({get_name(),"[drive_write]"},$psprintf("Waiting on stop_det_sm"),OVM_LOW);
-        stop_det_sm.get(t);
+        drive_write_proc.suspend();
       end
     endtask : drive_write
 
@@ -362,18 +374,18 @@
       bit [DATA_W-1:0]  data;
       int temp;
 
+      drive_read_proc     = process::self();
+
       ovm_report_info({get_name(),"[drive_read]"},$psprintf("Start of drive_read"),OVM_LOW);
 
       forever
       begin
-        ovm_report_info({get_name(),"[drive_read]"},$psprintf("Waiting on read_det_sm"),OVM_LOW);
-        read_det_sm.get(t);
-
+        #1;
         data  = 'd0;
 
-        if(reg_map.reg_arry.exists(regmap_addr))
+        if(reg_map.chk_addr_exist(regmap_addr)  ==  syn_reg_map#(REG_MAP_W)::SUCCESS)
         begin
-          data[REG_MAP_W-1:0] = reg_map.reg_arry[regmap_addr];
+          data[REG_MAP_W-1:0] = reg_map.reg_arry[int'(regmap_addr)];
           ovm_report_info({get_name(),"[drive_read]"},$psprintf("Driving read data 0x%x",data),OVM_LOW);
         end
         else
@@ -393,7 +405,7 @@
         begin
           for(int i=0;i<8;i++)
           begin
-            intf.sda_o      <=  data[DATA_W-1:0];
+            intf.sda_o      <=  data[DATA_W-1];
             intf.release_sda<=  0;
 
             @(negedge intf.scl);
@@ -401,24 +413,22 @@
             data  = data  <<  1;
           end
 
-          is_ack_phase_sm.put(1);
           #1;
 
+          ovm_report_info({get_name(),"[drive_read]"},$psprintf("Waiting for ACK from Master"),OVM_LOW);
           intf.sda_o      <=  1;
           intf.release_sda<=  1;
           @(negedge intf.scl);  //ACK from master
 
           intf.release_sda<=  0;
           #1;
-          is_ack_phase_sm.get(t);
         end
 
-        ovm_report_info({get_name(),"[drive_read]"},$psprintf("Waiting STOP"),OVM_LOW);
-        stop_det_sm.get(t);
-      end
+        intf.release_sda<=  1;
 
-      #1;
-      intf.release_sda  <=  1;
+        look_for_stop_proc.resume();
+        drive_read_proc.suspend();
+      end
 
     endtask : drive_read
 
@@ -433,6 +443,8 @@
  
 
  -- <Log>
+
+[19-11-2014  10:47:50 PM][mammenx] Added i2c read support
 
 [18-11-2014  06:02:12 PM][mammenx] Initial Commit
 

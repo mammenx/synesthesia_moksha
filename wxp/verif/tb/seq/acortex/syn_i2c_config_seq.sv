@@ -151,6 +151,29 @@
         while(rsp.data[0] & 'h1); //while I2C driver is busy
       end
 
+      if(rd_n_wr) //Read the contents of the buffer
+      begin
+        p_sequencer.ovm_report_info(get_name(),"Reading contents of I2C buffer...",OVM_LOW);
+
+        $cast(pkt,create_item(PKT_TYPE::get_type(),m_sequencer,$psprintf("I2C Buffer Read Seq")));
+
+        start_item(pkt);  //start_item has wait_for_grant()
+
+        pkt.addr  = new[NUM_BYTES];
+        pkt.data  = new[NUM_BYTES];
+        pkt.lb_xtn= BURST_READ;
+
+        for(i=0;  i<NUM_BYTES;  i++)
+        begin
+          $cast(pkt.addr[i],  build_addr(ACORTEX_BLK,ACORTEX_I2C_BLK_CODE,(I2C_DATA_CACHE_BASE_ADDR+i)));
+        end
+
+        p_sequencer.ovm_report_info(get_name(),$psprintf("Generated pkt - \n%s", pkt.sprint()),OVM_LOW);
+
+        finish_item(pkt);
+
+        #1;
+      end
 
     endtask : body
 
@@ -166,6 +189,8 @@
  
 
  -- <Log>
+
+[19-11-2014  10:47:50 PM][mammenx] Added i2c read support
 
 [02-11-2014  01:47:10 PM][mammenx] Modified for syn_env_pkg
 

@@ -34,6 +34,7 @@ class syn_acortex_i2c_test extends syn_acortex_base_test;
 
     //Sequences
     syn_i2c_config_seq#(super.I2C_DATA_W,super.LB_SEQ_ITEM_T,super.LB_SEQR_T)   i2c_config_seq;
+    syn_ssm2603_codec_config_seq#(super.LB_SEQ_ITEM_T,super.LB_SEQR_T,super.I2C_DATA_W,super.CODEC_REG_MAP_W) codec_config_seq;
 
 
     OVM_FILE  f;
@@ -60,6 +61,7 @@ class syn_acortex_i2c_test extends syn_acortex_base_test;
       ovm_report_info(get_full_name(),"Start of build",OVM_LOW);
 
       i2c_config_seq  = syn_i2c_config_seq#(super.I2C_DATA_W,super.LB_SEQ_ITEM_T,super.LB_SEQR_T)::type_id::create("i2c_config_seq");
+      codec_config_seq= syn_ssm2603_codec_config_seq#(super.LB_SEQ_ITEM_T,super.LB_SEQR_T,super.I2C_DATA_W,super.CODEC_REG_MAP_W)::type_id::create("codec_config_seq");
 
       ovm_report_info(get_full_name(),"End of build",OVM_LOW);
     endfunction : build
@@ -92,16 +94,16 @@ class syn_acortex_i2c_test extends syn_acortex_base_test;
 
       #500;
 
-      for(int i=0;  i<1; i++)
-      begin
-        i2c_config_seq.poll_en    = 1;
-        i2c_config_seq.rd_n_wr    = 0;
-        i2c_config_seq.num_bytes  = 2;
-        i2c_config_seq.i2c_data   = $random & 'h0fff;
-        i2c_config_seq.start(super.env.lb_agent.seqr);
+      //  for(int i=0;  i<1; i++)
+      //  begin
+      //    i2c_config_seq.poll_en    = 1;
+      //    i2c_config_seq.rd_n_wr    = 0;
+      //    i2c_config_seq.num_bytes  = 2;
+      //    i2c_config_seq.i2c_data   = $random & 'h0fff;
+      //    i2c_config_seq.start(super.env.lb_agent.seqr);
 
-        #100ns;
-      end
+      //    #100ns;
+      //  end
 
       //  i2c_config_seq.poll_en    = 1;
       //  i2c_config_seq.rd_n_wr    = 0;
@@ -123,6 +125,21 @@ class syn_acortex_i2c_test extends syn_acortex_base_test;
 
       //  #100ns;
 
+      codec_config_seq.addr = 'd1;
+      codec_config_seq.data = $random;
+      codec_config_seq.read_n_write = 0;
+      codec_config_seq.poll_en  = 1;
+
+      codec_config_seq.start(super.env.lb_agent.seqr);
+
+      codec_config_seq.addr = 'd1;
+      codec_config_seq.data = $random;
+      codec_config_seq.read_n_write = 1;
+      codec_config_seq.poll_en  = 1;
+
+      codec_config_seq.start(super.env.lb_agent.seqr);
+
+
       ovm_report_info(get_name(),"Calling global_stop_request().....",OVM_LOW);
       global_stop_request();
 
@@ -139,6 +156,8 @@ endclass : syn_acortex_i2c_test
  
 
  -- <Log>
+
+[19-11-2014  10:47:50 PM][mammenx] Added i2c read support
 
 [18-11-2014  06:03:18 PM][mammenx] Removed MCLK feature testing and updated I2C agents
 
