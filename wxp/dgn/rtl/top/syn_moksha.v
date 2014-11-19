@@ -108,12 +108,12 @@ input             HDMI_TX_INT;
 output            HDMI_TX_VS;
 
 //////////// Audio //////////
-input             AUD_ADCDAT;
-output            AUD_ADCLRCK;
-output            AUD_BCLK;
-output            AUD_DACDAT;
-output            AUD_DACLRCK;
-output            AUD_XCK;
+input             AUD_ADCDAT/*synthesis keep*/;
+output            AUD_ADCLRCK/*synthesis keep*/;
+output            AUD_BCLK/*synthesis keep*/;
+output            AUD_DACDAT/*synthesis keep*/;
+output            AUD_DACLRCK/*synthesis keep*/;
+output            AUD_XCK/*synthesis keep*/;
 
 //////////// I2C for Audio/HDMI-TX/Si5338/HSMC //////////
 output            I2C_SCL /*synthesis keep*/;

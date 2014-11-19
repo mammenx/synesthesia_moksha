@@ -2,22 +2,25 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="231" key="DIALOG_WIDTH"/>
-		<item value="133" key="DIALOG_Y_ORIGIN"/>
+		<item value="186" key="DIALOG_Y_ORIGIN"/>
+		<item value="58" key="DIALOG_X_ORIGIN"/>
 		<item value="359" key="DIALOG_HEIGHT"/>
-		<item value="576" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Segoe UI|7.5|0|WINDOWS|1|-10|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
+		<item value="true" key="casesensitive"/>
 		<item value="false" key="isRegEx"/>
-		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="CODEC" key="selection"/>
+		<item value="CODEC_" key="selection"/>
 		<list key="findhistory">
+			<item value="CODEC_"/>
 			<item value="CODEC"/>
 		</list>
 		<list key="replacehistory">
+			<item value="AUD_CODEC_"/>
+			<item value="AUD_CODEC)"/>
 			<item value="AUD_CODEC"/>
 		</list>
 	</section>

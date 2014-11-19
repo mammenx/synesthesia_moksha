@@ -250,7 +250,7 @@
 
 #define	AUD_CODEC_ALCSEL_MSK			0x3
 #define	AUD_CODEC_ALCSEL_OFFST			7
-#define	AUD_CODEC_ALSEL_IDX				0x10
+#define	AUD_CODEC_ALCSEL_IDX			0x10
 
 //IDX[0x11] Fields
 #define	AUD_CODEC_ATK_MSK				0xf
@@ -267,11 +267,11 @@
 #define	AUD_CODEC_NGAT_IDX				0x12
 
 #define	AUD_CODEC_NGG_MSK				0x3
-#define	AUD_CODEC_NGG_OFFSTw			1
+#define	AUD_CODEC_NGG_OFFST				1
 #define	AUD_CODEC_NGG_IDX				0x12
 
 #define	AUD_CODEC_NGTH_MSK				0x1f
-#define	AUD_CODEC_NGTH_OFFSTw			3
+#define	AUD_CODEC_NGTH_OFFST			3
 #define	AUD_CODEC_NGTH_IDX				0x12
 
 
@@ -289,10 +289,17 @@ I2C_RES	aud_codec_write_reg(alt_u8 addr, alt_u16 val);
 I2C_RES	aud_codec_read_reg(alt_u8 addr);
 void aud_codec_reset();
 void aud_codec_init();
+void aud_codec_dump_regs();
+void aud_codec_update_field(alt_u16 val, alt_u8 idx, alt_u8 offset, alt_u8 msk);
+void aud_codec_update_iwl(BPS_T val);
 
 //MACRO to extract field from CODEC register
-#define	AUD_CODEC_EXTRACT_FIELD(offset,msk,data) \
-		(data >> offset) & msk
+#define	AUD_CODEC_EXTRACT_FIELD(offset,msk) \
+		(aud_codec_i2c_bffr.val >> offset) & msk
+
+//MACRO to update a field read from codec
+#define AUD_CODEC_UPDATE_FIELD(value,offset,msk)	\
+		(aud_codec_i2c_bffr.val & ~(msk<<offset)) + ((value & msk)<<offset)
 
 #endif /* AUD_CODEC_H_ */
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<workbench progressCount="34" version="2.0">
+<workbench progressCount="35" version="2.0">
 <workbenchAdvisor/>
 <window height="728" maximized="true" width="1024" x="50" y="0">
 <fastViewData fastViewLocation="1024"/>
@@ -13,13 +13,13 @@
 <coolItem id="org.eclipse.cdt.ui.CElementCreationActionSet" itemType="typeToolBarContribution" x="151" y="22"/>
 <coolItem id="org.eclipse.cdt.ui.buildConfigActionSet" itemType="typeToolBarContribution" x="81" y="22"/>
 <coolItem id="org.eclipse.debug.ui.launchActionSet" itemType="typeToolBarContribution" x="117" y="22"/>
-<coolItem id="org.eclipse.search.searchActionSet" itemType="typeToolBarContribution" x="95" y="22"/>
+<coolItem id="org.eclipse.search.searchActionSet" itemType="typeToolBarContribution" x="72" y="22"/>
 <coolItem id="org.eclipse.ui.edit.text.actionSet.presentation" itemType="typeToolBarContribution" x="61" y="22"/>
 <coolItem id="group.nav" itemType="typeGroupMarker"/>
 <coolItem id="org.eclipse.ui.workbench.navigate" itemType="typeToolBarContribution" x="174" y="22"/>
 <coolItem id="group.editor" itemType="typeGroupMarker"/>
 <coolItem id="org.eclipse.ui.DefaultTextEditor" itemType="typePlaceholder" x="-1" y="-1"/>
-<coolItem id="org.eclipse.cdt.ui.editor.CEditor" itemType="typeToolBarContribution" x="-1" y="-1"/>
+<coolItem id="org.eclipse.cdt.ui.editor.CEditor" itemType="typePlaceholder" x="-1" y="-1"/>
 <coolItem id="group.help" itemType="typeGroupMarker"/>
 <coolItem id="org.eclipse.ui.workbench.help" itemType="typeToolBarContribution" x="-1" y="-1"/>
 </coolbarLayout>
@@ -28,16 +28,10 @@
 <editorArea activeWorkbook="DefaultEditorWorkbook">
 <info part="DefaultEditorWorkbook">
 <folder appearance="1" expanded="2">
-<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
-<part id="0"/>
-</presentation>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory"/>
 </folder>
 </info>
 </editorArea>
-<editor activePart="true" focus="true" id="org.eclipse.cdt.ui.editor.CEditor" name="hello_world_small.c" partName="hello_world_small.c" path="G:/WorK/github/synesthesia_moksha/wxp/dgn/sw/ledos_main/hello_world_small.c" title="hello_world_small.c" tooltip="ledos_main/hello_world_small.c" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/ledos_main/hello_world_small.c"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="3740" selectionTopPixel="1130"/>
-</editor>
 </editors>
 <views>
 <view id="org.eclipse.ui.navigator.ProjectExplorer" partName="Project Explorer">
@@ -50,7 +44,9 @@
 <view id="org.eclipse.ui.views.ProblemView" partName="Problems">
 <viewState PRIMARY_SORT_FIELD="org.eclipse.ui.ide.severityAndDescriptionField" categoryGroup="org.eclipse.ui.ide.severity" markerContentGenerator="org.eclipse.ui.ide.problemsGenerator" partName="Problems">
 <expanded>
-<category IMemento.internal.id="Warnings (9 items)"/>
+<category IMemento.internal.id="Errors (100 of 150 items)"/>
+<category IMemento.internal.id="Warnings"/>
+<category IMemento.internal.id="Errors"/>
 </expanded>
 <columnWidths org.eclipse.ui.ide.locationField="75" org.eclipse.ui.ide.markerType="75" org.eclipse.ui.ide.pathField="100" org.eclipse.ui.ide.resourceField="75" org.eclipse.ui.ide.severityAndDescriptionField="250"/>
 <visible IMemento.internal.id="org.eclipse.ui.ide.severityAndDescriptionField"/>
@@ -252,13 +248,13 @@
 </folder>
 </info>
 <info part="org.eclipse.ui.editorss" ratio="0.25" ratioLeft="250" ratioRight="750" relationship="2" relative="topLeft"/>
-<info folder="true" part="bottom" ratio="0.75" ratioLeft="477" ratioRight="159" relationship="4" relative="org.eclipse.ui.editorss">
-<folder activePageID="org.eclipse.ui.console.ConsoleView" appearance="2" expanded="2">
+<info folder="true" part="bottom" ratio="0.6903226" ratioLeft="428" ratioRight="192" relationship="4" relative="org.eclipse.ui.editorss">
+<folder activePageID="com.altera.sbtgui.launch.hardware.ByteStreamConsoleView:USB-Blaster on localhost [USB-0].1.0" appearance="2" expanded="2">
 <page content="org.eclipse.ui.views.ProblemView" label="Problems"/>
 <page content="org.eclipse.ui.views.TaskList" label="Tasks"/>
 <page content="org.eclipse.ui.console.ConsoleView" label="Console"/>
 <page content="org.eclipse.ui.views.PropertySheet" label="Properties"/>
-<page content="com.altera.sbtgui.launch.hardware.ByteStreamConsoleView:USB-Blaster on localhost [USB-0].1.0" label="LabelNotFound"/>
+<page content="com.altera.sbtgui.launch.hardware.ByteStreamConsoleView:USB-Blaster on localhost [USB-0].1.0" label="Nios II Console"/>
 <page content="com.altera.sbtgui.launch.hardware.ByteStreamConsoleView:*" label="LabelNotFound"/>
 <page content="com.altera.sbtgui.launch.hardware.ByteStreamConsoleView" label="LabelNotFound"/>
 <presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
@@ -266,6 +262,7 @@
 <part id="1"/>
 <part id="2"/>
 <part id="3"/>
+<part id="4"/>
 </presentation>
 </folder>
 </info>
@@ -282,173 +279,19 @@
 </perspective>
 </perspectives>
 <workingSets/>
-<navigationHistory>
-<editors>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/ledos_main/ledos/aud_codec/aud_codec.c"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/ledos_main/hello_world_small.c"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/ledos_main/ledos/aud_codec/aud_codec.h"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/ledos_main/ledos/cortex/acortex/i2c/i2c.c"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/ledos_main/ledos/cortex/acortex/i2c/i2c.h"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/ledos_main/ledos/cortex/cortex.c"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/ledos_main/ledos/ledos.c"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/ledos_main/hello_world_small.c"/>
-</editors>
-<item historyLabel="aud_codec.c" index="0">
-<position info="not_deleted" x="1588" y="0"/>
-</item>
-<item historyLabel="aud_codec.h" index="2">
-<position info="not_deleted" x="1491" y="21"/>
-</item>
-<item historyLabel="aud_codec.c" index="0">
-<position info="not_deleted" x="1650" y="0"/>
-</item>
-<item historyLabel="hello_world_small.c" index="1">
-<position/>
-</item>
-<item historyLabel="aud_codec.c" index="0">
-<position info="not_deleted" x="1913" y="0"/>
-</item>
-<item historyLabel="hello_world_small.c" index="1">
-<position info="not_deleted" x="3854" y="0"/>
-</item>
-<item historyLabel="i2c.c" index="3">
-<position info="not_deleted" x="3046" y="0"/>
-</item>
-<item historyLabel="hello_world_small.c" index="1">
-<position info="not_deleted" x="3703" y="0"/>
-</item>
-<item historyLabel="ledos.c" index="6">
-<position info="not_deleted" x="1278" y="0"/>
-</item>
-<item historyLabel="aud_codec.h" index="2">
-<position info="not_deleted" x="8542" y="24"/>
-</item>
-<item historyLabel="aud_codec.c" index="0">
-<position info="not_deleted" x="2580" y="14"/>
-</item>
-<item historyLabel="hello_world_small.c" index="1">
-<position info="not_deleted" x="3700" y="0"/>
-</item>
-<item historyLabel="ledos.c" index="6">
-<position info="not_deleted" x="1315" y="0"/>
-</item>
-<item historyLabel="hello_world_small.c" index="1">
-<position info="not_deleted" x="3700" y="0"/>
-</item>
-<item historyLabel="aud_codec.c" index="0">
-<position info="not_deleted" x="2580" y="14"/>
-</item>
-<item historyLabel="hello_world_small.c" index="1">
-<position info="not_deleted" x="3713" y="0"/>
-</item>
-<item historyLabel="aud_codec.c" index="0">
-<position info="not_deleted" x="1821" y="0"/>
-</item>
-<item historyLabel="hello_world_small.c" index="1">
-<position info="not_deleted" x="3709" y="0"/>
-</item>
-<item historyLabel="i2c.c" index="3">
-<position info="not_deleted" x="3916" y="0"/>
-</item>
-<item historyLabel="i2c.h" index="4">
-<position info="not_deleted" x="2480" y="19"/>
-</item>
-<item historyLabel="i2c.c" index="3">
-<position info="not_deleted" x="3916" y="0"/>
-</item>
-<item historyLabel="i2c.h" index="4">
-<position info="not_deleted" x="2480" y="19"/>
-</item>
-<item historyLabel="cortex.c" index="5">
-<position info="not_deleted" x="1330" y="0"/>
-</item>
-<item historyLabel="i2c.c" index="3">
-<position info="not_deleted" x="2239" y="0"/>
-</item>
-<item historyLabel="i2c.h" index="4">
-<position info="not_deleted" x="2790" y="0"/>
-</item>
-<item historyLabel="i2c.c" index="3">
-<position info="not_deleted" x="2239" y="0"/>
-</item>
-<item historyLabel="cortex.c" index="5">
-<position info="not_deleted" x="1330" y="0"/>
-</item>
-<item historyLabel="i2c.h" index="4">
-<position info="not_deleted" x="2468" y="0"/>
-</item>
-<item historyLabel="cortex.c" index="5">
-<position info="not_deleted" x="1330" y="0"/>
-</item>
-<item historyLabel="i2c.h" index="4">
-<position info="not_deleted" x="2468" y="0"/>
-</item>
-<item historyLabel="aud_codec.c" index="0">
-<position info="not_deleted" x="1821" y="0"/>
-</item>
-<item historyLabel="i2c.h" index="4">
-<position/>
-</item>
-<item historyLabel="i2c.c" index="3">
-<position info="not_deleted" x="2239" y="0"/>
-</item>
-<item historyLabel="i2c.h" index="4">
-<position/>
-</item>
-<item historyLabel="i2c.c" index="3">
-<position info="not_deleted" x="4008" y="0"/>
-</item>
-<item historyLabel="aud_codec.c" index="0">
-<position info="not_deleted" x="1821" y="0"/>
-</item>
-<item historyLabel="aud_codec.h" index="2">
-<position info="not_deleted" x="8542" y="24"/>
-</item>
-<item historyLabel="i2c.h" index="4">
-<position info="not_deleted" x="3678" y="52"/>
-</item>
-<item historyLabel="i2c.c" index="3">
-<position info="not_deleted" x="4008" y="0"/>
-</item>
-<item historyLabel="i2c.c" index="3">
-<position info="not_deleted" x="4264" y="0"/>
-</item>
-<item historyLabel="i2c.c" index="3">
-<position info="not_deleted" x="4260" y="0"/>
-</item>
-<item historyLabel="i2c.c" index="3">
-<position info="not_deleted" x="4215" y="0"/>
-</item>
-<item historyLabel="i2c.c" index="3">
-<position info="not_deleted" x="4081" y="17"/>
-</item>
-<item historyLabel="aud_codec.c" index="0">
-<position info="not_deleted" x="1821" y="0"/>
-</item>
-<item historyLabel="aud_codec.c" index="0">
-<position info="not_deleted" x="1590" y="0"/>
-</item>
-<item historyLabel="hello_world_small.c" index="1">
-<position info="not_deleted" x="3740" y="0"/>
-</item>
-<item historyLabel="i2c.c" index="3">
-<position info="not_deleted" x="3451" y="0"/>
-</item>
-<item historyLabel="i2c.h" index="4">
-<position info="not_deleted" x="3678" y="52"/>
-</item>
-<item historyLabel="i2c.c" index="3">
-<position info="not_deleted" x="3869" y="0"/>
-</item>
-<item active="true" historyLabel="hello_world_small.c" index="7">
-<position info="not_deleted" x="3740" y="0"/>
-</item>
-</navigationHistory>
+<navigationHistory/>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
 </page>
 <workbenchWindowAdvisor/>
 <actionBarAdvisor/>
 <trimLayout>
+<trimArea IMemento.internal.id="16384">
+<trimItem IMemento.internal.id="topLeft"/>
+</trimArea>
+<trimArea IMemento.internal.id="131072">
+<trimItem IMemento.internal.id="org.eclipse.ui.editorss"/>
+<trimItem IMemento.internal.id="topRight"/>
+</trimArea>
 <trimArea IMemento.internal.id="128">
 <trimItem IMemento.internal.id="org.eclipse.ui.internal.WorkbenchWindow.topBar"/>
 <trimItem IMemento.internal.id="org.eclipse.mylyn.tasks.ui.trim.container"/>
@@ -457,27 +300,31 @@
 <trimItem IMemento.internal.id="org.eclise.ui.internal.FastViewBar"/>
 <trimItem IMemento.internal.id="org.eclipse.jface.action.StatusLineManager"/>
 <trimItem IMemento.internal.id="org.eclipse.ui.internal.progress.ProgressRegion"/>
+<trimItem IMemento.internal.id="bottom"/>
 </trimArea>
 </trimLayout>
 </window>
 <mruList>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="ledos.c" tooltip="ledos_main/ledos/ledos.c">
-<persistable path="/ledos_main/ledos/ledos.c"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="ssm2603_drvr.h" tooltip="ledos_main/ledos/cortex/acortex/ssm2603_drvr/ssm2603_drvr.h">
+<persistable path="/ledos_main/ledos/cortex/acortex/ssm2603_drvr/ssm2603_drvr.h"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="i2c.c" tooltip="ledos_main/ledos/cortex/acortex/i2c/i2c.c">
 <persistable path="/ledos_main/ledos/cortex/acortex/i2c/i2c.c"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="aud_codec.h" tooltip="ledos_main/ledos/aud_codec/aud_codec.h">
+<persistable path="/ledos_main/ledos/aud_codec/aud_codec.h"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="aud_codec.c" tooltip="ledos_main/ledos/aud_codec/aud_codec.c">
+<persistable path="/ledos_main/ledos/aud_codec/aud_codec.c"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="ledos.c" tooltip="ledos_main/ledos/ledos.c">
+<persistable path="/ledos_main/ledos/ledos.c"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="cortex.c" tooltip="ledos_main/ledos/cortex/cortex.c">
 <persistable path="/ledos_main/ledos/cortex/cortex.c"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="i2c.h" tooltip="ledos_main/ledos/cortex/acortex/i2c/i2c.h">
 <persistable path="/ledos_main/ledos/cortex/acortex/i2c/i2c.h"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="aud_codec.c" tooltip="ledos_main/ledos/aud_codec/aud_codec.c">
-<persistable path="/ledos_main/ledos/aud_codec/aud_codec.c"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="aud_codec.h" tooltip="ledos_main/ledos/aud_codec/aud_codec.h">
-<persistable path="/ledos_main/ledos/aud_codec/aud_codec.h"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="ledos.h" tooltip="ledos_main/ledos/ledos.h">
 <persistable path="/ledos_main/ledos/ledos.h"/>
@@ -493,9 +340,6 @@
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="hello_world_small.c" tooltip="ledos_main/hello_world_small.c">
 <persistable path="/ledos_main/hello_world_small.c"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="ssm2603_drvr.h" tooltip="ledos_main/ledos/cortex/acortex/ssm2603_drvr/ssm2603_drvr.h">
-<persistable path="/ledos_main/ledos/cortex/acortex/ssm2603_drvr/ssm2603_drvr.h"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="acortex.h" tooltip="ledos_main/ledos/cortex/acortex/acortex.h">
 <persistable path="/ledos_main/ledos/cortex/acortex/acortex.h"/>

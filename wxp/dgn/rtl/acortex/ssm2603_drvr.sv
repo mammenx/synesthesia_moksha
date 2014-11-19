@@ -59,14 +59,14 @@ module ssm2603_drvr #(
   output  reg                 lb_rd_valid,
   output  reg [LB_DATA_W-1:0] lb_rd_data,
 
-  output  reg                 adc_pcm_valid,
-  output  reg [31:0]          adc_lpcm_data,
-  output  reg [31:0]          adc_rpcm_data,
+  output  reg                 adc_pcm_valid/*synthesis preserve*/,
+  output  reg [31:0]          adc_lpcm_data/*synthesis preserve*/,
+  output  reg [31:0]          adc_rpcm_data/*synthesis preserve*/,
 
-  input                       dac_data_rdy,
-  output  reg                 dac_pcm_nxt,
-  input   [31:0]              dac_lpcm_data,
-  input   [31:0]              dac_rpcm_data,
+  input                       dac_data_rdy/*synthesis keep*/,
+  output  reg                 dac_pcm_nxt/*synthesis preserve*/,
+  input   [31:0]              dac_lpcm_data/*synthesis keep*/,
+  input   [31:0]              dac_rpcm_data/*synthesis keep*/,
 
   input                       AUD_ADCDAT,
   output  reg                 AUD_ADCLRCK,

@@ -126,8 +126,7 @@ I2C_RES	i2c_xtn_read(alt_u8 addr, alt_u8 *bffr, alt_u8 num_bytes, alt_u8 start, 
 	}
 
 	for(i=0; i<num_bytes;i++)	{
-	//for(i=0; i<4;i++)	{
-		alt_printf("[i2c_xtn_read] Cache[0x%x] : 0x%x\n",i,IORD_I2C_DATA_CACHE(i));
+		//alt_printf("[i2c_xtn_read] Cache[0x%x] : 0x%x\n",i,IORD_I2C_DATA_CACHE(i));
 		bffr[i]	=	IORD_I2C_DATA_CACHE(i)	&	0xff;
 	}
 
