@@ -98,6 +98,7 @@ module i2c_master #(
 
   wire                        sda_i/*synthesis keep*/;
 
+  wire  [(I2C_MAX_DATA_BYTES*8)-1:0]  data_cache_packed_w;
 
   genvar  i,j;
 
@@ -176,9 +177,9 @@ enum  logic [2:0] { IDLE_S  = 3'd0,
       begin
         i2c_init              <=  0;
 
-        if(i2c_rd_n_wr  & (fsm_pstate ==  DATA_S) & tck_by_2_valid)
+        if(i2c_rd_n_wr  & (fsm_pstate ==  DATA_S) & tck_by_2_valid  & scl)
         begin
-          data_cache[data_cntr_bytes  - 1'b1] <=  {data_cache[data_cntr_bytes - 1'b1][6:1],sda_i};
+          data_cache[data_cntr_bytes  - 1'b1] <=  {data_cache[data_cntr_bytes - 1'b1][6:0],sda_i};
         end
       end
 
@@ -212,6 +213,14 @@ enum  logic [2:0] { IDLE_S  = 3'd0,
       lb_rd_valid             <=  lb_rd_en;
     end
   end
+
+
+  generate
+    for(i=0;i<I2C_MAX_DATA_BYTES;i++)
+    begin : data_cache_packed_gen
+      assign  data_cache_packed_w[(i*8) +:  8]  = data_cache[i];
+    end
+  endgenerate
 
 
   /*  Synchronize SDA Line input */
@@ -456,6 +465,8 @@ endmodule // i2c_master
  
 
  -- <Log>
+
+[19-11-2014  10:47:22 PM][mammenx] Fixed data_cache bug during I2C reads
 
 [11-11-2014  12:47:57 AM][mammenx] Fixed synthesis errors
 
