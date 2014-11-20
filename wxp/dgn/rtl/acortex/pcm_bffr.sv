@@ -88,24 +88,28 @@ module pcm_bffr #(
 
 
 //----------------------- Internal Register Declarations ------------------
-  reg                         bffr_mode;
+  reg                         bffr_mode/*synthesis keep*/;
   reg                         cap_done;
 
   reg                         adc_pcm_valid_1d;
   reg                         dac_data_rdy_1d;
   reg                         dac_pcm_nxt_1d,dac_pcm_nxt_2d;
   reg                         fwft_refresh,fwft_refresh_1d;
-  reg     [MEM_ADDR_W-1:0]    pcm_raddr,pcm_waddr;
-  reg                         bffr_a_n_b_sel;
+  reg     [MEM_ADDR_W-1:0]    pcm_raddr/*synthesis keep*/;
+  reg     [MEM_ADDR_W-1:0]    pcm_waddr/*synthesis keep*/;
+  reg                         bffr_a_n_b_sel/*synthesis keep*/;
   reg     [MEM_RD_DELAY-1:0]  mem_rd_del_vec;
 
 //----------------------- Internal Wire Declarations ----------------------
   wire                        adc_pcm_valid_extended;
   wire                        dac_pcm_nxt_extended;
-  wire    [31:0]              pcm_mem_wdata;
+  wire    [31:0]              pcm_mem_wdata/*synthesis keep*/;
   wire                        switch_banks;
-  wire    [31:0]              bffr_a_pcm_mem_rdata,bffr_b_pcm_mem_rdata,bffr_pcm_rdata;
-  wire                        bffr_a_wr_en,bffr_b_wr_en;
+  wire    [31:0]              bffr_a_pcm_mem_rdata/*synthesis keep*/;
+  wire    [31:0]              bffr_b_pcm_mem_rdata/*synthesis keep*/;
+  wire    [31:0]              bffr_pcm_rdata;
+  wire                        bffr_a_wr_en/*synthesis keep*/;
+  wire                        bffr_b_wr_en/*synthesis keep*/;
 
 
 //----------------------- Internal Interface Declarations -----------------
@@ -171,7 +175,7 @@ module pcm_bffr #(
 
           PCM_BFFR_CAP_DATA_REG_ADDR  :
           begin
-            lb_rd_data        <=  bffr_pcm_rdata;
+            lb_rd_data        <=  bffr_a_pcm_mem_rdata;
           end
 
           default :

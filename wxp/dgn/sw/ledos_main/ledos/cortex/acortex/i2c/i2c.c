@@ -67,7 +67,7 @@ I2C_RES	i2c_xtn_write(alt_u8 addr, alt_u8 *data, alt_u8 num_bytes, alt_u8 start,
 	alt_u32 i,fsm;
 
 	if(num_bytes > I2C_MAX_XTN_LEN)	{
-		alt_printf("[i2c_xtn_write] ERROR num_bytes(0x%x) > I2C_MAX_XTN_LEN(0x%x)\n",num_bytes,I2C_MAX_XTN_LEN);
+		alt_printf("[i2c_xtn_write] ERROR num_bytes(0x%x) > I2C_MAX_XTN_LEN(0x%x)\r\n",num_bytes,I2C_MAX_XTN_LEN);
 		return I2C_ERROR;
 	}
 
@@ -96,7 +96,7 @@ I2C_RES	i2c_xtn_write(alt_u8 addr, alt_u8 *data, alt_u8 num_bytes, alt_u8 start,
 	}
 
 	if(IORD_I2C_STATUS	&	I2C_NACK_DET_MSK){
-		alt_printf("[i2c_xtn_write] NACK Detected : 0x%x\n",IORD_I2C_STATUS);
+		alt_printf("[i2c_xtn_write] NACK Detected : 0x%x\r\n",IORD_I2C_STATUS);
 		return I2C_NACK_DETECTED;
 	}
 
@@ -108,7 +108,7 @@ I2C_RES	i2c_xtn_read(alt_u8 addr, alt_u8 *bffr, alt_u8 num_bytes, alt_u8 start, 
 	alt_u32 i;
 
 	if(num_bytes > I2C_MAX_XTN_LEN)	{
-		alt_printf("[i2c_xtn_write] ERROR num_bytes(0x%x) > I2C_MAX_XTN_LEN(0x%x)\n",num_bytes,I2C_MAX_XTN_LEN);
+		alt_printf("[i2c_xtn_write] ERROR num_bytes(0x%x) > I2C_MAX_XTN_LEN(0x%x)\r\n",num_bytes,I2C_MAX_XTN_LEN);
 		return I2C_ERROR;
 	}
 
@@ -121,7 +121,7 @@ I2C_RES	i2c_xtn_read(alt_u8 addr, alt_u8 *bffr, alt_u8 num_bytes, alt_u8 start, 
 	}
 
 	if(IORD_I2C_STATUS	&	I2C_NACK_DET_MSK){
-		alt_printf("[i2c_xtn_read] NACK Detected : 0x%x\n",IORD_I2C_STATUS);
+		alt_printf("[i2c_xtn_read] NACK Detected : 0x%x\r\n",IORD_I2C_STATUS);
 		return I2C_NACK_DETECTED;
 	}
 

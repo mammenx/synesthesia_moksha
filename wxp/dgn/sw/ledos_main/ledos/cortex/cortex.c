@@ -31,7 +31,8 @@
 #include "cortex.h"
 
 void init_cortex()	{
+	IOWR_RESET_CNTRL(0x0);
 	IOWR_RESET_CNTRL(0xf);
 
-	configure_i2c_clk(255);
+	init_acortex();
 }

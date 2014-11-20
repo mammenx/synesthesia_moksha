@@ -152,6 +152,15 @@ ELF_PATCH_FLAG  += --simulation_enabled false
 # Small-footprint (polled mode) driver none 
 # setting altera_avalon_jtag_uart_driver.enable_small_driver is false
 
+# Enable driver ioctl() support. This feature is not compatible with the 
+# 'small' driver; ioctl() support will not be compiled if either the UART 
+# 'enable_small_driver' or HAL 'enable_reduced_device_drivers' settings are 
+# enabled. none 
+# setting altera_avalon_uart_driver.enable_ioctl is false
+
+# Small-footprint (polled mode) driver none 
+# setting altera_avalon_uart_driver.enable_small_driver is false
+
 # Build a custom version of newlib with the specified space-separated compiler 
 # flags. The custom newlib build will be placed in the &lt;bsp root>/newlib 
 # directory, and will be used only for applications that utilize this BSP. 

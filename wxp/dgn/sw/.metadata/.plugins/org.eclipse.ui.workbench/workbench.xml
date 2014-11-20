@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<workbench progressCount="35" version="2.0">
+<workbench progressCount="34" version="2.0">
 <workbenchAdvisor/>
 <window height="728" maximized="true" width="1024" x="50" y="0">
 <fastViewData fastViewLocation="1024"/>
@@ -44,9 +44,7 @@
 <view id="org.eclipse.ui.views.ProblemView" partName="Problems">
 <viewState PRIMARY_SORT_FIELD="org.eclipse.ui.ide.severityAndDescriptionField" categoryGroup="org.eclipse.ui.ide.severity" markerContentGenerator="org.eclipse.ui.ide.problemsGenerator" partName="Problems">
 <expanded>
-<category IMemento.internal.id="Errors (100 of 150 items)"/>
-<category IMemento.internal.id="Warnings"/>
-<category IMemento.internal.id="Errors"/>
+<category IMemento.internal.id="Warnings (9 items)"/>
 </expanded>
 <columnWidths org.eclipse.ui.ide.locationField="75" org.eclipse.ui.ide.markerType="75" org.eclipse.ui.ide.pathField="100" org.eclipse.ui.ide.resourceField="75" org.eclipse.ui.ide.severityAndDescriptionField="250"/>
 <visible IMemento.internal.id="org.eclipse.ui.ide.severityAndDescriptionField"/>
@@ -249,12 +247,12 @@
 </info>
 <info part="org.eclipse.ui.editorss" ratio="0.25" ratioLeft="250" ratioRight="750" relationship="2" relative="topLeft"/>
 <info folder="true" part="bottom" ratio="0.6903226" ratioLeft="428" ratioRight="192" relationship="4" relative="org.eclipse.ui.editorss">
-<folder activePageID="com.altera.sbtgui.launch.hardware.ByteStreamConsoleView:USB-Blaster on localhost [USB-0].1.0" appearance="2" expanded="2">
+<folder activePageID="org.eclipse.ui.console.ConsoleView" appearance="2" expanded="2">
 <page content="org.eclipse.ui.views.ProblemView" label="Problems"/>
 <page content="org.eclipse.ui.views.TaskList" label="Tasks"/>
 <page content="org.eclipse.ui.console.ConsoleView" label="Console"/>
 <page content="org.eclipse.ui.views.PropertySheet" label="Properties"/>
-<page content="com.altera.sbtgui.launch.hardware.ByteStreamConsoleView:USB-Blaster on localhost [USB-0].1.0" label="Nios II Console"/>
+<page content="com.altera.sbtgui.launch.hardware.ByteStreamConsoleView:USB-Blaster on localhost [USB-0].1.0" label="LabelNotFound"/>
 <page content="com.altera.sbtgui.launch.hardware.ByteStreamConsoleView:*" label="LabelNotFound"/>
 <page content="com.altera.sbtgui.launch.hardware.ByteStreamConsoleView" label="LabelNotFound"/>
 <presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
@@ -262,7 +260,6 @@
 <part id="1"/>
 <part id="2"/>
 <part id="3"/>
-<part id="4"/>
 </presentation>
 </folder>
 </info>
@@ -289,7 +286,6 @@
 <trimItem IMemento.internal.id="topLeft"/>
 </trimArea>
 <trimArea IMemento.internal.id="131072">
-<trimItem IMemento.internal.id="org.eclipse.ui.editorss"/>
 <trimItem IMemento.internal.id="topRight"/>
 </trimArea>
 <trimArea IMemento.internal.id="128">
@@ -305,23 +301,41 @@
 </trimLayout>
 </window>
 <mruList>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="ssm2603_drvr.h" tooltip="ledos_main/ledos/cortex/acortex/ssm2603_drvr/ssm2603_drvr.h">
-<persistable path="/ledos_main/ledos/cortex/acortex/ssm2603_drvr/ssm2603_drvr.h"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="i2c.c" tooltip="ledos_main/ledos/cortex/acortex/i2c/i2c.c">
-<persistable path="/ledos_main/ledos/cortex/acortex/i2c/i2c.c"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="aud_codec.h" tooltip="ledos_main/ledos/aud_codec/aud_codec.h">
-<persistable path="/ledos_main/ledos/aud_codec/aud_codec.h"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="aud_codec.c" tooltip="ledos_main/ledos/aud_codec/aud_codec.c">
-<persistable path="/ledos_main/ledos/aud_codec/aud_codec.c"/>
-</file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="ledos.c" tooltip="ledos_main/ledos/ledos.c">
 <persistable path="/ledos_main/ledos/ledos.c"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="cortex.c" tooltip="ledos_main/ledos/cortex/cortex.c">
 <persistable path="/ledos_main/ledos/cortex/cortex.c"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="acortex.c" tooltip="ledos_main/ledos/cortex/acortex/acortex.c">
+<persistable path="/ledos_main/ledos/cortex/acortex/acortex.c"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="ssm2603_drvr.c" tooltip="ledos_main/ledos/cortex/acortex/ssm2603_drvr/ssm2603_drvr.c">
+<persistable path="/ledos_main/ledos/cortex/acortex/ssm2603_drvr/ssm2603_drvr.c"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="pcm_bffr.c" tooltip="ledos_main/ledos/cortex/acortex/pcm_bffr/pcm_bffr.c">
+<persistable path="/ledos_main/ledos/cortex/acortex/pcm_bffr/pcm_bffr.c"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="i2c.c" tooltip="ledos_main/ledos/cortex/acortex/i2c/i2c.c">
+<persistable path="/ledos_main/ledos/cortex/acortex/i2c/i2c.c"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="aud_codec.c" tooltip="ledos_main/ledos/aud_codec/aud_codec.c">
+<persistable path="/ledos_main/ledos/aud_codec/aud_codec.c"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="pcm_bffr.h" tooltip="ledos_main/ledos/cortex/acortex/pcm_bffr/pcm_bffr.h">
+<persistable path="/ledos_main/ledos/cortex/acortex/pcm_bffr/pcm_bffr.h"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="acortex.h" tooltip="ledos_main/ledos/cortex/acortex/acortex.h">
+<persistable path="/ledos_main/ledos/cortex/acortex/acortex.h"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="ssm2603_drvr.h" tooltip="ledos_main/ledos/cortex/acortex/ssm2603_drvr/ssm2603_drvr.h">
+<persistable path="/ledos_main/ledos/cortex/acortex/ssm2603_drvr/ssm2603_drvr.h"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="aud_codec.h" tooltip="ledos_main/ledos/aud_codec/aud_codec.h">
+<persistable path="/ledos_main/ledos/aud_codec/aud_codec.h"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="hello_world_small.c" tooltip="ledos_main/hello_world_small.c">
+<persistable path="/ledos_main/hello_world_small.c"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="i2c.h" tooltip="ledos_main/ledos/cortex/acortex/i2c/i2c.h">
 <persistable path="/ledos_main/ledos/cortex/acortex/i2c/i2c.h"/>
@@ -331,24 +345,6 @@
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="rst_cntrl.h" tooltip="ledos_main/ledos/cortex/rst_cntrl/rst_cntrl.h">
 <persistable path="/ledos_main/ledos/cortex/rst_cntrl/rst_cntrl.h"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="rst_cntrl.h" tooltip="ledos_main/ledos/cortex/acortex/rst_cntrl/rst_cntrl.h">
-<persistable path="/ledos_main/ledos/cortex/acortex/rst_cntrl/rst_cntrl.h"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="cortex.h" tooltip="ledos_main/ledos/cortex/cortex.h">
-<persistable path="/ledos_main/ledos/cortex/cortex.h"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="hello_world_small.c" tooltip="ledos_main/hello_world_small.c">
-<persistable path="/ledos_main/hello_world_small.c"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="acortex.h" tooltip="ledos_main/ledos/cortex/acortex/acortex.h">
-<persistable path="/ledos_main/ledos/cortex/acortex/acortex.h"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="system.h" tooltip="limbus_bsp/system.h">
-<persistable path="/limbus_bsp/system.h"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="pcm_bffr.c" tooltip="ledos_main/ledos/cortex/acortex/pcm_bffr/pcm_bffr.c">
-<persistable path="/ledos_main/ledos/cortex/acortex/pcm_bffr/pcm_bffr.c"/>
 </file>
 </mruList>
 </workbench>

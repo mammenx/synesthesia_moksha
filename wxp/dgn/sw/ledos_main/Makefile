@@ -149,6 +149,7 @@ C_SRCS += ledos/cortex/acortex/pcm_bffr/pcm_bffr.c
 C_SRCS += ledos/cortex/acortex/ssm2603_drvr/ssm2603_drvr.c
 C_SRCS += ledos/cortex/cortex.c
 C_SRCS += ledos/ledos.c
+C_SRCS += ledos/cortex/acortex/acortex.c
 CXX_SRCS :=
 ASM_SRCS :=
 

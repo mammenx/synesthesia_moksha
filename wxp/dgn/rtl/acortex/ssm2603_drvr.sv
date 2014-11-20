@@ -59,12 +59,12 @@ module ssm2603_drvr #(
   output  reg                 lb_rd_valid,
   output  reg [LB_DATA_W-1:0] lb_rd_data,
 
-  output  reg                 adc_pcm_valid/*synthesis preserve*/,
-  output  reg [31:0]          adc_lpcm_data/*synthesis preserve*/,
-  output  reg [31:0]          adc_rpcm_data/*synthesis preserve*/,
+  output  reg                 adc_pcm_valid/*synthesis keep*/,
+  output  reg [31:0]          adc_lpcm_data/*synthesis keep*/,
+  output  reg [31:0]          adc_rpcm_data/*synthesis keep*/,
 
   input                       dac_data_rdy/*synthesis keep*/,
-  output  reg                 dac_pcm_nxt/*synthesis preserve*/,
+  output  reg                 dac_pcm_nxt/*synthesis keep*/,
   input   [31:0]              dac_lpcm_data/*synthesis keep*/,
   input   [31:0]              dac_rpcm_data/*synthesis keep*/,
 
@@ -124,7 +124,7 @@ module ssm2603_drvr #(
                       LCHANNEL_S,
                       RCHANNEL_S,
                       WAIT_FOR_FS_S  
-                    }  fsm_pstate, next_state;
+                    }  fsm_pstate/*synthesis keep*/, next_state;
 
 
   genvar  i;

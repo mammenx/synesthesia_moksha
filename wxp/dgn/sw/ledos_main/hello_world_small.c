@@ -88,6 +88,10 @@ int main()
 
   init_ledos();
 
+
+  pcm_cap(FS_44KHZ,BPS_16);
+
+  dump_drvr_regs();
   aud_codec_dump_regs();
 
 

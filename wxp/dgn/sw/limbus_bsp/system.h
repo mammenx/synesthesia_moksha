@@ -4,7 +4,7 @@
  * Machine generated for CPU 'cpu' in SOPC Builder design 'limbus'
  * SOPC Builder design path: ../../syn/limbus.sopcinfo
  *
- * Generated: Wed Nov 19 23:41:00 IST 2014
+ * Generated: Thu Nov 20 18:25:47 IST 2014
  */
 
 /*
@@ -125,6 +125,7 @@
 
 #define __ALTERA_AVALON_JTAG_UART
 #define __ALTERA_AVALON_TIMER
+#define __ALTERA_AVALON_UART
 #define __ALTERA_GENERIC_TRISTATE_CONTROLLER
 #define __ALTERA_NIOS2_QSYS
 #define __CORTEX
@@ -146,19 +147,19 @@
 #define ALT_NUM_INTERNAL_INTERRUPT_CONTROLLERS 1
 #define ALT_NUM_INTERRUPT_CONTROLLERS 1
 #define ALT_STDERR "/dev/jtag_uart_0"
-#define ALT_STDERR_BASE 0x201028
+#define ALT_STDERR_BASE 0x201048
 #define ALT_STDERR_DEV jtag_uart_0
 #define ALT_STDERR_IS_JTAG_UART
 #define ALT_STDERR_PRESENT
 #define ALT_STDERR_TYPE "altera_avalon_jtag_uart"
 #define ALT_STDIN "/dev/jtag_uart_0"
-#define ALT_STDIN_BASE 0x201028
+#define ALT_STDIN_BASE 0x201048
 #define ALT_STDIN_DEV jtag_uart_0
 #define ALT_STDIN_IS_JTAG_UART
 #define ALT_STDIN_PRESENT
 #define ALT_STDIN_TYPE "altera_avalon_jtag_uart"
 #define ALT_STDOUT "/dev/jtag_uart_0"
-#define ALT_STDOUT_BASE 0x201028
+#define ALT_STDOUT_BASE 0x201048
 #define ALT_STDOUT_DEV jtag_uart_0
 #define ALT_STDOUT_IS_JTAG_UART
 #define ALT_STDOUT_PRESENT
@@ -234,7 +235,7 @@
  */
 
 #define ALT_MODULE_CLASS_jtag_uart_0 altera_avalon_jtag_uart
-#define JTAG_UART_0_BASE 0x201028
+#define JTAG_UART_0_BASE 0x201048
 #define JTAG_UART_0_IRQ 0
 #define JTAG_UART_0_IRQ_INTERRUPT_CONTROLLER_ID 0
 #define JTAG_UART_0_NAME "/dev/jtag_uart_0"
@@ -271,7 +272,7 @@
 
 #define ALT_MODULE_CLASS_timer_0 altera_avalon_timer
 #define TIMER_0_ALWAYS_RUN 0
-#define TIMER_0_BASE 0x201000
+#define TIMER_0_BASE 0x201020
 #define TIMER_0_COUNTER_SIZE 32
 #define TIMER_0_FIXED_PERIOD 0
 #define TIMER_0_FREQ 100000000
@@ -288,5 +289,30 @@
 #define TIMER_0_TICKS_PER_SEC 1000.0
 #define TIMER_0_TIMEOUT_PULSE_OUTPUT 0
 #define TIMER_0_TYPE "altera_avalon_timer"
+
+
+/*
+ * uart configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_uart altera_avalon_uart
+#define UART_BASE 0x201000
+#define UART_BAUD 115200
+#define UART_DATA_BITS 8
+#define UART_FIXED_BAUD 1
+#define UART_FREQ 100000000
+#define UART_IRQ 3
+#define UART_IRQ_INTERRUPT_CONTROLLER_ID 0
+#define UART_NAME "/dev/uart"
+#define UART_PARITY 'N'
+#define UART_SIM_CHAR_STREAM ""
+#define UART_SIM_TRUE_BAUD 0
+#define UART_SPAN 32
+#define UART_STOP_BITS 1
+#define UART_SYNC_REG_DEPTH 2
+#define UART_TYPE "altera_avalon_uart"
+#define UART_USE_CTS_RTS 0
+#define UART_USE_EOP_REGISTER 0
 
 #endif /* __SYSTEM_H_ */

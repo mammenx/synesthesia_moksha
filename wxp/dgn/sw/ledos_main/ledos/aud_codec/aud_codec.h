@@ -274,6 +274,32 @@
 #define	AUD_CODEC_NGTH_OFFST			3
 #define	AUD_CODEC_NGTH_IDX				0x12
 
+typedef enum	{
+	FS_8KHZ_SR		=	0x3,
+	FS_32KHZ_SR		=	0x6,
+	FS_44KHZ_SR		=	0x8,
+	FS_48KHZ_SR		=	0x0,
+	FS_88KHZ_SR		=	0xf,
+	FS_96KHZ_SR		=	0x7
+}SR_SEL;
+
+static const SR_SEL fs2sr_lookup[]	=	{
+		[FS_8KHZ]	=	FS_8KHZ_SR,
+		[FS_32KHZ]	=	FS_32KHZ_SR,
+		[FS_44KHZ]	=	FS_44KHZ_SR,
+		[FS_48KHZ]	=	FS_48KHZ_SR,
+		[FS_88KHZ]	=	FS_88KHZ_SR,
+		[FS_96KHZ]	=	FS_96KHZ_SR
+};
+
+static const SR_SEL fs2bosr_lookup[]	=	{
+		[FS_8KHZ]	=	0,
+		[FS_32KHZ]	=	0,
+		[FS_44KHZ]	=	1,
+		[FS_48KHZ]	=	0,
+		[FS_88KHZ]	=	1,
+		[FS_96KHZ]	=	0
+};
 
 //Buffer for storing I2C read/write data
 #define	AUD_CODEC_I2C_BFFR_SIZE			2

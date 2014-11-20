@@ -60,3 +60,10 @@ void configure_drvr_fs_div(FS_DIV_T val)	{
 void configure_drvr_bclk_div(BCLK_DIV_T val)	{
 	IOWR_SSM2603_DRVR_BCLK_DIV(val);
 }
+
+void dump_drvr_regs()	{
+	alt_printf("[dump_drvr_regs] SSM2603_DRVR_CONFIG_REG   : 0x%x\r\n",IORD_SSM2603_DRVR_CONFIG);
+	alt_printf("[dump_drvr_regs] SSM2603_DRVR_STATUS_REG   : 0x%x\r\n",IORD_SSM2603_DRVR_STATUS);
+	alt_printf("[dump_drvr_regs] SSM2603_DRVR_BCLK_DIV_REG : 0x%x\r\n",IORD_SSM2603_DRVR_BCLK_DIV);
+	alt_printf("[dump_drvr_regs] SSM2603_DRVR_FS_VAL_REG   : 0x%x\r\n",IORD_SSM2603_DRVR_FS_VAL);
+}

@@ -202,7 +202,10 @@ wire  [31:0]      cortex_lb_rd_data/*synthesis keep*/;
 
     /*  output wire         */  .cortex_reset_reset_n(cortex_rst_n),
 
-		/*  input  wire         */  .cortex_irq_irq(0)
+    /*  input  wire         */  .cortex_irq_irq(0),
+
+    /*  input  wire         */  .uart_rxd(UART_RX),
+    /*  output wire         */  .uart_txd(UART_TX)
 
   );
 

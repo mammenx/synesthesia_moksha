@@ -79,6 +79,16 @@
 #endif /* SSM2603_DRVR_H_ */
 
 
+typedef	enum	{
+	FS_8KHZ,
+	FS_32KHZ,
+	FS_44KHZ,
+	FS_48KHZ,
+	FS_88KHZ,
+	FS_96KHZ
+}FS_T;
+
+
 typedef enum	{	//	==	ACORTEX_FREQ(100MHz) / BCLK_FREQ
 	BCLK_DIV_10MHZ	=	10
 }BCLK_DIV_T;
@@ -91,6 +101,15 @@ typedef	enum	{	//	==	BCLK_FREQ(10MHz)	/	FS
 	FS_DIV_88KHZ	=	114,
 	FS_DIV_96KHZ	=	104
 }FS_DIV_T;
+
+static const FS_DIV_T fs2fs_div_lookup[]	=	{
+		[FS_8KHZ]	=	FS_DIV_8KHZ,
+		[FS_32KHZ]	=	FS_DIV_32KHZ,
+		[FS_44KHZ]	=	FS_DIV_44KHZ,
+		[FS_48KHZ]	=	FS_DIV_48KHZ,
+		[FS_88KHZ]	=	FS_DIV_88KHZ,
+		[FS_96KHZ]	=	FS_DIV_96KHZ
+};
 
 typedef	enum	{
 	BPS_16	=	0,
@@ -106,3 +125,4 @@ void enable_adc_drvr();
 void configure_drvr_bps(BPS_T val);
 void configure_drvr_fs_div(FS_DIV_T val);
 void configure_drvr_bclk_div(BCLK_DIV_T val);
+void dump_drvr_regs();

@@ -76,9 +76,19 @@ void aud_codec_reset()	{
 void aud_codec_init()	{
 	aud_codec_reset();
 
+	aud_codec_update_field(0,AUD_CODEC_PWROFF_IDX,AUD_CODEC_PWROFF_OFFST,AUD_CODEC_PWROFF_MSK);
+	aud_codec_update_field(0,AUD_CODEC_LINEINPD_IDX,AUD_CODEC_LINEINPD_OFFST,AUD_CODEC_LINEINPD_MSK);
+
+	/* Configure misc settings */
 	aud_codec_update_iwl(BPS_16);
 	aud_codec_update_field(1,AUD_CODEC_LRP_IDX,AUD_CODEC_LRP_OFFST,AUD_CODEC_LRP_MSK);
 	aud_codec_update_field(3,AUD_CODEC_FORMAT_IDX,AUD_CODEC_FORMAT_OFFST,AUD_CODEC_FORMAT_MSK);
+	aud_codec_update_field(1,AUD_CODEC_USB_NORM_IDX,AUD_CODEC_USB_NORM_OFFST,AUD_CODEC_USB_NORM_MSK);
+
+	/* Activate */
+	aud_codec_update_field(1,AUD_CODEC_ACTIVE_IDX,AUD_CODEC_ACTIVE_OFFST,AUD_CODEC_ACTIVE_MSK);
+
+	aud_codec_update_field(0,AUD_CODEC_OUTPD_IDX,AUD_CODEC_OUTPD_OFFST,AUD_CODEC_OUTPD_MSK);
 
 }
 
@@ -91,7 +101,7 @@ void aud_codec_dump_regs(){
 		switch(i) {
 			case AUD_CODEC_LEFT_LINE_IN_REG_IDX: {
 				if(aud_codec_read_reg(i))	{
-					alt_printf("[aud_codec_dump_regs] ERROR in reading codec register 0x%x\n",i);
+					alt_printf("[aud_codec_dump_regs] ERROR in reading codec register 0x%x\r\n",i);
 					return;
 				}
 				alt_printf("[0x%x] LEFT_LINE_IN REG - 0x%x\r\n",i,aud_codec_i2c_bffr.val);
@@ -103,7 +113,7 @@ void aud_codec_dump_regs(){
 
 			case AUD_CODEC_RIGHT_LINE_IN_REG_IDX: {
 				if(aud_codec_read_reg(i))	{
-					alt_printf("[aud_codec_dump_regs] ERROR in reading codec register 0x%x\n",i);
+					alt_printf("[aud_codec_dump_regs] ERROR in reading codec register 0x%x\r\n",i);
 					return;
 				}
 				alt_printf("[0x%x] RIGHT_LINE_IN REG - 0x%x\r\n",i,aud_codec_i2c_bffr.val);
@@ -115,7 +125,7 @@ void aud_codec_dump_regs(){
 
 			case AUD_CODEC_LEFT_HP_OUT_REG_IDX: {
 				if(aud_codec_read_reg(i))	{
-					alt_printf("[aud_codec_dump_regs] ERROR in reading codec register 0x%x\n",i);
+					alt_printf("[aud_codec_dump_regs] ERROR in reading codec register 0x%x\r\n",i);
 					return;
 				}
 				alt_printf("[0x%x] LEFT_HP_OUT REG - 0x%x\r\n",i,aud_codec_i2c_bffr.val);
@@ -126,7 +136,7 @@ void aud_codec_dump_regs(){
 
 			case AUD_CODEC_RIGHT_HP_OUT_REG_IDX: {
 				if(aud_codec_read_reg(i))	{
-					alt_printf("[aud_codec_dump_regs] ERROR in reading codec register 0x%x\n",i);
+					alt_printf("[aud_codec_dump_regs] ERROR in reading codec register 0x%x\r\n",i);
 					return;
 				}
 				alt_printf("[0x%x] RIGHT_HP_OUT REG - 0x%x\r\n",i,aud_codec_i2c_bffr.val);
@@ -137,7 +147,7 @@ void aud_codec_dump_regs(){
 
 			case AUD_CODEC_ANALOG_AUD_PATH_REG_IDX: {
 				if(aud_codec_read_reg(i))	{
-					alt_printf("[aud_codec_dump_regs] ERROR in reading codec register 0x%x\n",i);
+					alt_printf("[aud_codec_dump_regs] ERROR in reading codec register 0x%x\r\n",i);
 					return;
 				}
 				alt_printf("[0x%x] ANALOG_AUDIO_PATH REG - 0x%x\r\n",i,aud_codec_i2c_bffr.val);
@@ -147,13 +157,13 @@ void aud_codec_dump_regs(){
 				alt_printf("\tBYPASS    : 0x%x\r\n",AUD_CODEC_EXTRACT_FIELD(AUD_CODEC_BYPASS_OFFST,AUD_CODEC_BYPASS_MSK));
 				alt_printf("\tINSEL     : 0x%x\r\n",AUD_CODEC_EXTRACT_FIELD(AUD_CODEC_INSEL_OFFST,AUD_CODEC_INSEL_MSK));
 				alt_printf("\tMUTE MIC  : 0x%x\r\n",AUD_CODEC_EXTRACT_FIELD(AUD_CODEC_MUTE_MIC_OFFST,AUD_CODEC_MUTE_MIC_MSK));
-				alt_printf("\tMUTE BOOST: 0x%x\r\n",AUD_CODEC_EXTRACT_FIELD(AUD_CODEC_MIC_BOOST_OFFST,AUD_CODEC_MIC_BOOST_MSK));
+				alt_printf("\tMIC BOOST  : 0x%x\r\n",AUD_CODEC_EXTRACT_FIELD(AUD_CODEC_MIC_BOOST_OFFST,AUD_CODEC_MIC_BOOST_MSK));
 				continue;
 			}
 
 			case AUD_CODEC_DIGITAL_AUD_PATH_REG_IDX: {
 				if(aud_codec_read_reg(i))	{
-					alt_printf("[aud_codec_dump_regs] ERROR in reading codec register 0x%x\n",i);
+					alt_printf("[aud_codec_dump_regs] ERROR in reading codec register 0x%x\r\n",i);
 					return;
 				}
 				alt_printf("[0x%x] DIGITAL_AUDIO_PATH REG - 0x%x\r\n",i,aud_codec_i2c_bffr.val);
@@ -166,7 +176,7 @@ void aud_codec_dump_regs(){
 
 			case AUD_CODEC_POWER_DOWN_REG_IDX: {
 				if(aud_codec_read_reg(i))	{
-					alt_printf("[aud_codec_dump_regs] ERROR in reading codec register 0x%x\n",i);
+					alt_printf("[aud_codec_dump_regs] ERROR in reading codec register 0x%x\r\n",i);
 					return;
 				}
 				alt_printf("[0x%x] POWER_DOWN REG - 0x%x\r\n",i,aud_codec_i2c_bffr.val);
@@ -183,7 +193,7 @@ void aud_codec_dump_regs(){
 
 			case AUD_CODEC_DIGITAL_AUD_IF_FMT_REG_IDX: {
 				if(aud_codec_read_reg(i))	{
-					alt_printf("[aud_codec_dump_regs] ERROR in reading codec register 0x%x\n",i);
+					alt_printf("[aud_codec_dump_regs] ERROR in reading codec register 0x%x\r\n",i);
 					return;
 				}
 				alt_printf("[0x%x] DIGITAL_AUD_INTF_FMT REG - 0x%x\r\n",i,aud_codec_i2c_bffr.val);
@@ -198,7 +208,7 @@ void aud_codec_dump_regs(){
 
 			case AUD_CODEC_SAMPLING_CTRL_REG_IDX: {
 				if(aud_codec_read_reg(i))	{
-					alt_printf("[aud_codec_dump_regs] ERROR in reading codec register 0x%x\n",i);
+					alt_printf("[aud_codec_dump_regs] ERROR in reading codec register 0x%x\r\n",i);
 					return;
 				}
 				alt_printf("[0x%x] SAMPLING_CNTRL REG - 0x%x\r\n",i,aud_codec_i2c_bffr.val);
@@ -212,7 +222,7 @@ void aud_codec_dump_regs(){
 
 			case AUD_CODEC_ACTIVE_CTRL_REG_IDX: {
 				if(aud_codec_read_reg(i))	{
-					alt_printf("[aud_codec_dump_regs] ERROR in reading codec register 0x%x\n",i);
+					alt_printf("[aud_codec_dump_regs] ERROR in reading codec register 0x%x\r\n",i);
 					return;
 				}
 				alt_printf("[0x%x] SAMPLING_CNTRL REG - 0x%x\r\n",i,aud_codec_i2c_bffr.val);
@@ -230,7 +240,7 @@ void aud_codec_dump_regs(){
 			switch(i) {
 				case AUD_CODEC_RESET_REG_IDX: {
 					if(aud_codec_read_reg(i))	{
-						alt_printf("[aud_codec_dump_regs] ERROR in reading codec register 0x%x\n",i);
+						alt_printf("[aud_codec_dump_regs] ERROR in reading codec register 0x%x\r\n",i);
 						return;
 					}
 					alt_printf("[0x%x] AUD_CODEC_RESET REG - 0x%x\r\n",i,aud_codec_i2c_bffr.val);
@@ -239,7 +249,7 @@ void aud_codec_dump_regs(){
 
 				case AUD_CODEC_ALC_CNTRL_1_REG_IDX: {
 					if(aud_codec_read_reg(i))	{
-						alt_printf("[aud_codec_dump_regs] ERROR in reading codec register 0x%x\n",i);
+						alt_printf("[aud_codec_dump_regs] ERROR in reading codec register 0x%x\r\n",i);
 						return;
 					}
 					alt_printf("[0x%x] AUD_CODEC_ALC_CNTRL_1 REG - 0x%x\r\n",i,aud_codec_i2c_bffr.val);
@@ -251,7 +261,7 @@ void aud_codec_dump_regs(){
 
 				case AUD_CODEC_ALC_CNTRL_2_REG_IDX: {
 					if(aud_codec_read_reg(i))	{
-						alt_printf("[aud_codec_dump_regs] ERROR in reading codec register 0x%x\n",i);
+						alt_printf("[aud_codec_dump_regs] ERROR in reading codec register 0x%x\r\n",i);
 						return;
 					}
 					alt_printf("[0x%x] AUD_CODEC_ALC_CNTRL_2 REG - 0x%x\r\n",i,aud_codec_i2c_bffr.val);
@@ -262,7 +272,7 @@ void aud_codec_dump_regs(){
 
 				case AUD_CODEC_NOISE_GATE_REG_IDX: {
 					if(aud_codec_read_reg(i))	{
-						alt_printf("[aud_codec_dump_regs] ERROR in reading codec register 0x%x\n",i);
+						alt_printf("[aud_codec_dump_regs] ERROR in reading codec register 0x%x\r\n",i);
 						return;
 					}
 					alt_printf("[0x%x] AUD_CODEC_NOISE_GATE REG - 0x%x\r\n",i,aud_codec_i2c_bffr.val);
@@ -283,14 +293,14 @@ void aud_codec_dump_regs(){
 
 void aud_codec_update_field(alt_u16 val, alt_u8 idx, alt_u8 offset, alt_u8 msk)	{
 	if(aud_codec_read_reg(idx))	{
-		alt_printf("[aud_codec_update_field] ERROR in reading codec register 0x%x\n",idx);
+		alt_printf("[aud_codec_update_field] ERROR in reading codec register 0x%x\r\n",idx);
 		return;
 	}
 
 	aud_codec_i2c_bffr.val = AUD_CODEC_UPDATE_FIELD(val,offset,msk);
 
 	if(aud_codec_write_reg(idx,aud_codec_i2c_bffr.val))	{
-		alt_printf("[aud_codec_update_field] ERROR in writing to codec register 0x%x\n",idx);
+		alt_printf("[aud_codec_update_field] ERROR in writing to codec register 0x%x\r\n",idx);
 		return;
 	}
 

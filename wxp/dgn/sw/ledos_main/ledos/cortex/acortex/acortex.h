@@ -35,6 +35,11 @@
 #include "ssm2603_drvr/ssm2603_drvr.h"
 #include "pcm_bffr/pcm_bffr.h"
 
+void init_acortex();
+void enable_adc_path(FS_T fs, BPS_T bps);
+void disable_adc_path();
+
+void pcm_cap();
 
 #endif /* ACORTEX_H_ */
 
