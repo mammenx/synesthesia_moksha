@@ -18,6 +18,7 @@
 +incdir+../../verif/tb/seq/vcortex/
 +incdir+../../verif/tb/seq/acortex/
 +incdir+../../verif/tb/seq/fgyrus/
++incdir+../../verif/tb/seq/cortex/
 +incdir+../../verif/tb/seq/sram_acc/
 +incdir+../../verif/tb/sniffers/
 +incdir+../../verif/tb/tests/
@@ -31,6 +32,7 @@
 +incdir+../../dgn/rtl/i2c/
 +incdir+../../dgn/rtl/fgyrus/
 +incdir+../../dgn/rtl/cortex/
++incdir+../../dgn/rtl/rst_cntrl/
 
 //System Verilog DPI
 -dpiheader syn_dpi.h
@@ -43,6 +45,7 @@
 ../../verif/tb/env/interfaces/syn_lb_tb_intf.sv
 ../../verif/tb/env/interfaces/syn_pcm_mem_intf_s.sv
 ../../verif/tb/env/interfaces/syn_pcm_mem_intf_m.sv
+../../verif/tb/env/interfaces/syn_pcm_mem_intf_mon.sv
 ../../verif/tb/env/interfaces/syn_wm8731_intf.sv
 
 //Packages
@@ -54,3 +57,4 @@
 
 //TB TOP
 ../../verif/tb/top/syn_acortex_tb_top.sv
+../../verif/tb/top/syn_cortex_tb_top.sv

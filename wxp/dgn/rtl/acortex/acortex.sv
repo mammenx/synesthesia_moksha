@@ -59,7 +59,9 @@ module acortex #(
   output  [LB_DATA_W-1:0]     lb_rd_data,
 
   output                      acortex2fgyrus_pcm_rdy,
+  input                       fgyrus2acortex_rden,
   input   [MEM_ADDR_W-1:0]    fgyrus2acortex_addr,
+  output                      acortex2fgyrus_pcm_data_valid,
   output  [31:0]              acortex2fgyrus_pcm_data,
 
   output                      scl,
@@ -216,7 +218,9 @@ module acortex #(
     .dac_rpcm_data            (dac_rpcm_data),
 
     .acortex2fgyrus_pcm_rdy   (acortex2fgyrus_pcm_rdy   ),
+    .fgyrus2acortex_rden      (fgyrus2acortex_rden      ),
     .fgyrus2acortex_addr      (fgyrus2acortex_addr      ),
+    .acortex2fgyrus_pcm_data_valid  (acortex2fgyrus_pcm_data_valid),
     .acortex2fgyrus_pcm_data  (acortex2fgyrus_pcm_data  )
 
   );

@@ -3,13 +3,21 @@
 +incdir+../../dgn/rtl/i2c/
 +incdir+../../dgn/rtl/rst_cntrl/
 +incdir+../../dgn/rtl/acortex/
++incdir+../../dgn/rtl/fgyrus/
 +incdir+../../dgn/rtl/cortex/
 
 //Altera Libraries
 ../../dgn/rtl/altera/altera_mf.v
+../../dgn/rtl/altera/altera_lnsim.sv
 ../../dgn/rtl/altera/cyclonev_atoms.v
 ../../dgn/rtl/altera/async_dpram_32W_256D.v
 ../../dgn/rtl/altera/sync_dpram_32W_256D.v
+../../dgn/rtl/altera/complex_mult.v
+../../dgn/rtl/altera/cordic_ram.v
+../../dgn/rtl/altera/divider.v
+../../dgn/rtl/altera/ff_64x256_fwft.v
+../../dgn/rtl/altera/twiddle_ram.v
+../../dgn/rtl/altera/win_ram.v
 
 //Common
 ../../dgn/rtl/common/clk_mux.sv
@@ -27,6 +35,12 @@
 ../../dgn/rtl/acortex/pcm_bffr.sv
 ../../dgn/rtl/acortex/ssm2603_drvr.sv
 ../../dgn/rtl/acortex/acortex.sv
+
+//Fgyrus
+../../dgn/rtl/fgyrus/but_wing.sv
+../../dgn/rtl/fgyrus/fft_cache.sv
+../../dgn/rtl/fgyrus/fgyrus_fsm.sv
+../../dgn/rtl/fgyrus/fgyrus.sv
 
 //Cortex
 ../../dgn/rtl/cortex/cortex.sv

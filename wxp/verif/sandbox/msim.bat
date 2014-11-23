@@ -5,9 +5,14 @@ SETLOCAL
 
 rem set TEST_NAME=syn_acortex_base_test
 rem set TEST_NAME=syn_acortex_i2c_test
-set TEST_NAME=syn_acortex_mclk_test
+rem set TEST_NAME=syn_acortex_mclk_test
 
-set TB_TOP=syn_acortex_tb_top
+rem set TEST_NAME=syn_cortex_base_test
+set TEST_NAME=syn_cortex_i2c_test
+rem set TEST_NAME=syn_cortex_mclk_test
+
+rem set TB_TOP=syn_acortex_tb_top
+set TB_TOP=syn_cortex_tb_top
 
 set DGN_LIB=dgn.lib
 set LINT_OPT=-lint
@@ -58,7 +63,7 @@ rem pause
 echo  Compiling Design to %DGN_LIB%
 vlib %DGN_LIB%
 vmap %DGN_LIB% work
-vlog -work %DGN_LIB% -sv -f dgn.list -timescale "1ns / 10ps" %LINT_OPT% %PREPROCESS_OPT% > dgn.vlog.log | type dgn.vlog.log
+vlog -work %DGN_LIB% -sv +define+SIMULATION -f dgn.list -timescale "1ns / 10ps" %LINT_OPT% %PREPROCESS_OPT% > dgn.vlog.log | type dgn.vlog.log
 
 echo  Compiling TB
 vlog -f verif.list +define+SIMULATION -sv -incr -timescale "1ns / 10ps" > tb.vlog.log | type tb.vlog.log

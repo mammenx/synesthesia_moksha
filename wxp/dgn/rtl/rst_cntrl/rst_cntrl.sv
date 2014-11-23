@@ -59,7 +59,7 @@ module rst_cntrl #(
 );
 
 //----------------------- Local Parameters Declarations -------------------
-  `include  "rst_cntrl.svh"
+  `include  "rst_cntrl_regmap.svh"
 
 //----------------------- Input Declarations ------------------------------
 
@@ -97,7 +97,7 @@ module rst_cntrl #(
       lb_rd_valid             <=  0;
       lb_rd_data              <=  0;
 
-      cntrl_rst_n             <=  0;
+      cntrl_rst_n             <=  {NUM_RESETS{1'b0}};
     end
     else
     begin

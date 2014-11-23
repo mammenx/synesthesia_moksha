@@ -22,19 +22,19 @@
 /*
  --------------------------------------------------------------------------
  -- Project Code      : synesthesia_moksha
- -- Test Name         : syn_acortex_base_test
+ -- Test Name         : syn_cortex_base_test
  -- Author            : mammenx
- -- Function          : Base test that instantiates the acortex env & makes
+ -- Function          : Base test that instantiates the cortex env & makes
                         connections from DUT to TB interfaces.
  --------------------------------------------------------------------------
 */
 
 
-class syn_acortex_base_test extends ovm_test;
+class syn_cortex_base_test extends ovm_test;
 
 
     parameter LB_DATA_W = 32;
-    parameter LB_ADDR_W = 12;
+    parameter LB_ADDR_W = 16;
     parameter type  LB_SEQ_ITEM_T = syn_lb_seq_item#(LB_DATA_W,LB_ADDR_W);
     parameter type  LB_SEQR_T     = syn_lb_seqr#(LB_SEQ_ITEM_T);
     parameter type  PCM_SEQ_ITEM_T= syn_pcm_seq_item;
@@ -43,10 +43,10 @@ class syn_acortex_base_test extends ovm_test;
     parameter I2C_DATA_W          = 16;
     parameter CODEC_REG_MAP_W     = 9;
 
-    `ovm_component_utils(syn_acortex_base_test)
+    `ovm_component_utils(syn_cortex_base_test)
 
     //Declare environment
-    syn_acortex_env   env;
+    syn_cortex_env   env;
 
 
     syn_i2c_config_seq#(I2C_DATA_W,LB_SEQ_ITEM_T,LB_SEQR_T)   i2c_config_seq;
@@ -56,7 +56,7 @@ class syn_acortex_base_test extends ovm_test;
 
 
     /*  Constructor */
-    function new (string name="syn_acortex_base_test", ovm_component parent=null);
+    function new (string name="syn_cortex_base_test", ovm_component parent=null);
         super.new (name, parent);
     endfunction : new 
 
@@ -76,7 +76,7 @@ class syn_acortex_base_test extends ovm_test;
 
       ovm_report_info(get_full_name(),"Start of build",OVM_LOW);
 
-      env = new("syn_acortex_env", this);
+      env = new("syn_cortex_env", this);
 
       i2c_config_seq  = syn_i2c_config_seq#(I2C_DATA_W,LB_SEQ_ITEM_T,LB_SEQR_T)::type_id::create("i2c_config_seq");
 
@@ -98,19 +98,17 @@ class syn_acortex_base_test extends ovm_test;
       ovm_report_info(get_full_name(),"Start of connect",OVM_LOW);
 
       //Make connections from DUT to TB components
-      this.env.lb_agent.drvr.intf   = $root.syn_acortex_tb_top.lb_tb_intf;
-      this.env.lb_agent.mon.intf    = $root.syn_acortex_tb_top.lb_tb_intf;
+      this.env.lb_agent.drvr.intf   = $root.syn_cortex_tb_top.lb_tb_intf;
+      this.env.lb_agent.mon.intf    = $root.syn_cortex_tb_top.lb_tb_intf;
 
-      this.env.codec_agent.adc_drvr.intf    = $root.syn_acortex_tb_top.wm8731_intf;
-      this.env.codec_agent.adc_mon.intf     = $root.syn_acortex_tb_top.wm8731_intf;
-      this.env.codec_agent.dac_mon.intf     = $root.syn_acortex_tb_top.wm8731_intf;
-      this.env.codec_agent.i2c.mon.intf     = $root.syn_acortex_tb_top.wm8731_intf;
-      this.env.codec_agent.i2c.s_drvr.intf  = $root.syn_acortex_tb_top.wm8731_intf;
+      this.env.codec_agent.adc_drvr.intf    = $root.syn_cortex_tb_top.wm8731_intf;
+      this.env.codec_agent.adc_mon.intf     = $root.syn_cortex_tb_top.wm8731_intf;
+      this.env.codec_agent.dac_mon.intf     = $root.syn_cortex_tb_top.wm8731_intf;
+      this.env.codec_agent.i2c.mon.intf     = $root.syn_cortex_tb_top.wm8731_intf;
+      this.env.codec_agent.i2c.s_drvr.intf  = $root.syn_cortex_tb_top.wm8731_intf;
 
-      this.env.pcm_mem_agent.drvr.intf  = $root.syn_acortex_tb_top.pcm_mem_intf;
-      this.env.pcm_mem_agent.mon.intf   = $root.syn_acortex_tb_top.pcm_mem_intf;
-      //this.env.pcm_mem_agent.drvr.intf  = $root.syn_cortex_tb_top.cortex_inst.pcm_mem_intf;
-      //this.env.pcm_mem_agent.mon.intf   = $root.syn_cortex_tb_top.cortex_inst.pcm_mem_intf;
+      this.env.pcm_mem_agent.drvr.intf  = $root.syn_cortex_tb_top.cortex_inst.pcm_mem_intf;
+      this.env.pcm_mem_agent.mon.intf   = $root.syn_cortex_tb_top.cortex_inst.pcm_mem_intf;
 
       ovm_report_info(get_full_name(),"End of connect",OVM_LOW);
     endfunction : connect
@@ -120,6 +118,7 @@ class syn_acortex_base_test extends ovm_test;
     function void end_of_elaboration();
       ovm_report_info(get_full_name(),"End_of_elaboration", OVM_LOG);
 
+      this.env.pcm_mem_agent.drvr.enable  = 0;
 
       ovm_report_info(get_full_name(),$psprintf("OVM Hierarchy -\n%s",  this.sprint(printer)), OVM_LOG);
       print();
@@ -164,7 +163,7 @@ class syn_acortex_base_test extends ovm_test;
 
 
 
-endclass : syn_acortex_base_test
+endclass : syn_cortex_base_test
 
 /*
  --------------------------------------------------------------------------

@@ -66,7 +66,9 @@ module pcm_bffr #(
   output  reg [31:0]          dac_rpcm_data,
 
   output  reg                 acortex2fgyrus_pcm_rdy,
+  input                       fgyrus2acortex_rden,
   input   [MEM_ADDR_W-1:0]    fgyrus2acortex_addr,
+  output                      acortex2fgyrus_pcm_data_valid,
   output  [31:0]              acortex2fgyrus_pcm_data
 
 );
@@ -98,7 +100,7 @@ module pcm_bffr #(
   reg     [MEM_ADDR_W-1:0]    pcm_raddr/*synthesis keep*/;
   reg     [MEM_ADDR_W-1:0]    pcm_waddr/*synthesis keep*/;
   reg                         bffr_a_n_b_sel/*synthesis keep*/;
-  reg     [MEM_RD_DELAY-1:0]  mem_rd_del_vec;
+  reg     [MEM_RD_DELAY-1:0]  mem_rd_del_vec[1:0];
 
 //----------------------- Internal Wire Declarations ----------------------
   wire                        adc_pcm_valid_extended;
@@ -209,7 +211,7 @@ module pcm_bffr #(
       pcm_waddr             <=  0;
       pcm_raddr             <=  0;
       bffr_a_n_b_sel        <=  1;
-      mem_rd_del_vec        <=  0;
+      mem_rd_del_vec        <=  '{0,0};
     end
     else
     begin
@@ -218,7 +220,8 @@ module pcm_bffr #(
       dac_pcm_nxt_1d        <=  dac_pcm_nxt;
       dac_pcm_nxt_2d        <=  dac_pcm_nxt_1d;
       fwft_refresh_1d       <=  fwft_refresh;
-      mem_rd_del_vec        <=  {mem_rd_del_vec[MEM_RD_DELAY-2:0],pcm_raddr[MEM_ADDR_W-1]};
+      mem_rd_del_vec[0]     <=  {mem_rd_del_vec[0][MEM_RD_DELAY-2:0],pcm_raddr[MEM_ADDR_W-1]};
+      mem_rd_del_vec[1]     <=  {mem_rd_del_vec[1][MEM_RD_DELAY-2:0],fgyrus2acortex_rden};
 
       if(~fwft_refresh)
       begin
@@ -279,10 +282,12 @@ module pcm_bffr #(
         end
       end
 
-      dac_lpcm_data           <=  mem_rd_del_vec[MEM_RD_DELAY-1]  ? dac_lpcm_data   : bffr_pcm_rdata;
-      dac_rpcm_data           <=  mem_rd_del_vec[MEM_RD_DELAY-1]  ? bffr_pcm_rdata  : dac_rpcm_data;
+      dac_lpcm_data           <=  mem_rd_del_vec[0][MEM_RD_DELAY-1]  ? dac_lpcm_data   : bffr_pcm_rdata;
+      dac_rpcm_data           <=  mem_rd_del_vec[0][MEM_RD_DELAY-1]  ? bffr_pcm_rdata  : dac_rpcm_data;
     end
   end
+
+  assign  acortex2fgyrus_pcm_data_valid = mem_rd_del_vec[1][MEM_RD_DELAY-1];
 
   assign  adc_pcm_valid_extended  = adc_pcm_valid   | adc_pcm_valid_1d;
   assign  dac_pcm_nxt_extended    = dac_pcm_nxt_1d  | dac_pcm_nxt_2d;

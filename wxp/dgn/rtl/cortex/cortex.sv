@@ -33,6 +33,7 @@
 `timescale 1ns / 10ps
 
 `include  "lb_utils.svh"
+`include  "mem_utils.svh"
 
 module cortex #(
   //----------------- Parameters  -----------------------
@@ -75,7 +76,11 @@ module cortex #(
   localparam  LB_CHLD_DATA_W      = LB_DATA_W;
   localparam  LB_CHLD_ADDR_W      = LB_ADDR_W - LB_ADDR_BLK_W;
   localparam  LB_CHLD_ADDR_BLK_W  = 4;
-  localparam  NUM_LB_CHILDREN     = 2;
+  localparam  NUM_LB_CHILDREN     = 3;
+  localparam  PCM_MEM_DATA_W      = 32;
+  localparam  PCM_MEM_ADDR_W      = $clog2(NUM_AUD_SAMPLES) + 1;
+  localparam  FFT_SAMPLE_W        = 32;
+  localparam  FFT_TWDL_W          = 10;
 
 //----------------------- Input Declarations ------------------------------
 
@@ -97,8 +102,13 @@ module cortex #(
 
   wire  [NUM_LB_CHILDREN-2:0] cortex_rst_vec;
 
-//----------------------- Internal Interface Declarations -----------------
+  wire                        pcm_rdy_w;
+  `drop_mem_wires(PCM_MEM_DATA_W,PCM_MEM_ADDR_W,pcm_,_w)
 
+//----------------------- Internal Interface Declarations -----------------
+  `ifdef  SIMULATION
+    syn_pcm_mem_intf_mon#(PCM_MEM_DATA_W,PCM_MEM_ADDR_W,2)  pcm_mem_intf(clk,rst_n);
+  `endif
 
 //----------------------- FSM Declarations --------------------------------
 
@@ -160,9 +170,11 @@ module cortex #(
     `drop_lb_ports_split(ACORTEX_BLK,lb_, ,lb_chld_,_w)
     ,
 
-    .acortex2fgyrus_pcm_rdy   (),
-    .fgyrus2acortex_addr      (0),
-    .acortex2fgyrus_pcm_data  (),
+    .acortex2fgyrus_pcm_rdy   (pcm_rdy_w),
+    .fgyrus2acortex_rden      (pcm_rden_w),
+    .fgyrus2acortex_addr      (pcm_addr_w),
+    .acortex2fgyrus_pcm_data_valid  (pcm_rd_valid_w),
+    .acortex2fgyrus_pcm_data  (pcm_rdata_w),
 
     .scl                      (scl),
     .sda                      (sda),
@@ -174,6 +186,38 @@ module cortex #(
     .AUD_DACLRCK              (AUD_DACLRCK)
 
   );
+
+  /*  Instantiate Fgyrus  */
+  fgyrus #(
+    .LB_DATA_W           (LB_CHLD_DATA_W),
+    .LB_ADDR_W           (LB_CHLD_ADDR_W),
+    .PCM_MEM_DATA_W      (PCM_MEM_DATA_W),
+    .PCM_MEM_ADDR_W      (PCM_MEM_ADDR_W),
+    .NUM_SAMPLES         (NUM_AUD_SAMPLES),
+    .SAMPLE_W            (FFT_SAMPLE_W),
+    .TWDL_W              (FFT_TWDL_W)
+
+  ) fgyrus_inst (
+    .clk                 (clk),
+    .rst_n               (cortex_rst_vec[FGYRUS_BLK]),
+
+    `drop_lb_ports_split(FGYRUS_BLK,lb_, ,lb_chld_,_w)
+    ,
+
+    //PCM Buffer
+    .pcm_rdy             (pcm_rdy_w),
+
+    `drop_mem_ports(pcm_, ,pcm_,_w)
+
+  );
+
+  `ifdef  SIMULATION
+      assign  pcm_mem_intf.pcm_data_rdy = pcm_rdy_w;
+      assign  pcm_mem_intf.pcm_addr     = pcm_addr_w;
+      assign  pcm_mem_intf.pcm_rden     = pcm_rden_w;
+      assign  pcm_mem_intf.pcm_rdata    = pcm_rdata_w;
+      assign  pcm_mem_intf.pcm_rd_valid = pcm_rd_valid_w;
+  `endif
 
 endmodule // cortex
 
