@@ -28,13 +28,17 @@
  --------------------------------------------------------------------------
 */
 
+import  syn_fft_pkg::*;
+
 class syn_cortex_pcm_test extends syn_cortex_base_test;
 
     `ovm_component_utils(syn_cortex_pcm_test)
 
     //Sequences
+    syn_rst_config_seq#(super.LB_SEQ_ITEM_T,super.LB_SEQR_T)    rst_config_seq;
     syn_codec_adc_load_seq#(super.PCM_SEQ_ITEM_T,super.ADC_SEQR_T)    codec_adc_config_seq;
     syn_ssm2603_drvr_config_seq#(super.LB_SEQ_ITEM_T,super.LB_SEQR_T) drvr_config_seq;
+    syn_fgyrus_fsm_config_seq#(super.LB_SEQ_ITEM_T,super.LB_SEQR_T) fgyrus_fsm_config_seq;
 
 
     OVM_FILE  f;
@@ -62,6 +66,8 @@ class syn_cortex_pcm_test extends syn_cortex_base_test;
 
       codec_adc_config_seq= syn_codec_adc_load_seq#(super.PCM_SEQ_ITEM_T,super.ADC_SEQR_T)::type_id::create("codec_adc_config_seq");
       drvr_config_seq     = syn_ssm2603_drvr_config_seq#(super.LB_SEQ_ITEM_T,super.LB_SEQR_T)::type_id::create("drvr_config_seq");
+      rst_config_seq  = syn_rst_config_seq#(super.LB_SEQ_ITEM_T,super.LB_SEQR_T)::type_id::create("rst_config_seq");
+      fgyrus_fsm_config_seq = syn_fgyrus_fsm_config_seq#(super.LB_SEQ_ITEM_T,super.LB_SEQR_T)::type_id::create("fgyrus_fsm_config_seq");
 
       ovm_report_info(get_full_name(),"End of build",OVM_LOW);
     endfunction : build
@@ -91,10 +97,21 @@ class syn_cortex_pcm_test extends syn_cortex_base_test;
 
       super.env.sprint();
 
-      super.setup_codec(32);
+      #500;
+      rst_config_seq.acortex_rst_n  = 1;
+      rst_config_seq.fgyrus_rst_n   = 1;
+      rst_config_seq.start(super.env.lb_agent.seqr);
 
       #500;
 
+      super.setup_codec(32);
+
+      fgyrus_fsm_config_seq.fgyrus_en = 1;
+      fgyrus_fsm_config_seq.fgyrus_mode = syn_fft_pkg::NORMAL;
+      fgyrus_fsm_config_seq.fgyrus_post_norm  = 1;
+      fgyrus_fsm_config_seq.start(super.env.lb_agent.seqr);
+
+      #500;
       codec_adc_config_seq.pcm_pkt.fill_inc(128,0,1);
 
       drvr_config_seq.bclk_div_val  = 10;

@@ -57,6 +57,8 @@ endpackage  //  syn_fft_pkg
 
  -- <Log>
 
+[29-11-2014  10:36:46 PM][mammenx] Misc changes to stabilize Acorte scoreboards for PCM test
+
  --------------------------------------------------------------------------
 */
 
