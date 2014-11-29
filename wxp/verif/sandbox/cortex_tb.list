@@ -46,6 +46,7 @@
 `include  "syn_ssm2603_codec_config_seq.sv"
 `include  "syn_codec_adc_load_seq.sv"
 `include  "syn_rst_config_seq.sv"
+`include  "syn_fgyrus_fsm_config_seq.sv"
 
 
 //Tests

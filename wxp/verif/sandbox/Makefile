@@ -1,8 +1,12 @@
 #TEST_NAME=syn_acortex_base_test
-TEST_NAME=syn_acortex_i2c_test
+#TEST_NAME=syn_acortex_i2c_test
 #TEST_NAME=syn_acortex_pcm_test
+#TEST_NAME=syn_cortex_base_test
+#TEST_NAME=syn_cortex_i2c_test
+TEST_NAME=syn_cortex_pcm_test
 
-TB_TOP=syn_acortex_tb_top
+#TB_TOP=syn_acortex_tb_top
+TB_TOP=syn_cortex_tb_top
 
 DGN_LIB=dgn.lib
 LINT_OPT=-lint
@@ -42,11 +46,11 @@ dgn_lib:
 	echo	"Compiling RTL into $(DGN_LIB) library"
 	vlib $(DGN_LIB)
 	vmap $(DGN_LIB) work
-	vlog -work $(DGN_LIB) -sv -f dgn.list -timescale "1ns / 10ps" $(LINT_OPT) $(PREPROCESS_OPT) | tee dgn.vlog.log
+	vlog -work $(DGN_LIB) -sv +define+SIMULATION	-f dgn.list -timescale "1ns / 10ps" $(LINT_OPT) $(PREPROCESS_OPT) | tee dgn.vlog.log
 
 dgn:
 	echo	"Compiling RTL"
-	vlog -sv -f dgn.list -timescale "1ns / 10ps" $(LINT_OPT) $(PREPROCESS_OPT) | tee dgn.vlog.log
+	vlog +define+SIMULATION -sv -f dgn.list -timescale "1ns / 10ps" $(LINT_OPT) $(PREPROCESS_OPT) | tee dgn.vlog.log
 
 tb:
 	echo "Compiling TB"

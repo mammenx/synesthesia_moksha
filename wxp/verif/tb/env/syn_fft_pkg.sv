@@ -1,15 +1,15 @@
 /*
  --------------------------------------------------------------------------
-   Synesthesia - Copyright (C) 2012 Gregory Matthew James.
+   Synesthesia-Moksha - Copyright (C) 2012 Gregory Matthew James.
 
-   This file is part of Synesthesia.
+   This file is part of Synesthesia-Moksha.
 
-   Synesthesia is free; you can redistribute it and/or modify
+   Synesthesia-Moksha is free; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation; either version 3 of the License, or
    (at your option) any later version.
 
-   Synesthesia is distributed in the hope that it will be useful,
+   Synesthesia-Moksha is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    GNU General Public License for more details.
@@ -21,22 +21,11 @@
 
 /*
  --------------------------------------------------------------------------
- -- Project Code      : synesthesia
+ -- Project Code      : synesthesia_moksha
  -- Package Name      : syn_fft_pkg
  -- Author            : mammenx
  -- Description       : This package contains all the datatypes needed for
                         FFT.
- --------------------------------------------------------------------------
-*/
-
-/*
- --------------------------------------------------------------------------
-
- -- $Header$
- 
-
- -- $Log$
-
  --------------------------------------------------------------------------
 */
 
@@ -59,3 +48,16 @@ package syn_fft_pkg;
   typedef enum  logic {NORMAL=1'b0,CONFIG=1'b1} fgyrus_mode_t;
 
 endpackage  //  syn_fft_pkg
+
+/*
+ --------------------------------------------------------------------------
+
+ -- <Header>
+ 
+
+ -- <Log>
+
+ --------------------------------------------------------------------------
+*/
+
+

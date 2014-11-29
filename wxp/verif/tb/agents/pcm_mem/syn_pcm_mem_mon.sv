@@ -83,6 +83,8 @@
 
     /*  Run */
     task run();
+      int num_samples_read;
+
       ovm_report_info({get_name(),"[run]"},"Start of run ",OVM_LOW);
 
       //wait for reset
@@ -102,14 +104,18 @@
               pkt = new();
 
               pkt.pcm_data  = new[NUM_SAMPLES];
+              num_samples_read  = 0;
 
-              forever
+              do
               begin
                 @(posedge intf.clk_ir);
 
                 if(intf.cb_mon.pcm_rd_valid)
                 begin
-                  if(intf.cb_mon.pcm_raddr  >= NUM_SAMPLES)
+                  //ovm_report_info({get_name(),"[run]"},$psprintf("intf.cb_mon.pcm_raddr[0x%x], num_samples_read[%1d]",intf.cb_mon.pcm_raddr,num_samples_read),OVM_LOW);
+                  num_samples_read++;
+
+                  if(intf.cb_mon.pcm_raddr  > (NUM_SAMPLES-1))
                   begin
                     pkt.pcm_data[intf.cb_mon.pcm_raddr-NUM_SAMPLES].rchnnl = intf.cb_mon.pcm_rdata;
                     ovm_report_info({get_name(),"[run]"},$psprintf("pkt.pcm_data[%1d].rchnnl = 0x%x",(intf.cb_mon.pcm_raddr-NUM_SAMPLES),pkt.pcm_data[intf.cb_mon.pcm_raddr-NUM_SAMPLES].lchnnl),OVM_LOW);
@@ -119,12 +125,9 @@
                     pkt.pcm_data[intf.cb_mon.pcm_raddr].lchnnl = intf.cb_mon.pcm_rdata;
                     ovm_report_info({get_name(),"[run]"},$psprintf("pkt.pcm_data[%1d].lchnnl = 0x%x",intf.cb_mon.pcm_raddr,pkt.pcm_data[intf.cb_mon.pcm_raddr].lchnnl),OVM_LOW);
                   end
-
-
-                  if(intf.cb_mon.pcm_raddr  ==  ((NUM_SAMPLES*2)-1))
-                    break;
                 end
               end
+              while(num_samples_read  < (NUM_SAMPLES*2));
 
               @(posedge intf.clk_ir);
 

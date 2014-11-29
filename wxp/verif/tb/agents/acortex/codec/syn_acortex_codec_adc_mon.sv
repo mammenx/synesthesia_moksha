@@ -91,24 +91,25 @@
 
         @(posedge intf.rst_il);  //wait for reset
 
-        case(reg_map.get_field("iwl"))
-
-          syn_reg_map#(REG_MAP_W)::FAIL_FIELD_N_EXIST : ovm_report_fatal({get_name(),"[run]"},$psprintf("Could not find field <iwl> !!!"),OVM_LOW);
-
-          0 : bps = 16;
-          3 : bps = 32;
-
-          default : ovm_report_fatal({get_name(),"[run]"},$psprintf("IWL val : %d not supported !!!", reg_map.get_field("iwl")),OVM_LOW);
-
-        endcase
-
-        ovm_report_info({get_name(),"[run]"},$psprintf("BPS is : %1d",bps),OVM_LOW);
-
         forever
         begin
           ovm_report_info({get_name(),"[run]"},"Waiting for ADC LRC pulse",OVM_LOW);
           @(posedge intf.adc_lrc);
           ovm_report_info({get_name(),"[run]"},"Detected ADC LRC pulse",OVM_LOW);
+
+          case(reg_map.get_field("iwl"))
+
+            syn_reg_map#(REG_MAP_W)::FAIL_FIELD_N_EXIST : ovm_report_fatal({get_name(),"[run]"},$psprintf("Could not find field <iwl> !!!"),OVM_LOW);
+
+            0 : bps = 16;
+            3 : bps = 32;
+
+            default : ovm_report_fatal({get_name(),"[run]"},$psprintf("IWL val : %d not supported !!!", reg_map.get_field("iwl")),OVM_LOW);
+
+          endcase
+
+        ovm_report_info({get_name(),"[run]"},$psprintf("BPS is : %1d",bps),OVM_LOW);
+
 
           pkt = new();
           pkt.pcm_data  = new[1];
