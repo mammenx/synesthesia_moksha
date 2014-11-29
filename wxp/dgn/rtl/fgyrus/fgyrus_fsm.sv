@@ -172,7 +172,6 @@ module fgyrus_fsm #(
   logic [3:0]                 fgyrus_post_norm_f;
   logic                       but_bffr_ovrflow_f;
   logic                       but_bffr_underflw_f;
-  logic [MEM_RD_DEL-1:0]    rchnnl_n_lchnnl_f;
 
   logic [PST_VEC_W-1:0]     pst_vec_f;
   logic                       wait_for_end_f;
@@ -199,6 +198,7 @@ module fgyrus_fsm #(
   logic [LB_ADDR_W-1:0]     lb_del_addr_w;
   logic                       fgyrus_busy_c;
 
+  logic                       rchnnl_n_lchnnl_w;
   logic [SAMPLE_CNTR_W-2:0] sample_rcntr_rev_w;
   logic                       decimate_ovr_c;
 
@@ -535,7 +535,8 @@ enum  logic [2:0] { IDLE_S  = 3'd0,
   endgenerate
 
   /*  PCM Mem Interface Logic */
-  assign  pcm_addr    = (fsm_pstate ==  DECIMATE_WINDOW_S)  ? {rchnnl_n_lchnnl_f,sample_rcntr_rev_w}  : 0;
+  assign  rchnnl_n_lchnnl_w = sample_rcntr_f[SAMPLE_CNTR_W-1];
+  assign  pcm_addr    = (fsm_pstate ==  DECIMATE_WINDOW_S)  ? {rchnnl_n_lchnnl_w,sample_rcntr_rev_w}  : 0;
   assign  pcm_wdata   = 0;
   assign  pcm_wren    = 0;
   assign  pcm_rden    = (fsm_pstate ==  DECIMATE_WINDOW_S)  ? ~pst_vec_f[0] & ~wait_for_end_f : 1'b0;
@@ -624,8 +625,6 @@ enum  logic [2:0] { IDLE_S  = 3'd0,
       twdl_re        <=  0;
       twdl_im        <=  0;
       sample_rdy     <=  0;
-
-      rchnnl_n_lchnnl_f       <=  0;
     end
     else
     begin
@@ -634,13 +633,10 @@ enum  logic [2:0] { IDLE_S  = 3'd0,
         IDLE_S  :
         begin
           sample_rdy   <=  0;
-          rchnnl_n_lchnnl_f     <=  0;
         end
 
         DECIMATE_WINDOW_S :
         begin
-          rchnnl_n_lchnnl_f     <=  decimate_ovr_c  ? 1'b0  : {rchnnl_n_lchnnl_f[MEM_RD_DEL-2:0], sample_rcntr_f[SAMPLE_CNTR_W-1]};
-
           sample_a_re  <=  0;
           sample_a_im  <=  0;
 
@@ -909,6 +905,8 @@ endmodule // fgyrus_fsm
  
 
  -- <Log>
+
+[29-11-2014  10:32:10 PM][mammenx] Fixed pcm read address issue
 
  --------------------------------------------------------------------------
 */
