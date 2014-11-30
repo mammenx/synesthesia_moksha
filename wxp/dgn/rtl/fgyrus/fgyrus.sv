@@ -301,6 +301,27 @@ module fgyrus #(
     assign  but_intf.bffr_ovrflw  = bffr_ovrflw;
     assign  but_intf.bffr_underflw= bffr_underflw;
 
+
+    syn_fft_cache_intf#(FFT_CACHE_DATA_W,FFT_CACHE_ADDR_W)  fft_cache_intf(clk,rst_n);
+
+    assign  fft_cache_intf.wr_sample.re = cache_intf_wr_sample_re_w;
+    assign  fft_cache_intf.wr_sample.im = cache_intf_wr_sample_im_w;
+    assign  fft_cache_intf.wr_en        = cache_intf_wr_en_w;
+    assign  fft_cache_intf.waddr        = cache_intf_waddr_w;
+    assign  fft_cache_intf.raddr        = cache_intf_raddr_w;
+    assign  fft_cache_intf.rd_sample.re = cache_intf_rd_sample_re_w;
+    assign  fft_cache_intf.rd_sample.im = cache_intf_rd_sample_im_w;
+    assign  fft_cache_intf.rd_en        = cache_intf_rd_en_w;
+    assign  fft_cache_intf.rd_valid     = cache_intf_rd_valid_w;
+    assign  fft_cache_intf.fft_done     = cache_intf_fft_done_w;
+
+    assign  fft_cache_intf.hst_wr_data  = cache_intf_hst_wdata_w;
+    assign  fft_cache_intf.hst_wr_en    = cache_intf_hst_wren_w;
+    assign  fft_cache_intf.hst_addr     = cache_intf_hst_addr_w;
+    assign  fft_cache_intf.hst_rd_en    = cache_intf_hst_rden_w;
+    assign  fft_cache_intf.hst_rd_data  = cache_intf_hst_rdata_w;
+    assign  fft_cache_intf.hst_rd_valid = cache_intf_hst_rd_valid_w;
+
   `endif  //SIMULATION
 
 endmodule // fgyrus
@@ -313,6 +334,8 @@ endmodule // fgyrus
  
 
  -- <Log>
+
+[30-11-2014  05:55:59 PM][mammenx] Added fft_cache_intf
 
 [30-11-2014  11:39:05 AM][mammenx] Added syn_but_sb
 
