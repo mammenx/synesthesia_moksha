@@ -70,6 +70,11 @@
     parameter type  BUT_PKT_TYPE  = syn_but_seq_item;
     parameter type  BUT_INTF_TYPE = virtual syn_but_intf;
 
+    parameter type  FFT_CACHE_PKT_TYPE  = syn_fft_cache_seq_item;
+    parameter type  FFT_CACHE_INTF_TYPE = virtual syn_fft_cache_intf#(32,8);
+
+
+
     /*  Register with factory */
     `ovm_component_utils(syn_cortex_env)
 
@@ -95,6 +100,8 @@
     syn_but_sniffer#(BUT_PKT_TYPE,BUT_INTF_TYPE)              but_sniffer;
     syn_but_sb#(BUT_PKT_TYPE,BUT_PKT_TYPE)                    but_sb;
 
+    syn_fft_cache_sniffer#(FFT_CACHE_PKT_TYPE,FFT_CACHE_INTF_TYPE)            fft_cache_sniffer;
+    syn_fft_cache_sb#(PCM_PKT_TYPE,FFT_CACHE_PKT_TYPE)                        fft_cache_sb;
 
     OVM_FILE  f;
 
@@ -132,6 +139,9 @@
 
       but_sniffer   = syn_but_sniffer#(BUT_PKT_TYPE,BUT_INTF_TYPE)::type_id::create("but_sniffer",  this);
       but_sb        = syn_but_sb#(BUT_PKT_TYPE,BUT_PKT_TYPE)::type_id::create("but_sb",  this);
+
+      fft_cache_sniffer = syn_fft_cache_sniffer#(FFT_CACHE_PKT_TYPE,FFT_CACHE_INTF_TYPE)::type_id::create("fft_cache_sniffer",  this);
+      fft_cache_sb  = syn_fft_cache_sb#(PCM_PKT_TYPE,FFT_CACHE_PKT_TYPE)::type_id::create("fft_cache_sb",  this);
 
       LB2Env_ff       = new("LB2Env_ff",this);
 
@@ -177,6 +187,9 @@
 
         but_sniffer.SnifferIngr2Sb_port.connect(but_sb.Mon_sent_2Sb_port);
         but_sniffer.SnifferEgr2Sb_port.connect(but_sb.Mon_rcvd_2Sb_port);
+
+        this.pcm_mem_agent.mon.Mon2Sb_port.connect(fft_cache_sb.Mon_sent_2Sb_port);
+        this.fft_cache_sniffer.Sniffer2Sb_port.connect(fft_cache_sb.Mon_rcvd_2Sb_port);
 
       ovm_report_info(get_name(),"END of connect ",OVM_LOW);
     endfunction
@@ -300,6 +313,8 @@
  
 
  -- <Log>
+
+[30-11-2014  05:57:00 PM][mammenx] Added syn_fft_cache_sb components
 
 [30-11-2014  11:39:05 AM][mammenx] Added syn_but_sb
 

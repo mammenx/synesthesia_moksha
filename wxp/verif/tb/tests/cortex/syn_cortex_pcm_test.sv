@@ -80,6 +80,7 @@ class syn_cortex_pcm_test extends syn_cortex_base_test;
       ovm_report_info(get_full_name(),"Start of connect",OVM_LOW);
 
         super.env.codec_agent.i2c.s_drvr.update_reg_map_en = 1;
+        super.env.but_sniffer.enable  = 0;
 
       ovm_report_info(get_full_name(),"End of connect",OVM_LOW);
     endfunction : connect
@@ -156,6 +157,8 @@ endclass : syn_cortex_pcm_test
  
 
  -- <Log>
+
+[30-11-2014  05:57:00 PM][mammenx] Added syn_fft_cache_sb components
 
 [18-11-2014  06:03:18 PM][mammenx] Removed MCLK feature testing and updated I2C agents
 

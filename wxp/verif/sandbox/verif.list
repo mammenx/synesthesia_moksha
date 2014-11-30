@@ -55,6 +55,7 @@
 ../../verif/tb/env/interfaces/syn_pcm_mem_intf_mon.sv
 ../../verif/tb/env/interfaces/syn_wm8731_intf.sv
 ../../verif/tb/env/interfaces/syn_but_intf.sv
+../../verif/tb/env/interfaces/syn_fft_cache_intf.sv
 
 
 //TB TOP

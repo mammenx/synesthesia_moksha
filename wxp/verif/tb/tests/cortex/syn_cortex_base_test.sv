@@ -111,6 +111,7 @@ class syn_cortex_base_test extends ovm_test;
       this.env.pcm_mem_agent.mon.intf   = $root.syn_cortex_tb_top.cortex_inst.pcm_mem_intf;
 
       this.env.but_sniffer.intf         = $root.syn_cortex_tb_top.cortex_inst.fgyrus_inst.but_intf;
+      this.env.fft_cache_sniffer.intf   = $root.syn_cortex_tb_top.cortex_inst.fgyrus_inst.fft_cache_intf;
 
       ovm_report_info(get_full_name(),"End of connect",OVM_LOW);
     endfunction : connect
@@ -174,6 +175,8 @@ endclass : syn_cortex_base_test
  
 
  -- <Log>
+
+[30-11-2014  05:57:00 PM][mammenx] Added syn_fft_cache_sb components
 
 [30-11-2014  11:39:05 AM][mammenx] Added syn_but_sb
 
