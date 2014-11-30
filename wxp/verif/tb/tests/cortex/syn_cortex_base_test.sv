@@ -110,6 +110,8 @@ class syn_cortex_base_test extends ovm_test;
       this.env.pcm_mem_agent.drvr.intf  = $root.syn_cortex_tb_top.cortex_inst.pcm_mem_intf;
       this.env.pcm_mem_agent.mon.intf   = $root.syn_cortex_tb_top.cortex_inst.pcm_mem_intf;
 
+      this.env.but_sniffer.intf         = $root.syn_cortex_tb_top.cortex_inst.fgyrus_inst.but_intf;
+
       ovm_report_info(get_full_name(),"End of connect",OVM_LOW);
     endfunction : connect
 
@@ -172,6 +174,8 @@ endclass : syn_cortex_base_test
  
 
  -- <Log>
+
+[30-11-2014  11:39:05 AM][mammenx] Added syn_but_sb
 
 [18-11-2014  06:03:18 PM][mammenx] Removed MCLK feature testing and updated I2C agents
 

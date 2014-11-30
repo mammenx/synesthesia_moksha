@@ -48412,10 +48412,8 @@ module scfifo ( data,
             
             if ((use_eab == "ON") && (stratix_family) && ((showahead_speed) || (showahead_area) || (legacy_speed)))
             begin
-                //write_latency1 <= 1'bx;
-                //write_latency2 <= 1'bx;
-                write_latency1 <= 0;
-                write_latency2 <= 0;
+                write_latency1 <= 1'bx;
+                write_latency2 <= 1'bx;
                 data_shown <= {lpm_width{1'b0}};
                 if (add_ram_output_register == "ON")
                     tmp_q <= {lpm_width{1'b0}};

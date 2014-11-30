@@ -41,18 +41,20 @@
 +incdir+../ovm-2.1.2/src/
 ../ovm-2.1.2/src/ovm_pkg.sv
 
+//Packages
+../../verif/tb/env/syn_fft_pkg.sv
+../../verif/tb/env/syn_math_pkg.sv
+../../verif/tb/env/syn_audio_pkg.sv
+../../verif/tb/env/syn_env_pkg.sv
+
+
 //Interfaces
 ../../verif/tb/env/interfaces/syn_lb_tb_intf.sv
 ../../verif/tb/env/interfaces/syn_pcm_mem_intf_s.sv
 ../../verif/tb/env/interfaces/syn_pcm_mem_intf_m.sv
 ../../verif/tb/env/interfaces/syn_pcm_mem_intf_mon.sv
 ../../verif/tb/env/interfaces/syn_wm8731_intf.sv
-
-//Packages
-../../verif/tb/env/syn_fft_pkg.sv
-../../verif/tb/env/syn_math_pkg.sv
-../../verif/tb/env/syn_audio_pkg.sv
-../../verif/tb/env/syn_env_pkg.sv
+../../verif/tb/env/interfaces/syn_but_intf.sv
 
 
 //TB TOP

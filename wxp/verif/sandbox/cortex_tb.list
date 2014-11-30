@@ -1,6 +1,7 @@
 //Sequence items
 `include  "syn_lb_seq_item.sv"
 `include  "syn_pcm_seq_item.sv"
+`include  "syn_but_seq_item.sv"
 
 //RAL
 `include  "syn_reg_map.sv"
@@ -29,11 +30,13 @@
 `include  "syn_acortex_codec_agent.sv"
 
 //Sniffers
+`include  "syn_but_sniffer.sv"
 
 //Scoreboards
 `include  "syn_adc_sb.sv"
 `include  "syn_dac_sb.sv"
 `include  "syn_i2c_sb.sv"
+`include  "syn_but_sb.sv"
 
 //Environments
 `include  "syn_acortex_env.sv"

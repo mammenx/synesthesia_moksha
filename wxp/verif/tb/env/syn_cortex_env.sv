@@ -67,6 +67,8 @@
     parameter type  PCM_MEM_INTF_DRVR_TYPE  = virtual syn_pcm_mem_intf_mon.TB_DRVR;
     parameter type  PCM_MEM_INTF_MON_TYPE   = virtual syn_pcm_mem_intf_mon.TB_MON;
 
+    parameter type  BUT_PKT_TYPE  = syn_but_seq_item;
+    parameter type  BUT_INTF_TYPE = virtual syn_but_intf;
 
     /*  Register with factory */
     `ovm_component_utils(syn_cortex_env)
@@ -89,7 +91,10 @@
     syn_reg_map#(REG_MAP_W)   wm8731_reg_map;  //each register is 9b
 
     syn_reg_map#(LB_DATA_W)   acortex_reg_map;
-    
+
+    syn_but_sniffer#(BUT_PKT_TYPE,BUT_INTF_TYPE)              but_sniffer;
+    syn_but_sb#(BUT_PKT_TYPE,BUT_PKT_TYPE)                    but_sb;
+
 
     OVM_FILE  f;
 
@@ -124,6 +129,9 @@
       i2c_sb        = syn_i2c_sb#(I2C_DATA_W,LB_DATA_W,LB_PKT_T,I2C_PKT_TYPE)::type_id::create("i2c_sb",  this);
       adc_sb        = syn_adc_sb#(LB_PKT_T,PCM_PKT_TYPE,LB_DATA_W)::type_id::create("adc_sb",  this);
       dac_sb        = syn_dac_sb#(LB_PKT_T,PCM_PKT_TYPE,LB_DATA_W)::type_id::create("dac_sb",  this);
+
+      but_sniffer   = syn_but_sniffer#(BUT_PKT_TYPE,BUT_INTF_TYPE)::type_id::create("but_sniffer",  this);
+      but_sb        = syn_but_sb#(BUT_PKT_TYPE,BUT_PKT_TYPE)::type_id::create("but_sb",  this);
 
       LB2Env_ff       = new("LB2Env_ff",this);
 
@@ -166,6 +174,9 @@
         i2c_sb.reg_map        = this.acortex_reg_map;
         adc_sb.adc_reg_map    = this.acortex_reg_map;
         dac_sb.dac_reg_map    = this.acortex_reg_map;
+
+        but_sniffer.SnifferIngr2Sb_port.connect(but_sb.Mon_sent_2Sb_port);
+        but_sniffer.SnifferEgr2Sb_port.connect(but_sb.Mon_rcvd_2Sb_port);
 
       ovm_report_info(get_name(),"END of connect ",OVM_LOW);
     endfunction
@@ -289,6 +300,8 @@
  
 
  -- <Log>
+
+[30-11-2014  11:39:05 AM][mammenx] Added syn_but_sb
 
 [18-11-2014  06:03:18 PM][mammenx] Removed MCLK feature testing and updated I2C agents
 

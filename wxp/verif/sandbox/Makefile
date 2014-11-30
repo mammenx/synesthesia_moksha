@@ -69,7 +69,7 @@ dll:
 
 sim:
 	echo  Running test : $(TEST_NAME)
-	vsim -c -novopt +OVM_TESTNAME=$(TEST_NAME) -sv_lib syn_dpi_lib $(TB_TOP) +define+SIMULATION -l $(TEST_NAME).vsim.log -permit_unmatched_virtual_intf -do "add wave -r /*;run -all"
+	vsim -c -novopt +OVM_TESTNAME=$(TEST_NAME) -sv_lib syn_dpi_lib $(TB_TOP) +define+SIMULATION -l $(TEST_NAME).vsim.log -permit_unmatched_virtual_intf -do "add wave -r /*;run -all" -suppress 8233
 
 gui:
 	vsim vsim.wlf

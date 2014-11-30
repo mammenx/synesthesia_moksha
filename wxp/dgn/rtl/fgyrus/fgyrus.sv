@@ -282,6 +282,27 @@ module fgyrus #(
     .q          (twdl_ram_rdata_w)
   );
 
+
+  `ifdef  SIMULATION
+    syn_but_intf  but_intf(clk,rst_n);
+
+    assign  but_intf.sample_a.re  = sample_a_re_w;
+    assign  but_intf.sample_a.im  = sample_a_im_w;
+    assign  but_intf.sample_b.re  = sample_b_re_w;
+    assign  but_intf.sample_b.im  = sample_b_im_w;
+    assign  but_intf.twdl.re      = twdl_re_w;
+    assign  but_intf.twdl.im      = twdl_im_w;
+    assign  but_intf.sample_rdy   = sample_rdy_w;
+
+    assign  but_intf.res.re       = res_re_w;
+    assign  but_intf.res.im       = res_im_w;
+    assign  but_intf.res_rdy      = res_rdy;
+
+    assign  but_intf.bffr_ovrflw  = bffr_ovrflw;
+    assign  but_intf.bffr_underflw= bffr_underflw;
+
+  `endif  //SIMULATION
+
 endmodule // fgyrus
 
 
@@ -292,6 +313,8 @@ endmodule // fgyrus
  
 
  -- <Log>
+
+[30-11-2014  11:39:05 AM][mammenx] Added syn_but_sb
 
  --------------------------------------------------------------------------
 */
