@@ -39,6 +39,7 @@ class syn_cortex_pcm_test extends syn_cortex_base_test;
     syn_codec_adc_load_seq#(super.PCM_SEQ_ITEM_T,super.ADC_SEQR_T)    codec_adc_config_seq;
     syn_ssm2603_drvr_config_seq#(super.LB_SEQ_ITEM_T,super.LB_SEQR_T) drvr_config_seq;
     syn_fgyrus_fsm_config_seq#(super.LB_SEQ_ITEM_T,super.LB_SEQR_T) fgyrus_fsm_config_seq;
+    syn_fgyrus_fft_poll_seq#(super.LB_SEQ_ITEM_T,super.LB_SEQR_T,super.PCM_SEQ_ITEM_T) fgyrus_fft_poll_seq;
 
 
     OVM_FILE  f;
@@ -68,6 +69,7 @@ class syn_cortex_pcm_test extends syn_cortex_base_test;
       drvr_config_seq     = syn_ssm2603_drvr_config_seq#(super.LB_SEQ_ITEM_T,super.LB_SEQR_T)::type_id::create("drvr_config_seq");
       rst_config_seq  = syn_rst_config_seq#(super.LB_SEQ_ITEM_T,super.LB_SEQR_T)::type_id::create("rst_config_seq");
       fgyrus_fsm_config_seq = syn_fgyrus_fsm_config_seq#(super.LB_SEQ_ITEM_T,super.LB_SEQR_T)::type_id::create("fgyrus_fsm_config_seq");
+      fgyrus_fft_poll_seq = syn_fgyrus_fft_poll_seq#(super.LB_SEQ_ITEM_T,super.LB_SEQR_T,super.PCM_SEQ_ITEM_T)::type_id::create("fgyrus_fft_poll_seq");
 
       ovm_report_info(get_full_name(),"End of build",OVM_LOW);
     endfunction : build
@@ -131,7 +133,11 @@ class syn_cortex_pcm_test extends syn_cortex_base_test;
         begin
           drvr_config_seq.start(super.env.lb_agent.seqr);
         end
-      join
+
+        begin
+          fgyrus_fft_poll_seq.start(super.env.lb_agent.seqr);
+        end
+      join_any
 
       do  
       begin
@@ -157,6 +163,8 @@ endclass : syn_cortex_pcm_test
  
 
  -- <Log>
+
+[06-12-2014  05:48:30 PM][mammenx] Added fft_sb to environment
 
 [30-11-2014  05:57:00 PM][mammenx] Added syn_fft_cache_sb components
 

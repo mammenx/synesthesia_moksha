@@ -51,6 +51,8 @@ class syn_lb_seqr #(type  PKT_TYPE  = syn_lb_seq_item)
   
     OVM_FILE  f;
 
+    ovm_analysis_port#(syn_pcm_seq_item)  LB2FFT_Sb_port;
+
     /* Constructor  */
     function new (string name = "syn_lb_seqr", ovm_component parent);
         super.new(name, parent);
@@ -71,6 +73,7 @@ class syn_lb_seqr #(type  PKT_TYPE  = syn_lb_seq_item)
 
       ovm_report_info(get_name(),"Start of build ",OVM_LOW);
 
+      LB2FFT_Sb_port  = new("LB2FFT_Sb_port", this);
 
       ovm_report_info(get_name(),"End of build ",OVM_LOW);
     endfunction : build

@@ -42,6 +42,7 @@
     `include  "i2c_master_regmap.svh"
     `include  "pcm_bffr_regmap.svh"
     `include  "ssm2603_drvr_regmap.svh"
+    `include  "fgyrus_reg_map.svh"
 
     //Parameters
     parameter       LB_DATA_W   = syn_env_pkg::LB_DATA_W;
@@ -97,11 +98,15 @@
 
     syn_reg_map#(LB_DATA_W)   acortex_reg_map;
 
+    syn_reg_map#(LB_DATA_W)   fgyrus_reg_map;
+
     syn_but_sniffer#(BUT_PKT_TYPE,BUT_INTF_TYPE)              but_sniffer;
     syn_but_sb#(BUT_PKT_TYPE,BUT_PKT_TYPE)                    but_sb;
 
     syn_fft_cache_sniffer#(FFT_CACHE_PKT_TYPE,FFT_CACHE_INTF_TYPE)            fft_cache_sniffer;
     syn_fft_cache_sb#(PCM_PKT_TYPE,FFT_CACHE_PKT_TYPE)                        fft_cache_sb;
+
+    syn_fft_sb#(PCM_PKT_TYPE,PCM_PKT_TYPE)                                    fft_sb;
 
     OVM_FILE  f;
 
@@ -142,6 +147,7 @@
 
       fft_cache_sniffer = syn_fft_cache_sniffer#(FFT_CACHE_PKT_TYPE,FFT_CACHE_INTF_TYPE)::type_id::create("fft_cache_sniffer",  this);
       fft_cache_sb  = syn_fft_cache_sb#(PCM_PKT_TYPE,FFT_CACHE_PKT_TYPE)::type_id::create("fft_cache_sb",  this);
+      fft_sb        = syn_fft_sb#(PCM_PKT_TYPE,PCM_PKT_TYPE)::type_id::create("fft_sb",  this);
 
       LB2Env_ff       = new("LB2Env_ff",this);
 
@@ -152,6 +158,10 @@
       acortex_reg_map    = syn_reg_map#(LB_DATA_W)::type_id::create("acortex_reg_map",this);
       build_acortex_reg_map();
       ovm_report_info(get_name(),$psprintf("Acortex Reg Map Table%s",acortex_reg_map.sprintTable()),OVM_LOW);
+
+      fgyrus_reg_map    = syn_reg_map#(LB_DATA_W)::type_id::create("fgyrus_reg_map",this);
+      build_fgyrus_reg_map();
+      ovm_report_info(get_name(),$psprintf("Fgyrus Reg Map Table%s",fgyrus_reg_map.sprintTable()),OVM_LOW);
 
       ovm_report_info(get_name(),"End of build ",OVM_LOW);
     endfunction
@@ -191,6 +201,9 @@
         this.pcm_mem_agent.mon.Mon2Sb_port.connect(fft_cache_sb.Mon_sent_2Sb_port);
         this.fft_cache_sniffer.Sniffer2Sb_port.connect(fft_cache_sb.Mon_rcvd_2Sb_port);
 
+        this.pcm_mem_agent.mon.Mon2Sb_port.connect(fft_sb.Mon_sent_2Sb_port);
+        this.lb_agent.seqr.LB2FFT_Sb_port.connect(fft_sb.Mon_rcvd_2Sb_port);
+
       ovm_report_info(get_name(),"END of connect ",OVM_LOW);
     endfunction
 
@@ -212,13 +225,31 @@
         begin
           for(int i=0;  i<lb_pkt.addr.size; i++)
           begin
-            if(!acortex_reg_map.set_reg(lb_pkt.addr[i],lb_pkt.data[i]))
+            if(lb_pkt.addr[i][LB_DATA_W-1  -:  LB_BLK_1_W] ==  ACORTEX_BLK)
             begin
-              ovm_report_info({get_name(),"[run]"},"Updated regmap",OVM_LOW);
+              if(!acortex_reg_map.set_reg(lb_pkt.addr[i],lb_pkt.data[i]))
+              begin
+                ovm_report_info({get_name(),"[run]"},"Updated acortex_regmap",OVM_LOW);
+              end
+              else
+              begin
+                ovm_report_warning({get_name(),"[run]"},"Could not update acortex_regmap!",OVM_LOW);
+              end
+            end
+            else if(lb_pkt.addr[i][LB_DATA_W-1  -:  LB_BLK_1_W] ==  FGYRUS_BLK)
+            begin
+              if(!fgyrus_reg_map.set_reg(lb_pkt.addr[i],lb_pkt.data[i]))
+              begin
+                ovm_report_info({get_name(),"[run]"},"Updated fgyrus_regmap",OVM_LOW);
+              end
+              else
+              begin
+                ovm_report_warning({get_name(),"[run]"},"Could not update fgyrus_regmap!",OVM_LOW);
+              end
             end
             else
             begin
-              ovm_report_warning({get_name(),"[run]"},"Could not update regmap!",OVM_LOW);
+              ovm_report_warning({get_name(),"[run]"},"Unknown LB_BLK_1 code!",OVM_LOW);
             end
           end
 
@@ -282,25 +313,42 @@
     endfunction : build_wm8731_reg_map
 
     function  void  build_acortex_reg_map();
-      acortex_reg_map.create_field("i2c_addr",      build_addr(0,ACORTEX_I2C_BLK_CODE,I2C_ADDR_REG_ADDR),    1,    7);
-      acortex_reg_map.create_field("clk_div",       build_addr(0,ACORTEX_I2C_BLK_CODE,I2C_CLK_DIV_REG_ADDR), 0,    LB_DATA_W-1);
-      acortex_reg_map.create_field("i2c_start_en",  build_addr(0,ACORTEX_I2C_BLK_CODE,I2C_CONFIG_REG_ADDR),  0,    0);
-      acortex_reg_map.create_field("i2c_stop_en",   build_addr(0,ACORTEX_I2C_BLK_CODE,I2C_CONFIG_REG_ADDR),  1,    1);
-      acortex_reg_map.create_field("i2c_init",      build_addr(0,ACORTEX_I2C_BLK_CODE,I2C_CONFIG_REG_ADDR),  2,    2);
-      acortex_reg_map.create_field("i2c_rd_n_wr",   build_addr(0,ACORTEX_I2C_BLK_CODE,I2C_CONFIG_REG_ADDR),  3,    3);
-      acortex_reg_map.create_field("i2c_num_bytes", build_addr(0,ACORTEX_I2C_BLK_CODE,I2C_CONFIG_REG_ADDR),  8,    LB_DATA_W-1);
-      acortex_reg_map.create_field("i2c_data_0",    build_addr(0,ACORTEX_I2C_BLK_CODE,I2C_DATA_CACHE_BASE_ADDR+0),  0,  7);
-      acortex_reg_map.create_field("i2c_data_1",    build_addr(0,ACORTEX_I2C_BLK_CODE,I2C_DATA_CACHE_BASE_ADDR+1),  0,  7);
-      acortex_reg_map.create_field("i2c_data_2",    build_addr(0,ACORTEX_I2C_BLK_CODE,I2C_DATA_CACHE_BASE_ADDR+2),  0,  7);
-      acortex_reg_map.create_field("i2c_data_3",    build_addr(0,ACORTEX_I2C_BLK_CODE,I2C_DATA_CACHE_BASE_ADDR+3),  0,  7);
+      acortex_reg_map.create_field("i2c_addr",      build_addr(ACORTEX_BLK,ACORTEX_I2C_BLK_CODE,I2C_ADDR_REG_ADDR),    1,    7);
+      acortex_reg_map.create_field("clk_div",       build_addr(ACORTEX_BLK,ACORTEX_I2C_BLK_CODE,I2C_CLK_DIV_REG_ADDR), 0,    LB_DATA_W-1);
+      acortex_reg_map.create_field("i2c_start_en",  build_addr(ACORTEX_BLK,ACORTEX_I2C_BLK_CODE,I2C_CONFIG_REG_ADDR),  0,    0);
+      acortex_reg_map.create_field("i2c_stop_en",   build_addr(ACORTEX_BLK,ACORTEX_I2C_BLK_CODE,I2C_CONFIG_REG_ADDR),  1,    1);
+      acortex_reg_map.create_field("i2c_init",      build_addr(ACORTEX_BLK,ACORTEX_I2C_BLK_CODE,I2C_CONFIG_REG_ADDR),  2,    2);
+      acortex_reg_map.create_field("i2c_rd_n_wr",   build_addr(ACORTEX_BLK,ACORTEX_I2C_BLK_CODE,I2C_CONFIG_REG_ADDR),  3,    3);
+      acortex_reg_map.create_field("i2c_num_bytes", build_addr(ACORTEX_BLK,ACORTEX_I2C_BLK_CODE,I2C_CONFIG_REG_ADDR),  8,    LB_DATA_W-1);
+      acortex_reg_map.create_field("i2c_data_0",    build_addr(ACORTEX_BLK,ACORTEX_I2C_BLK_CODE,I2C_DATA_CACHE_BASE_ADDR+0),  0,  7);
+      acortex_reg_map.create_field("i2c_data_1",    build_addr(ACORTEX_BLK,ACORTEX_I2C_BLK_CODE,I2C_DATA_CACHE_BASE_ADDR+1),  0,  7);
+      acortex_reg_map.create_field("i2c_data_2",    build_addr(ACORTEX_BLK,ACORTEX_I2C_BLK_CODE,I2C_DATA_CACHE_BASE_ADDR+2),  0,  7);
+      acortex_reg_map.create_field("i2c_data_3",    build_addr(ACORTEX_BLK,ACORTEX_I2C_BLK_CODE,I2C_DATA_CACHE_BASE_ADDR+3),  0,  7);
 
-      acortex_reg_map.create_field("dac_en",        build_addr(0,ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_CONFIG_REG_ADDR),   0,  0);
-      acortex_reg_map.create_field("adc_en",        build_addr(0,ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_CONFIG_REG_ADDR),   1,  1);
-      acortex_reg_map.create_field("bps_val",       build_addr(0,ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_CONFIG_REG_ADDR),   2,  3);
-      acortex_reg_map.create_field("bclk_div_val",  build_addr(0,ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_BCLK_DIV_REG_ADDR), 0,  LB_DATA_W-1);
-      acortex_reg_map.create_field("fs_val",        build_addr(0,ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_FS_VAL_REG_ADDR),   0,  LB_DATA_W-1);
-      acortex_reg_map.create_field("bffr_mode",     build_addr(0,ACORTEX_PCM_BFFR_CLK_CODE,PCM_BFFR_CONTROL_REG_ADDR),  0,  0);
+      acortex_reg_map.create_field("dac_en",        build_addr(ACORTEX_BLK,ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_CONFIG_REG_ADDR),   0,  0);
+      acortex_reg_map.create_field("adc_en",        build_addr(ACORTEX_BLK,ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_CONFIG_REG_ADDR),   1,  1);
+      acortex_reg_map.create_field("bps_val",       build_addr(ACORTEX_BLK,ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_CONFIG_REG_ADDR),   2,  3);
+      acortex_reg_map.create_field("bclk_div_val",  build_addr(ACORTEX_BLK,ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_BCLK_DIV_REG_ADDR), 0,  LB_DATA_W-1);
+      acortex_reg_map.create_field("fs_val",        build_addr(ACORTEX_BLK,ACORTEX_DRVR_BLK_CODE,SSM2603_DRVR_FS_VAL_REG_ADDR),   0,  LB_DATA_W-1);
+      acortex_reg_map.create_field("bffr_mode",     build_addr(ACORTEX_BLK,ACORTEX_PCM_BFFR_CLK_CODE,PCM_BFFR_CONTROL_REG_ADDR),  0,  0);
     endfunction : build_acortex_reg_map
+
+
+    function  void  build_fgyrus_reg_map();
+      fgyrus_reg_map.create_field("fgyrus_en",    build_addr(FGYRUS_BLK,FGYRUS_REG_CODE,FGYRUS_CONTROL_REG_ADDR),  0,  0);
+      fgyrus_reg_map.create_field("fgyrus_mode",  build_addr(FGYRUS_BLK,FGYRUS_REG_CODE,FGYRUS_CONTROL_REG_ADDR),  1,  1);
+
+      fgyrus_reg_map.create_field("fgyrus_busy",        build_addr(FGYRUS_BLK,FGYRUS_REG_CODE,FGYRUS_STATUS_REG_ADDR),  0,  0);
+      fgyrus_reg_map.create_field("but_bffr_underflow", build_addr(FGYRUS_BLK,FGYRUS_REG_CODE,FGYRUS_STATUS_REG_ADDR),  1,  1);
+      fgyrus_reg_map.create_field("but_bffr_ovrflow",   build_addr(FGYRUS_BLK,FGYRUS_REG_CODE,FGYRUS_STATUS_REG_ADDR),  2,  2);
+
+      fgyrus_reg_map.create_field("fgyrus_post_norm", build_addr(FGYRUS_BLK,FGYRUS_REG_CODE,FGYRUS_POST_NORM_REG_ADDR),  3,  0);
+
+      fgyrus_reg_map.create_space("fgyrus_fft_cache_ram", build_addr(FGYRUS_BLK,FGYRUS_FFT_CACHE_RAM_CODE,0), 256);
+      fgyrus_reg_map.create_space("fgyrus_twdl_ram",      build_addr(FGYRUS_BLK,FGYRUS_TWDLE_RAM_CODE,0),     128);
+      fgyrus_reg_map.create_space("fgyrus_cordic_ram",    build_addr(FGYRUS_BLK,FGYRUS_CORDIC_RAM_CODE,0),    256);
+      fgyrus_reg_map.create_space("fgyrus_win_ram",       build_addr(FGYRUS_BLK,FGYRUS_WIN_RAM_CODE,0),       128);
+    endfunction : build_fgyrus_reg_map
 
   endclass  : syn_cortex_env
 
@@ -313,6 +361,8 @@
  
 
  -- <Log>
+
+[06-12-2014  05:48:30 PM][mammenx] Added fft_sb to environment
 
 [30-11-2014  05:57:00 PM][mammenx] Added syn_fft_cache_sb components
 
