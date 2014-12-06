@@ -172,6 +172,7 @@ module fgyrus_fsm #(
   logic [3:0]                 fgyrus_post_norm_f;
   logic                       but_bffr_ovrflow_f;
   logic                       but_bffr_underflw_f;
+  logic                       fft_done_f; //Clear on read
 
   logic [PST_VEC_W-1:0]     pst_vec_f;
   logic                       wait_for_end_f;
@@ -250,6 +251,7 @@ enum  logic [2:0] { IDLE_S  = 3'd0,
       fgyrus_post_norm_f      <=  0;  //No normalization
       but_bffr_ovrflow_f      <=  0;
       but_bffr_underflw_f     <=  0;
+      fft_done_f              <=  0;
 
       lb_del_vec_f            <=  0;
       lb_addr_del_vec_f       <=  0;
@@ -280,7 +282,7 @@ enum  logic [2:0] { IDLE_S  = 3'd0,
           case(lb_del_addr_w[7:0])
 
             FGYRUS_CONTROL_REG_ADDR   : lb_rd_data <=  {{LB_DATA_W-2{1'b0}}, fgyrus_mode_f,fgyrus_en_f};
-            FGYRUS_STATUS_REG_ADDR    : lb_rd_data <=  {{LB_DATA_W-3{1'b0}}, but_bffr_ovrflow_f,but_bffr_underflw_f,fgyrus_busy_c};
+            FGYRUS_STATUS_REG_ADDR    : lb_rd_data <=  {{LB_DATA_W-4{1'b0}}, fft_done_f,but_bffr_ovrflow_f,but_bffr_underflw_f,fgyrus_busy_c};
             FGYRUS_POST_NORM_REG_ADDR : lb_rd_data <=  {{LB_DATA_W-4{1'b0}}, fgyrus_post_norm_f};
             default                   : lb_rd_data <=  'hdeadbabe;
 
@@ -303,6 +305,16 @@ enum  logic [2:0] { IDLE_S  = 3'd0,
       endcase
 
       lb_rd_valid        <=  lb_del_vec_f[(2*LB_DEL)-2];
+
+      //Clear on read logic
+      if(fft_done_f)
+      begin
+        fft_done_f       <= ~lb_rd_valid;
+      end
+      else
+      begin
+        fft_done_f       <= cache_intf_fft_done;
+      end
     end
   end
 
