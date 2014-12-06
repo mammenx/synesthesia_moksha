@@ -918,6 +918,8 @@ endmodule // fgyrus_fsm
 
  -- <Log>
 
+[06-12-2014  05:46:36 PM][mammenx] Added fft_done_f
+
 [29-11-2014  10:32:10 PM][mammenx] Fixed pcm read address issue
 
  --------------------------------------------------------------------------
