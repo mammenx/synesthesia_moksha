@@ -34,13 +34,14 @@
 #include "sys/alt_stdio.h"
 
 
-void init_acortex()	{
+void init_acortex(BPS_T bps)	{
 	configure_i2c_clk(255);
 
 	configure_drvr_bclk_div(BCLK_DIV_10MHZ);
+	configure_drvr_bps(bps);
 }
 
-void enable_adc_path(FS_T fs, BPS_T bps)	{
+void enable_audio_path(FS_T fs, BPS_T bps)	{
 	/* De-Activate Codec */
 	aud_codec_update_field(0,AUD_CODEC_ACTIVE_IDX,AUD_CODEC_ACTIVE_OFFST,AUD_CODEC_ACTIVE_MSK);
 	aud_codec_update_field(1,AUD_CODEC_OUTPD_IDX,AUD_CODEC_OUTPD_OFFST,AUD_CODEC_OUTPD_MSK);
@@ -58,6 +59,7 @@ void enable_adc_path(FS_T fs, BPS_T bps)	{
 	configure_drvr_fs_div(fs2fs_div_lookup[fs]);
 
 	aud_codec_update_field(0,AUD_CODEC_ADCPD_IDX,AUD_CODEC_ADCPD_OFFST,AUD_CODEC_ADCPD_MSK);
+	aud_codec_update_field(0,AUD_CODEC_DACPD_IDX,AUD_CODEC_DACPD_OFFST,AUD_CODEC_DACPD_MSK);
 
 	/* Activate Codec */
 	aud_codec_update_field(1,AUD_CODEC_ACTIVE_IDX,AUD_CODEC_ACTIVE_OFFST,AUD_CODEC_ACTIVE_MSK);
@@ -65,7 +67,7 @@ void enable_adc_path(FS_T fs, BPS_T bps)	{
 
 }
 
-void disable_adc_path()	{
+void disable_audio_path()	{
 	/* De-Activate Codec */
 	aud_codec_update_field(0,AUD_CODEC_ACTIVE_IDX,AUD_CODEC_ACTIVE_OFFST,AUD_CODEC_ACTIVE_MSK);
 	aud_codec_update_field(1,AUD_CODEC_OUTPD_IDX,AUD_CODEC_OUTPD_OFFST,AUD_CODEC_OUTPD_MSK);
@@ -75,6 +77,7 @@ void disable_adc_path()	{
 	aud_codec_update_field(1,AUD_CODEC_RIN_MUTE_IDX,AUD_CODEC_RIN_MUTE_OFFST,AUD_CODEC_RIN_MUTE_MSK);
 
 	aud_codec_update_field(1,AUD_CODEC_ADCPD_IDX,AUD_CODEC_ADCPD_OFFST,AUD_CODEC_ADCPD_MSK);
+	aud_codec_update_field(1,AUD_CODEC_DACPD_IDX,AUD_CODEC_DACPD_OFFST,AUD_CODEC_DACPD_MSK);
 
 	/* Activate Codec */
 	aud_codec_update_field(1,AUD_CODEC_ACTIVE_IDX,AUD_CODEC_ACTIVE_OFFST,AUD_CODEC_ACTIVE_MSK);
@@ -89,11 +92,11 @@ void pcm_cap(FS_T fs, BPS_T bps)	{
 
 
 	disable_adc_drvr();
-	disable_adc_path();
+	disable_audio_path();
 
 	update_acache_mode(PCM_BFFR_MODE_CAPTURE);
 
-	enable_adc_path(fs,bps);
+	enable_audio_path(fs,bps);
 	enable_adc_drvr();
 
 	do {
@@ -103,19 +106,19 @@ void pcm_cap(FS_T fs, BPS_T bps)	{
 	dump_acache_cap_data(lbffr, rbffr);
 
 	for(i=0;i<PCM_BFFR_NUM_SAMPLES;i++)	{
-		alt_printf("[pcm_cap] LBFFR[0x%x] - 0x%x\r\n",i,lbffr[i]);
+		printf("[pcm_cap] LBFFR[0x%x] - 0x%x\r\n",i,lbffr[i]);
 	}
 
 	alt_printf("\r\n");
 
 	for(i=0;i<PCM_BFFR_NUM_SAMPLES;i++)	{
-		alt_printf("[pcm_cap] RBFFR[0x%x] - 0x%x\r\n",i,rbffr[i]);
+		printf("[pcm_cap] RBFFR[0x%x] - 0x%x\r\n",i,rbffr[i]);
 	}
 
 	alt_printf("\r\n");
 
 	disable_adc_drvr();
-	disable_adc_path();
+	disable_audio_path();
 
 }
 

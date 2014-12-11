@@ -73,17 +73,22 @@ void aud_codec_reset()	{
 	}
 }
 
-void aud_codec_init()	{
+void aud_codec_init(BPS_T bps)	{
 	aud_codec_reset();
 
 	aud_codec_update_field(0,AUD_CODEC_PWROFF_IDX,AUD_CODEC_PWROFF_OFFST,AUD_CODEC_PWROFF_MSK);
 	aud_codec_update_field(0,AUD_CODEC_LINEINPD_IDX,AUD_CODEC_LINEINPD_OFFST,AUD_CODEC_LINEINPD_MSK);
 
 	/* Configure misc settings */
-	aud_codec_update_iwl(BPS_16);
+	aud_codec_update_iwl(bps);
 	aud_codec_update_field(1,AUD_CODEC_LRP_IDX,AUD_CODEC_LRP_OFFST,AUD_CODEC_LRP_MSK);
 	aud_codec_update_field(3,AUD_CODEC_FORMAT_IDX,AUD_CODEC_FORMAT_OFFST,AUD_CODEC_FORMAT_MSK);
 	aud_codec_update_field(1,AUD_CODEC_USB_NORM_IDX,AUD_CODEC_USB_NORM_OFFST,AUD_CODEC_USB_NORM_MSK);
+
+	aud_codec_update_field(1,AUD_CODEC_DAC_SEL_IDX,AUD_CODEC_DAC_SEL_OFFST,AUD_CODEC_DAC_SEL_MSK);
+	aud_codec_update_field(0,AUD_CODEC_BYPASS_IDX,AUD_CODEC_BYPASS_OFFST,AUD_CODEC_BYPASS_MSK);
+
+	aud_codec_update_field(0,AUD_CODEC_DAC_MU_IDX,AUD_CODEC_DAC_MU_OFFST,AUD_CODEC_DAC_MU_MSK);
 
 	/* Activate */
 	aud_codec_update_field(1,AUD_CODEC_ACTIVE_IDX,AUD_CODEC_ACTIVE_OFFST,AUD_CODEC_ACTIVE_MSK);

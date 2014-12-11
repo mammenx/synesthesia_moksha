@@ -36,8 +36,8 @@
 #include "pcm_bffr/pcm_bffr.h"
 
 void init_acortex();
-void enable_adc_path(FS_T fs, BPS_T bps);
-void disable_adc_path();
+void enable_audio_path(FS_T fs, BPS_T bps);
+void disable_audio_path();
 
 void pcm_cap();
 

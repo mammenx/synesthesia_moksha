@@ -32,6 +32,7 @@
 #define CORTEX_H_
 
 #include "acortex/acortex.h"
+#include "fgyrus/fgyrus.h"
 #include "rst_cntrl/rst_cntrl.h"
 
 void init_cortex();

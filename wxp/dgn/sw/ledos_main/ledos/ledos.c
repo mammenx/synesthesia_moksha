@@ -31,7 +31,7 @@
 #include "ledos.h"
 
 
-void init_ledos()	{
-	init_cortex();
-	aud_codec_init();
+void init_ledos(BPS_T bps)	{
+	init_cortex(bps);
+	aud_codec_init(bps);
 }

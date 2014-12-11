@@ -84,16 +84,74 @@
 
 int main()
 { 
+	alt_u32 b32[256];
+	alt_u16 b16[256];
+	alt_u32 i;
+	alt_u32 lbffr[128];
+	alt_u32 rbffr[128];
+
   alt_putstr("Hello from Nios II!\n");
 
-  init_ledos();
+  init_ledos(BPS_24);
+  enable_fgyrus();
+
+  //pcm_cap(FS_32KHZ,BPS_24);
+
+	disable_adc_drvr();
+	disable_dac_drvr();
+	disable_audio_path();
+
+	update_acache_mode(PCM_BFFR_MODE_NORMAL);
+
+	enable_audio_path(FS_44KHZ,BPS_24);
+	enable_adc_drvr();
+	enable_dac_drvr();
 
 
-  pcm_cap(FS_44KHZ,BPS_16);
+  /*
+	do {
+
+	} while (get_fgyrus_status() == FGYRUS_FFT_DONE);
+
+	alt_printf("FFT Done\n");
+
+	dump_fgyrus_fft_cache(lbffr,rbffr,128);
+
+	 for(i=0;i<128;i++) {
+		  printf("FFT L[0x%x] - %d\r\n",i,lbffr[i]);
+	  }
+
+	 for(i=0;i<128;i++) {
+		  printf("FFT R[0x%x] - %d\r\n",i,rbffr[i]);
+	  }
+	  */
 
   dump_drvr_regs();
   aud_codec_dump_regs();
 
+/*
+  update_fgyrus_mode(FGYRUS_CONFIG);
+
+  dump_fgyrus_twdl_ram(b32);
+
+  for(i=0;i<FGYRUS_TWDL_RAM_SIZE;i++) {
+	  alt_printf("Twdl Ram[0x%x] - 0x%x\r\n",i,b32[i]);
+  }
+
+
+  dump_fgyrus_win_ram(b32);
+
+  for(i=0;i<FGYRUS_WIN_RAM_SIZE;i++) {
+	  alt_printf("Win Ram[0x%x] - 0x%x\r\n",i,b32[i]);
+  }
+
+
+  dump_fgyrus_cordic_ram(b16);
+
+  for(i=0;i<FGYRUS_CORDIC_RAM_SIZE;i++) {
+	  alt_printf("Cordic Ram[0x%x] - 0x%x\r\n",i,b16[i]);
+  }
+  */
 
   /* Event loop never exits. */
   while (1);

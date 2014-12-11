@@ -35,7 +35,7 @@
 #include "system.h"
 #include "alt_types.h"
 
-#define	RESET_CNTRL_REG_ADDR	0x10000
+#define	RESET_CNTRL_REG_ADDR	0x20000
 #define	RESET_CNTRL_MSK			0x00000007
 
 #define	IORD_RESET_CNTRL			\
