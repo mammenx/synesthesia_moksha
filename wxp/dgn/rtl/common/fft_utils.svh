@@ -44,13 +44,13 @@
 
 
   `define drop_fft_cache_data_intf_set(TYPE,SAMPLE_W,MEM_DATA_W,MEM_ADDR_W,prefix,postfix) \
-      `drop_complex_set(TYPE,SAMPLE_W,prefix``wr_sample_,postfix);  \
+      `drop_complex_set(TYPE,SAMPLE_W,prefix``wr_sample_,postfix)  \
       TYPE                    prefix``wr_en``postfix; \
       TYPE  [MEM_ADDR_W-1:0]  prefix``waddr``postfix; \
       TYPE  [MEM_ADDR_W-1:0]  prefix``raddr``postfix; \
       TYPE                    prefix``rd_en``postfix; \
       TYPE                    prefix``rd_valid``postfix; \
-      `drop_complex_set(TYPE,SAMPLE_W,prefix``rd_sample_,postfix);  \
+      `drop_complex_set(TYPE,SAMPLE_W,prefix``rd_sample_,postfix)  \
       TYPE                    prefix``fft_done``postfix; \
 
 

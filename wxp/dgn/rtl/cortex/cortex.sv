@@ -102,8 +102,8 @@ module cortex #(
 
   wire  [NUM_LB_CHILDREN-2:0] cortex_rst_vec;
 
-  wire                        pcm_rdy_w;
-  `drop_mem_wires(PCM_MEM_DATA_W,PCM_MEM_ADDR_W,pcm_,_w)
+  wire                        pcm_rdy_w/*synthesis keep*/;
+  `drop_mem_wires(PCM_MEM_DATA_W,PCM_MEM_ADDR_W,pcm_,_w /*synthesis keep*/)
 
 //----------------------- Internal Interface Declarations -----------------
   `ifdef  SIMULATION

@@ -118,9 +118,9 @@ module fgyrus #(
   wire                      bffr_ovrflw;
   wire                      bffr_underflw;
 
-  `drop_fft_cache_data_intf_set(wire,SAMPLE_W,FFT_CACHE_DATA_W,FFT_CACHE_ADDR_W,cache_intf_,_w)
+  `drop_fft_cache_data_intf_set(wire,SAMPLE_W,FFT_CACHE_DATA_W,FFT_CACHE_ADDR_W,cache_intf_,_w /*synthesis keep*/)
 
-  `drop_mem_wires(FFT_CACHE_DATA_W,FFT_CACHE_ADDR_W,cache_intf_hst_,_w)
+  `drop_mem_wires(FFT_CACHE_DATA_W,FFT_CACHE_ADDR_W,cache_intf_hst_,_w /*synthesis keep*/)
 
   `drop_mem_wires(WIN_RAM_DATA_W,WIN_RAM_ADDR_W,win_ram_,_w)
 

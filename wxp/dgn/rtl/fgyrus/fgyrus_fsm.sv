@@ -88,14 +88,14 @@ module fgyrus_fsm #(
   input                       bffr_underflw,
 
   //PCM Buffer
-  input                         pcm_rdy,
+  input                         pcm_rdy /* synthesis keep */,
 
-  output  [PCM_MEM_ADDR_W-1:0]  pcm_addr,
-  output  [PCM_MEM_DATA_W-1:0]  pcm_wdata,
-  output                        pcm_wren,
-  output                        pcm_rden,
-  input   [PCM_MEM_DATA_W-1:0]  pcm_rdata,
-  input                         pcm_rd_valid,
+  output  [PCM_MEM_ADDR_W-1:0]  pcm_addr /* synthesis keep */,
+  output  [PCM_MEM_DATA_W-1:0]  pcm_wdata /* synthesis keep */,
+  output                        pcm_wren /* synthesis keep */,
+  output                        pcm_rden /* synthesis keep */,
+  input   [PCM_MEM_DATA_W-1:0]  pcm_rdata /* synthesis keep */,
+  input                         pcm_rd_valid /* synthesis keep */,
 
   //Window RAM
   output  [WIN_RAM_ADDR_W-1:0]  win_ram_addr,
@@ -122,16 +122,16 @@ module fgyrus_fsm #(
   input                           cordic_ram_rd_valid,
 
   //FFT Cache
-  output  reg [SAMPLE_W-1:0]          cache_intf_wr_sample_re,
-  output  reg [SAMPLE_W-1:0]          cache_intf_wr_sample_im,
-  output  reg                         cache_intf_wr_en,
-  output  [FFT_CACHE_ADDR_W-1:0]  cache_intf_waddr,
-  output  [FFT_CACHE_ADDR_W-1:0]  cache_intf_raddr,
-  output  reg                         cache_intf_rd_en,
-  input                           cache_intf_rd_valid,
-  input   [SAMPLE_W-1:0]          cache_intf_rd_sample_re,
-  input   [SAMPLE_W-1:0]          cache_intf_rd_sample_im,
-  output                          cache_intf_fft_done,
+  output  reg [SAMPLE_W-1:0]      cache_intf_wr_sample_re /* synthesis keep */,
+  output  reg [SAMPLE_W-1:0]      cache_intf_wr_sample_im /* synthesis keep */,
+  output  reg                     cache_intf_wr_en /* synthesis keep */,
+  output  [FFT_CACHE_ADDR_W-1:0]  cache_intf_waddr /* synthesis keep */,
+  output  [FFT_CACHE_ADDR_W-1:0]  cache_intf_raddr /* synthesis keep */,
+  output  reg                     cache_intf_rd_en /* synthesis keep */,
+  input                           cache_intf_rd_valid /* synthesis keep */,
+  input   [SAMPLE_W-1:0]          cache_intf_rd_sample_re /* synthesis keep */,
+  input   [SAMPLE_W-1:0]          cache_intf_rd_sample_im /* synthesis keep */,
+  output                          cache_intf_fft_done /* synthesis keep */,
 
   output  [FFT_CACHE_DATA_W-1:0]  cache_intf_hst_wdata,
   output                          cache_intf_hst_wren,
@@ -165,60 +165,60 @@ module fgyrus_fsm #(
 
 
 //----------------------- Internal Register Declarations ------------------
-  logic [(2*LB_DEL)-1:0]    lb_del_vec_f;
-  logic [LB_ADDR_DEL_W-1:0] lb_addr_del_vec_f;
-  logic                       fgyrus_en_f;
-  logic                       fgyrus_mode_f;  //0->Normal,  1->Config
-  logic [3:0]                 fgyrus_post_norm_f;
-  logic                       but_bffr_ovrflow_f;
-  logic                       but_bffr_underflw_f;
-  logic                       fft_done_f; //Clear on read
+  logic [(2*LB_DEL)-1:0]    lb_del_vec_f /*synthesis keep*/;
+  logic [LB_ADDR_DEL_W-1:0] lb_addr_del_vec_f /*synthesis keep*/;
+  logic                       fgyrus_en_f /*synthesis keep*/;
+  logic                       fgyrus_mode_f /*synthesis keep*/;  //0->Normal,  1->Config
+  logic [3:0]                 fgyrus_post_norm_f /*synthesis keep*/;
+  logic                       but_bffr_ovrflow_f /*synthesis keep*/;
+  logic                       but_bffr_underflw_f /*synthesis keep*/;
+  logic                       fft_done_f /*synthesis keep*/; //Clear on read
 
-  logic [PST_VEC_W-1:0]     pst_vec_f;
-  logic                       wait_for_end_f;
-  logic [SAMPLE_CNTR_W-1:0] sample_rcntr_f;
-  logic [SAMPLE_CNTR_W-1:0] sample_wcntr_f;
+  logic [PST_VEC_W-1:0]     pst_vec_f /*synthesis keep*/;
+  logic                       wait_for_end_f /*synthesis keep*/;
+  logic [SAMPLE_CNTR_W-1:0] sample_rcntr_f /*synthesis keep*/;
+  logic [SAMPLE_CNTR_W-1:0] sample_wcntr_f /*synthesis keep*/;
 
-  logic [NUM_FFT_STAGES-1:0]  fft_stage_rd_f;
-  logic [SAMPLE_CNTR_W-1:0] fft_stage_rd_bound_f;
-  logic [NUM_FFT_STAGES-1:0]  fft_stage_wr_f;
-  logic [SAMPLE_CNTR_W-1:0] fft_stage_wr_bound_f;
+  logic [NUM_FFT_STAGES-1:0]  fft_stage_rd_f /*synthesis keep*/;
+  logic [SAMPLE_CNTR_W-1:0] fft_stage_rd_bound_f /*synthesis keep*/;
+  logic [NUM_FFT_STAGES-1:0]  fft_stage_wr_f /*synthesis keep*/;
+  logic [SAMPLE_CNTR_W-1:0] fft_stage_wr_bound_f /*synthesis keep*/;
 
-  logic                       div_load_f;
-  logic [DIV_W-1:0]         div_n_f;
-  logic [DIV_W-1:0]         div_d_f;
-  logic                       div_norm_f;
-  logic                       div_d_is_null_f;
+  logic                       div_load_f /*synthesis keep*/;
+  logic [DIV_W-1:0]         div_n_f /*synthesis keep*/;
+  logic [DIV_W-1:0]         div_d_f /*synthesis keep*/;
+  logic                       div_norm_f /*synthesis keep*/;
+  logic                       div_d_is_null_f /*synthesis keep*/;
 
-  logic [6:0]                 twdl_addr_f;
-  logic [7:0]                 cordic_addr_f;
+  logic [6:0]                 twdl_addr_f /*synthesis keep*/;
+  logic [7:0]                 cordic_addr_f /*synthesis keep*/;
 
   genvar  i;
 
 //----------------------- Internal Wire Declarations ----------------------
-  logic [LB_ADDR_W-1:0]     lb_del_addr_w;
-  logic                       fgyrus_busy_c;
+  logic [LB_ADDR_W-1:0]     lb_del_addr_w /*synthesis keep*/;
+  logic                       fgyrus_busy_c /*synthesis keep*/;
 
-  logic                       rchnnl_n_lchnnl_w;
-  logic [SAMPLE_CNTR_W-2:0] sample_rcntr_rev_w;
-  logic                       decimate_ovr_c;
+  logic                       rchnnl_n_lchnnl_w /*synthesis keep*/;
+  logic [SAMPLE_CNTR_W-2:0] sample_rcntr_rev_w /*synthesis keep*/;
+  logic                       decimate_ovr_c /*synthesis keep*/;
 
-  logic                       wrap_inc_fft_rcntr_c;
-  logic                       fft_stage_rd_ovr_c;
-  logic                       fft_rd_ovr_c;
+  logic                       wrap_inc_fft_rcntr_c /*synthesis keep*/;
+  logic                       fft_stage_rd_ovr_c /*synthesis keep*/;
+  logic                       fft_rd_ovr_c /*synthesis keep*/;
 
-  logic                       wrap_inc_fft_wcntr_c;
-  logic                       fft_stage_wr_ovr_c;
-  logic                       fft_wr_ovr_c;
+  logic                       wrap_inc_fft_wcntr_c /*synthesis keep*/;
+  logic                       fft_stage_wr_ovr_c /*synthesis keep*/;
+  logic                       fft_wr_ovr_c /*synthesis keep*/;
 
-  logic                       cordic_ovr_c;
-  logic                       abs_ovr_c;
+  logic                       cordic_ovr_c /*synthesis keep*/;
+  logic                       abs_ovr_c /*synthesis keep*/;
 
-  logic [DIV_W-1:0]         div_res_q_w;
-  logic [DIV_W-1:0]         div_res_r_w;
-  logic                       div_res_rdy_w;
-  logic                       div_res_almost_done_w;
-  logic [DIV_W-1:0]         div_res_q_norm_c;
+  logic [DIV_W-1:0]         div_res_q_w /*synthesis keep*/;
+  logic [DIV_W-1:0]         div_res_r_w /*synthesis keep*/;
+  logic                       div_res_rdy_w /*synthesis keep*/;
+  logic                       div_res_almost_done_w /*synthesis keep*/;
+  logic [DIV_W-1:0]         div_res_q_norm_c /*synthesis keep*/;
 
 
 //----------------------- Internal Interface Declarations -----------------
@@ -230,7 +230,7 @@ enum  logic [2:0] { IDLE_S  = 3'd0,
                     FFT_S,
                     CORDIC_S,
                     ABS_S
-                  } fsm_pstate, next_state  /* synthesis syn_encoding = "user" */;
+                  } fsm_pstate/* synthesis keep */, next_state;
 
 
 //----------------------- Start of Code -----------------------------------
@@ -840,7 +840,13 @@ enum  logic [2:0] { IDLE_S  = 3'd0,
 
           pst_vec_f[2]  : //normalise numerator
           begin
-            div_n_f           <=  div_norm_f  ? {div_n_f[15:0],{16{1'b0}}}  : div_norm_f;
+            div_n_f           <=  div_norm_f  ? {div_n_f[15:0],{16{1'b0}}}  : div_n_f;
+          end
+
+          default :
+          begin
+            div_n_f           <=  div_n_f;
+            div_d_f           <=  div_d_f;
           end
 
         endcase

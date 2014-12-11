@@ -102,7 +102,7 @@ module but_wing #(
 
   logic   [(SAMPLE_W*2)-1:0] bffr_rd_data_w;
   logic   [(SAMPLE_W*2)-1:0] bffr_wr_data_w;
-  `drop_complex_set(reg,SAMPLE_W,bffr_sample_a_,_w);
+  `drop_complex_set(reg,SAMPLE_W,bffr_sample_a_,_w)
   logic                            bffr_full_w;
   logic                            bffr_empty_w;
 
