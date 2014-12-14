@@ -50,7 +50,7 @@ dgn_lib:
 
 dgn:
 	echo	"Compiling RTL"
-	vlog +define+SIMULATION -sv -f dgn.list -timescale "1ns / 10ps" $(LINT_OPT) $(PREPROCESS_OPT) | tee dgn.vlog.log
+	vlog +define+SIMULATION -incr -sv -f dgn.list -timescale "1ns / 10ps" $(LINT_OPT) $(PREPROCESS_OPT) | tee dgn.vlog.log
 
 tb:
 	echo "Compiling TB"
