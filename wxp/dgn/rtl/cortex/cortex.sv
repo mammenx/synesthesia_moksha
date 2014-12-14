@@ -42,6 +42,8 @@ module cortex #(
   parameter LB_ADDR_W         = 16,
   parameter LB_ADDR_BLK_W     = 4,
   parameter NUM_AUD_SAMPLES   = 128,
+  parameter SYS_MEM_DATA_W    = 32,
+  parameter SYS_MEM_ADDR_W    = 27,
   parameter DEFAULT_DATA_VAL  = 'hdeadbabe
 
 ) (
@@ -61,6 +63,14 @@ module cortex #(
     output                      scl,
     inout                       sda,
 
+    input                       sys_mem_cntrlr_wait,
+    output                      sys_mem_cntrlr_wren,
+    output                      sys_mem_cntrlr_rden,
+    output  [SYS_MEM_ADDR_W-1:0]sys_mem_cntrlr_addr,
+    output  [SYS_MEM_DATA_W-1:0]sys_mem_cntrlr_wdata,
+    input                       sys_mem_cntrlr_rd_valid,
+    input   [SYS_MEM_DATA_W-1:0]sys_mem_cntrlr_rdata,
+
     input                       AUD_ADCDAT,
     output                      AUD_ADCLRCK,
     output                      AUD_BCLK,
@@ -76,11 +86,14 @@ module cortex #(
   localparam  LB_CHLD_DATA_W      = LB_DATA_W;
   localparam  LB_CHLD_ADDR_W      = LB_ADDR_W - LB_ADDR_BLK_W;
   localparam  LB_CHLD_ADDR_BLK_W  = 4;
-  localparam  NUM_LB_CHILDREN     = 3;
+  localparam  NUM_LB_CHILDREN     = 4;
   localparam  PCM_MEM_DATA_W      = 32;
   localparam  PCM_MEM_ADDR_W      = $clog2(NUM_AUD_SAMPLES) + 1;
   localparam  FFT_SAMPLE_W        = 32;
   localparam  FFT_TWDL_W          = 10;
+  localparam  NUM_SYS_MEM_AGENTS  = 2;
+  localparam  int SYS_MEM_ARB_WIEGHT_LIST = '{8,8};
+  localparam  SYS_MEM_ARB_TOTAL_WEIGHT    = 16;
 
 //----------------------- Input Declarations ------------------------------
 
@@ -104,6 +117,10 @@ module cortex #(
 
   wire                        pcm_rdy_w/*synthesis keep*/;
   `drop_mem_wires(PCM_MEM_DATA_W,PCM_MEM_ADDR_W,pcm_,_w /*synthesis keep*/)
+
+  wire  [NUM_SYS_MEM_AGENTS-1:0]  sys_mem_agent_wait_w;
+  `drop_mem_wires(SYS_MEM_DATA_W,SYS_MEM_ADDR_W,sys_mem_agent_,_w [NUM_SYS_MEM_AGENTS-1:0]);
+
 
 //----------------------- Internal Interface Declarations -----------------
   `ifdef  SIMULATION
@@ -219,6 +236,38 @@ module cortex #(
       assign  pcm_mem_intf.pcm_rd_valid = pcm_rd_valid_w;
   `endif
 
+  /*  Instantiate System Memory Interface */
+  sys_mem_intf #(
+    .LB_DATA_W           (LB_CHLD_DATA_W),
+    .LB_ADDR_W           (LB_CHLD_ADDR_W),
+    .LB_ADDR_BLK_W       (LB_CHLD_ADDR_BLK_W),
+    .MEM_DATA_W          (SYS_MEM_DATA_W),
+    .MEM_ADDR_W          (SYS_MEM_ADDR_W),
+    .NUM_AGENTS          (NUM_SYS_MEM_AGENTS),
+    .DEFAULT_DATA_VAL    (DEFAULT_DATA_VAL),
+
+    .ARB_WEIGHT_LIST     (SYS_MEM_ARB_WIEGHT_LIST),
+    .ARB_TOTAL_WEIGHT    (SYS_MEM_ARB_TOTAL_WEIGHT)
+
+  ) sys_mem_intf_inst (
+
+    .clk                      (clk),
+    .rst_n                    (cortex_rst_vec[SYS_MEM_MNGR_BLK]),
+
+    `drop_lb_ports_split(SYS_MEM_MNGR_BLK,lb_, ,lb_chld_,_w)
+    ,
+
+    .agent_wait              (sys_mem_agent_wait_w),
+    `drop_mem_ports(agent_, ,sys_mem_agent_,_w)
+    ,
+
+    .cntrlr_wait              (sys_mem_cntrlr_wait),
+    `drop_mem_ports(cntrlr_, ,sys_mem_cntrlr_, )
+
+  );
+
+
+
 endmodule // cortex
 
 /*
@@ -228,6 +277,8 @@ endmodule // cortex
  
 
  -- <Log>
+
+[14-12-2014  07:41:11 PM][mammenx] Added sys_mem_intf
 
 [11-11-2014  07:53:04 PM][mammenx] Fixed synthesis errors
 
