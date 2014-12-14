@@ -32,22 +32,24 @@
 
 `timescale 1ns / 10ps
 
+`include  "mem_utils.svh"
+`include  "lb_utils.svh"
 
 module sys_mem_intf #(
   //----------------- Parameters  -----------------------
-  parameter MODULE_NAME         = "SYS_MEM_INTF"
+  parameter MODULE_NAME         = "SYS_MEM_INTF",
   parameter LB_DATA_W           = 32,
   parameter LB_ADDR_W           = 12,
   parameter LB_ADDR_BLK_W       = 4,
   parameter MEM_DATA_W          = 32,
   parameter MEM_ADDR_W          = 27,
   parameter NUM_AGENTS          = 2,
-  parameter LB_DATA_W           = 32,
-  parameter LB_ADDR_W           = 8,
   parameter DEFAULT_DATA_VAL    = 'hdeadbabe,
 
-  parameter int ARB_WEIGHT_LIST = '{8,8},
-  parameter ARB_TOTAL_WEIGHT    = 16
+  parameter int ARB_WEIGHT_LIST [NUM_AGENTS-1:0] = '{8,8},
+  parameter ARB_TOTAL_WEIGHT    = 16,
+
+  parameter AGENT_ID_W          = $clog2(NUM_AGENTS)  //Do not override
 
 ) (
 

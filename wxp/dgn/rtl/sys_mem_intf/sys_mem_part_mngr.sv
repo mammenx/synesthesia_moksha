@@ -173,7 +173,7 @@ module sys_mem_part_mngr #(
   assign  ram_addr_c[AGENT_ID_W-1:0]  = mode  ? hst_addr  : agent_id;
 
   assign  ram_wdata_w[39:MEM_ADDR_W]  = 0;
-  assign  ram_wdata_w[MEM_ADDR_W-1:]  = lb_wr_data[MEM_ADDR_W-1:0];
+  assign  ram_wdata_w[MEM_ADDR_W-1:0] = lb_wr_data[MEM_ADDR_W-1:0];
 
   assign  start_ram_wr_en_c           = (lb_addr  ==  SYS_MEM_PART_MNGR_START_DATA_REG) ? lb_wr_en  : 1'b0;
   assign  end_ram_wr_en_c             = (lb_addr  ==  SYS_MEM_PART_MNGR_END_DATA_REG)   ? lb_wr_en  : 1'b0;

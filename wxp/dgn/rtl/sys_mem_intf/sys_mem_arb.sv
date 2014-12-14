@@ -41,11 +41,9 @@ module sys_mem_arb #(
   parameter MEM_DATA_W          = 32,
   parameter MEM_ADDR_W          = 27,
   parameter NUM_AGENTS          = 2,
-  parameter LB_DATA_W           = 32,
-  parameter LB_ADDR_W           = 8,
   parameter DEFAULT_DATA_VAL    = 'hdeadbabe,
 
-  parameter int ARB_WEIGHT_LIST = '{8,8},
+  parameter int ARB_WEIGHT_LIST [NUM_AGENTS-1:0]  = '{8,8},
   parameter ARB_TOTAL_WEIGHT    = 16,
 
   parameter AGENT_ID_W          = $clog2(NUM_AGENTS)  //Do not override
@@ -319,10 +317,10 @@ module sys_mem_arb #(
 
   assign  ingr_bffr_rd_en = ingr_bffr_del_f[BFFR_DELAY-1]  & ~cntrlr_wait;
 
-  assign  cntrlr_wren     = bffr_rdata[BFFR_OCC_W-1]  & bffr_rd_en;
-  assign  cntrlr_rden     = bffr_rdata[BFFR_OCC_W-2]  & bffr_rd_en;
-  assign  cntrlr_wdata    = bffr_rdata[BFFR_OCC_W-3:MEM_ADDR_W];
-  assign  cntrlr_addr     = bffr_rdata[MEM_ADDR_W-1:0]  + agent_offset;
+  assign  cntrlr_wren     = ingr_bffr_rdata[BFFR_OCC_W-1]  & ingr_bffr_rd_en;
+  assign  cntrlr_rden     = ingr_bffr_rdata[BFFR_OCC_W-2]  & ingr_bffr_rd_en;
+  assign  cntrlr_wdata    = ingr_bffr_rdata[BFFR_OCC_W-3:MEM_ADDR_W];
+  assign  cntrlr_addr     = ingr_bffr_rdata[MEM_ADDR_W-1:0]  + agent_offset;
 
 
 

@@ -92,7 +92,7 @@ module cortex #(
   localparam  FFT_SAMPLE_W        = 32;
   localparam  FFT_TWDL_W          = 10;
   localparam  NUM_SYS_MEM_AGENTS  = 2;
-  localparam  int SYS_MEM_ARB_WIEGHT_LIST = '{8,8};
+  localparam  int SYS_MEM_ARB_WIEGHT_LIST [NUM_SYS_MEM_AGENTS-1:0]  = '{8,8};
   localparam  SYS_MEM_ARB_TOTAL_WEIGHT    = 16;
 
 //----------------------- Input Declarations ------------------------------
@@ -277,6 +277,8 @@ endmodule // cortex
  
 
  -- <Log>
+
+[14-12-2014  07:55:45 PM][mammenx] Fixed misc compilation errors
 
 [14-12-2014  07:41:11 PM][mammenx] Added sys_mem_intf
 
