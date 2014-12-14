@@ -4,6 +4,7 @@
 +incdir+../../dgn/rtl/rst_cntrl/
 +incdir+../../dgn/rtl/acortex/
 +incdir+../../dgn/rtl/fgyrus/
++incdir+../../dgn/rtl/sys_mem_intf/
 +incdir+../../dgn/rtl/cortex/
 
 //Altera Libraries
@@ -16,6 +17,8 @@
 ../../dgn/rtl/altera/cordic_ram.v
 ../../dgn/rtl/altera/divider.v
 ../../dgn/rtl/altera/ff_64x256_fwft.v
+../../dgn/rtl/altera/ff_10x1024_fwft.v
+../../dgn/rtl/altera/ff_80x32_fwft.v
 ../../dgn/rtl/altera/twiddle_ram.v
 ../../dgn/rtl/altera/win_ram.v
 
@@ -41,6 +44,11 @@
 ../../dgn/rtl/fgyrus/fft_cache.sv
 ../../dgn/rtl/fgyrus/fgyrus_fsm.sv
 ../../dgn/rtl/fgyrus/fgyrus.sv
+
+//System Memory Interface
+../../dgn/rtl/sys_mem_intf/sys_mem_arb.sv
+../../dgn/rtl/sys_mem_intf/sys_mem_part_mngr.sv
+../../dgn/rtl/sys_mem_intf/sys_mem_intf.sv
 
 //Cortex
 ../../dgn/rtl/cortex/cortex.sv
