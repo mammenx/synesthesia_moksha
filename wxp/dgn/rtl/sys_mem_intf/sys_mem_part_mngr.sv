@@ -212,6 +212,8 @@ endmodule // sys_mem_part_mngr
 
  -- <Log>
 
+[14-12-2014  07:55:45 PM][mammenx] Fixed misc compilation errors
+
 [11-12-2014  06:54:58 PM][mammenx] Initial Commit
 
 

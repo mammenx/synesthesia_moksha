@@ -205,6 +205,8 @@ endmodule // sys_mem_intf
 
  -- <Log>
 
+[14-12-2014  07:55:45 PM][mammenx] Fixed misc compilation errors
+
 [14-12-2014  07:19:08 PM][mammenx] Initial Commit
 
 
