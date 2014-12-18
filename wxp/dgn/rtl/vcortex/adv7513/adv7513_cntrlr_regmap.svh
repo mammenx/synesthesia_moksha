@@ -1,0 +1,2 @@
+parameter ADV7513_CNTRLR_CONFIG_REG = 0;
+parameter ADV7513_CNTRLR_STATUS_REG = 1;
