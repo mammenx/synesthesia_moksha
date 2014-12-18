@@ -233,6 +233,8 @@ endmodule // adv7513_cntrlr
 
  -- <Log>
 
+[18-12-2014  09:34:05 PM][mammenx] Moved to adv7513_cntrlr directory
+
 [18-12-2014  09:32:17 PM][mammenx] Initial Commit
 
 

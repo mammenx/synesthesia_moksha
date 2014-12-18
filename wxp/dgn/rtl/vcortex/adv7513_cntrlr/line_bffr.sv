@@ -48,7 +48,7 @@ module line_bffr #(
   input                       clk_hdmi,
   input                       rst_n,
 
-  input                       line_bffr_en;
+  input                       line_bffr_en,
   output  reg                 bffr_ovrflw,
   output  reg                 bffr_undrflw,
 
@@ -189,6 +189,8 @@ endmodule // line_bffr
  
 
  -- <Log>
+
+[18-12-2014  09:34:05 PM][mammenx] Moved to adv7513_cntrlr directory
 
 [18-12-2014  08:51:48 PM][mammenx] Initial Commit
 
