@@ -24,7 +24,7 @@
  -- Project Code      : synesthesia-moksha
  -- Module Name       : cortex
  -- Author            : mammenx
- -- Associated modules: lb_splitter,  acortex
+ -- Associated modules: lb_splitter, acortex, sys_mem_intf, vcortex
  -- Function          : This is the top module for Cortex acceleration
                         engine.
  --------------------------------------------------------------------------
@@ -50,7 +50,9 @@ module cortex #(
 
   //--------------------- Ports -------------------------
     input                       clk,
+    input                       clk_hdmi,
     input                       rst_n,
+    input                       hdmi_rst_n,
 
     input                       lb_wr_en,
     input                       lb_rd_en,
@@ -75,9 +77,13 @@ module cortex #(
     output                      AUD_ADCLRCK,
     output                      AUD_BCLK,
     output                      AUD_DACDAT,
-    output                      AUD_DACLRCK
+    output                      AUD_DACLRCK,
 
-
+    output  [23:0]              HDMI_TX_D,
+    output                      HDMI_TX_DE,
+    output                      HDMI_TX_HS,
+    input                       HDMI_TX_INT,
+    output                      HDMI_TX_VS
 );
 
 //----------------------- Local Parameters Declarations -------------------
@@ -86,7 +92,7 @@ module cortex #(
   localparam  LB_CHLD_DATA_W      = LB_DATA_W;
   localparam  LB_CHLD_ADDR_W      = LB_ADDR_W - LB_ADDR_BLK_W;
   localparam  LB_CHLD_ADDR_BLK_W  = 4;
-  localparam  NUM_LB_CHILDREN     = 4;
+  localparam  NUM_LB_CHILDREN     = 5;
   localparam  PCM_MEM_DATA_W      = 32;
   localparam  PCM_MEM_ADDR_W      = $clog2(NUM_AUD_SAMPLES) + 1;
   localparam  FFT_SAMPLE_W        = 32;
@@ -94,6 +100,8 @@ module cortex #(
   localparam  NUM_SYS_MEM_AGENTS  = 2;
   localparam  int SYS_MEM_ARB_WIEGHT_LIST [NUM_SYS_MEM_AGENTS-1:0]  = '{8,8};
   localparam  SYS_MEM_ARB_TOTAL_WEIGHT    = 16;
+  localparam  SYS_MEM_VCORTEX_START_ADDR  = 0;
+  localparam  SYS_MEM_VCORTEX_STOP_ADDR   = 921599;
 
 //----------------------- Input Declarations ------------------------------
 
@@ -266,6 +274,41 @@ module cortex #(
 
   );
 
+  vcortex #(
+    .LB_DATA_W            (LB_CHLD_DATA_W),
+    .LB_ADDR_W            (LB_CHLD_ADDR_W),
+    .LB_ADDR_BLK_W        (LB_CHLD_ADDR_BLK_W),
+    .SYS_MEM_NUM_AGENTS   (NUM_SYS_MEM_AGENTS),
+    .SYS_MEM_DATA_W       (SYS_MEM_DATA_W),
+    .SYS_MEM_ADDR_W       (SYS_MEM_ADDR_W),
+    .SYS_MEM_START_ADDR   (SYS_MEM_VCORTEX_START_ADDR),
+    .SYS_MEM_STOP_ADDR    (SYS_MEM_VCORTEX_STOP_ADDR),
+    .DEFAULT_REG_VAL      (DEFAULT_REG_VAL)
+   
+  ) vcortex_inst  (
+
+      .clk                (clk),
+      .clk_hdmi           (clk_hdmi),
+      .rst_n              (cortex_rst_vec[VCORTEX_BLK]),
+      .hdmi_rst_n         (hdmi_rst_n),
+
+
+      `drop_lb_ports_split(VCORTEX_BLK,lb_, ,lb_chld_,_w)
+      ,
+
+      .sys_mem_wait       (sys_mem_agent_wait_w),
+      `drop_mem_ports(sys_mem_, ,sys_mem_agent_,_w)
+      ,
+
+      .HDMI_TX_D          (HDMI_TX_D),
+      .HDMI_TX_DE         (HDMI_TX_DE),
+      .HDMI_TX_HS         (HDMI_TX_HS),
+      .HDMI_TX_INT        (HDMI_TX_INT),
+      .HDMI_TX_VS         (HDMI_TX_VS)
+
+  );
+
+
 
 
 endmodule // cortex
@@ -277,6 +320,8 @@ endmodule // cortex
  
 
  -- <Log>
+
+[08-01-2015  08:01:08 PM][mammenx] Added Vcortex
 
 [14-12-2014  07:55:45 PM][mammenx] Fixed misc compilation errors
 
