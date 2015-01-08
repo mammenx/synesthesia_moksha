@@ -1,0 +1,2 @@
+parameter VCORTEX_HST_ACCESS_BLK_CODE       = 0;
+parameter VCORTEX_ADV7513_CNTRLR_BLK_CODE   = 1;
