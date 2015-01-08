@@ -47,13 +47,13 @@
   `define drop_ff_rd_ports(p_prefix,p_postfix,w_prefix,w_postfix)  \
       .p_prefix``rd_en``p_postfix        (w_prefix``rd_en``w_postfix   ),  \
       .p_prefix``rdata``p_postfix        (w_prefix``rdata``w_postfix   ),  \
-      .p_prefix``empty``p_postfix        (w_prefix``empty``w_postfix   ),  \
+      .p_prefix``empty``p_postfix        (w_prefix``empty``w_postfix   )   \
 
 
   `define drop_ff_wr_ports(p_prefix,p_postfix,w_prefix,w_postfix)  \
       .p_prefix``wr_en``p_postfix        (w_prefix``wr_en``w_postfix   ),  \
       .p_prefix``wdata``p_postfix        (w_prefix``wdata``w_postfix   ),  \
-      .p_prefix``full``p_postfix         (w_prefix``full``w_postfix    ),  \
+      .p_prefix``full``p_postfix         (w_prefix``full``w_postfix    )   \
 
 
 `endif
