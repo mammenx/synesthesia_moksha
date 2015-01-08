@@ -66,6 +66,8 @@
 
  -- <Log>
 
+[08-01-2015  05:35:13 PM][mammenx] Fixed compilation issues
+
 [17-12-2014  01:21:20 PM][mammenx] Initial Commit
 
 
