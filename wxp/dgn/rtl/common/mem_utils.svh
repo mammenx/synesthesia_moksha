@@ -69,6 +69,8 @@
 
  -- <Log>
 
+[10-01-2015  07:16:28 PM][mammenx] Added new macro for dropping multidimensional wires
+
 
  --------------------------------------------------------------------------
 */
