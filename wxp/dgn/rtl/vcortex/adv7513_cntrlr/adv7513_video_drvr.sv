@@ -70,11 +70,11 @@ module adv7513_video_drvr #(
 );
 
 //----------------------- Local Parameters Declarations -------------------
-  localparam  VGA_HTOTAL_W    = VGA_HVALID_W  + VGA_HFP_W + VGA_HSYNC_W + VGA_HBP_W;
-  localparam  VGA_HCNTR_W     = $clog2(VGA_HTOTAL_W);
+  localparam  HTOTAL_W    = HVALID_W  + HFP_W + HSYNC_W + HBP_W;
+  localparam  HCNTR_W     = $clog2(HTOTAL_W);
 
-  localparam  VGA_VTOTAL_W    = VGA_VVALID_W  + VGA_VFP_W + VGA_VSYNC_W + VGA_VBP_W;
-  localparam  VGA_VCNTR_W     = $clog2(VGA_VTOTAL_W);
+  localparam  VTOTAL_W    = VVALID_W  + VFP_W + VSYNC_W + VBP_W;
+  localparam  VCNTR_W     = $clog2(VTOTAL_W);
 
   localparam  SYNC_ACTIVE_VAL = SYNC_ACTIVE_HIGH_N_LOW  ? 1 : 0;
   localparam  SYNC_NACTIVE_VAL= SYNC_ACTIVE_HIGH_N_LOW  ? 0 : 1;
@@ -92,8 +92,8 @@ module adv7513_video_drvr #(
 
 
 //----------------------- Internal Register Declarations ------------------
-  reg   [VGA_HCNTR_W-1:0]     hcntr_f;
-  reg   [VGA_VCNTR_W-1:0]     vcntr_f;
+  reg   [HCNTR_W-1:0]     hcntr_f;
+  reg   [VCNTR_W-1:0]     vcntr_f;
 
 
 //----------------------- Internal Wire Declarations ----------------------
@@ -256,20 +256,20 @@ vga_fsm_t   vfsm_pstate,  vfsm_nstate /* synthesis syn_encoding = "user" */;
   assign  vcntr_en_c          =   (vfsm_pstate  ==  IDLE_S) ? 1'b0  : 1'b1;
 
   //Check when to wrap counters
-  assign  hcntr_wrap_c        =   (hcntr_f  ==  VGA_HTOTAL_W-1) ? 1'b1  : 1'b0;
-  assign  vcntr_wrap_c        =   (vcntr_f  ==  VGA_VTOTAL_W-1) ? hcntr_wrap_c  : 1'b0;
+  assign  hcntr_wrap_c        =   (hcntr_f  ==  HTOTAL_W-1) ? 1'b1  : 1'b0;
+  assign  vcntr_wrap_c        =   (vcntr_f  ==  VTOTAL_W-1) ? hcntr_wrap_c  : 1'b0;
 
   //Check if FP is done
-  assign  hfp_ovr_c           =   (hcntr_f  ==  VGA_HFP_W-1)    ? 1'b1  : 1'b0;
-  assign  vfp_ovr_c           =   (vcntr_f  ==  VGA_VFP_W-1)    ? hcntr_wrap_c  : 1'b0;
+  assign  hfp_ovr_c           =   (hcntr_f  ==  HFP_W-1)    ? 1'b1  : 1'b0;
+  assign  vfp_ovr_c           =   (vcntr_f  ==  VFP_W-1)    ? hcntr_wrap_c  : 1'b0;
 
   //Check if SYNC is done
-  assign  hsync_ovr_c         =   (hcntr_f  ==  VGA_HFP_W+VGA_HSYNC_W-1)  ? 1'b1  : 1'b0;
-  assign  vsync_ovr_c         =   (vcntr_f  ==  VGA_VFP_W+VGA_VSYNC_W-1)  ? hcntr_wrap_c  : 1'b0;
+  assign  hsync_ovr_c         =   (hcntr_f  ==  HFP_W+HSYNC_W-1)  ? 1'b1  : 1'b0;
+  assign  vsync_ovr_c         =   (vcntr_f  ==  VFP_W+VSYNC_W-1)  ? hcntr_wrap_c  : 1'b0;
 
   //Check if BP is done
-  assign  hbp_ovr_c           =   (hcntr_f  ==  VGA_HFP_W+VGA_HSYNC_W+VGA_HBP_W-1)  ? 1'b1  : 1'b0;
-  assign  vbp_ovr_c           =   (vcntr_f  ==  VGA_VFP_W+VGA_VSYNC_W+VGA_VBP_W-1)  ? hcntr_wrap_c  : 1'b0;
+  assign  hbp_ovr_c           =   (hcntr_f  ==  HFP_W+HSYNC_W+HBP_W-1)  ? 1'b1  : 1'b0;
+  assign  vbp_ovr_c           =   (vcntr_f  ==  VFP_W+VSYNC_W+VBP_W-1)  ? hcntr_wrap_c  : 1'b0;
 
   /*
     * HCNTR, VCNTR Logic
@@ -352,6 +352,8 @@ endmodule // adv7513_video_drvr
  
 
  -- <Log>
+
+[10-01-2015  11:49:47 AM][mammenx] Fixed Compilation Errors
 
 [18-12-2014  09:34:05 PM][mammenx] Moved to adv7513_cntrlr directory
 

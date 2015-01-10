@@ -35,7 +35,7 @@
 
 module sys_mem_hst_acc #(
   //----------------- Parameters  -----------------------
-  parameter MODULE_NAME         = "SYS_MEM_HST_ACC"
+  parameter MODULE_NAME         = "SYS_MEM_HST_ACC",
   parameter LB_DATA_W           = 32,
   parameter LB_ADDR_W           = 8,
   parameter LB_ADDR_BLK_W       = 4,
@@ -71,6 +71,7 @@ module sys_mem_hst_acc #(
 );
 
 //----------------------- Local Parameters Declarations -------------------
+  `include  "sys_mem_hst_acc_regmap.svh"
 
 
 //----------------------- Input Declarations ------------------------------
@@ -203,6 +204,8 @@ endmodule // sys_mem_hst_acc
  
 
  -- <Log>
+
+[10-01-2015  11:49:47 AM][mammenx] Fixed Compilation Errors
 
 [08-01-2015  07:13:10 PM][mammenx] Initial Commit
 

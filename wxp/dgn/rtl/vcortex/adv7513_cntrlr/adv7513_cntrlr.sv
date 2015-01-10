@@ -33,6 +33,7 @@
 `timescale 1ns / 10ps
 
 `include  "ff_utils.svh"
+`include  "mem_utils.svh"
 
 module adv7513_cntrlr #(
   //----------------- Parameters  -----------------------
@@ -232,6 +233,8 @@ endmodule // adv7513_cntrlr
  
 
  -- <Log>
+
+[10-01-2015  11:49:47 AM][mammenx] Fixed Compilation Errors
 
 [18-12-2014  09:34:05 PM][mammenx] Moved to adv7513_cntrlr directory
 

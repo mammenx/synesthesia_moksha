@@ -93,6 +93,7 @@ module cortex #(
   localparam  LB_CHLD_ADDR_W      = LB_ADDR_W - LB_ADDR_BLK_W;
   localparam  LB_CHLD_ADDR_BLK_W  = 4;
   localparam  NUM_LB_CHILDREN     = 5;
+  localparam  NUM_RESETS          = NUM_LB_CHILDREN - 1;
   localparam  PCM_MEM_DATA_W      = 32;
   localparam  PCM_MEM_ADDR_W      = $clog2(NUM_AUD_SAMPLES) + 1;
   localparam  FFT_SAMPLE_W        = 32;
@@ -121,7 +122,7 @@ module cortex #(
 //----------------------- Internal Wire Declarations ----------------------
   `drop_lb_splitter_wires(LB_CHLD_DATA_W,LB_CHLD_ADDR_W,NUM_LB_CHILDREN,lb_chld_,_w)
 
-  wire  [NUM_LB_CHILDREN-2:0] cortex_rst_vec;
+  wire  [NUM_RESETS-1:0]      cortex_rst_vec;
 
   wire                        pcm_rdy_w/*synthesis keep*/;
   `drop_mem_wires(PCM_MEM_DATA_W,PCM_MEM_ADDR_W,pcm_,_w /*synthesis keep*/)
@@ -162,7 +163,7 @@ module cortex #(
   );
 
   rst_cntrl #(
-    .NUM_RESETS       (NUM_LB_CHILDREN-1),
+    .NUM_RESETS       (NUM_RESETS),
     .LB_DATA_W        (LB_CHLD_DATA_W),
     .LB_ADDR_W        (LB_CHLD_ADDR_W),
     .DEFAULT_REG_VAL  (DEFAULT_DATA_VAL)
@@ -283,7 +284,7 @@ module cortex #(
     .SYS_MEM_ADDR_W       (SYS_MEM_ADDR_W),
     .SYS_MEM_START_ADDR   (SYS_MEM_VCORTEX_START_ADDR),
     .SYS_MEM_STOP_ADDR    (SYS_MEM_VCORTEX_STOP_ADDR),
-    .DEFAULT_REG_VAL      (DEFAULT_REG_VAL)
+    .DEFAULT_REG_VAL      (DEFAULT_DATA_VAL)
    
   ) vcortex_inst  (
 
@@ -320,6 +321,8 @@ endmodule // cortex
  
 
  -- <Log>
+
+[10-01-2015  11:49:47 AM][mammenx] Fixed Compilation Errors
 
 [08-01-2015  08:01:08 PM][mammenx] Added Vcortex
 

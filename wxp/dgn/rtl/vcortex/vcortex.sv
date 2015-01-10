@@ -32,10 +32,11 @@
 `timescale 1ns / 10ps
 
 `include  "mem_utils.svh"
+`include  "lb_utils.svh"
 
 module vcortex #(
   //----------------- Parameters  -----------------------
-  parameter MODULE_NAME         = "VCORTEX"
+  parameter MODULE_NAME         = "VCORTEX",
   parameter LB_DATA_W           = 32,
   parameter LB_ADDR_W           = 12,
   parameter LB_ADDR_BLK_W       = 4,
@@ -63,13 +64,13 @@ module vcortex #(
     output                      lb_rd_valid,
     output  [LB_DATA_W-1:0]     lb_rd_data,
 
-    input   [NUM_AGENTS-1:0]    sys_mem_wait,
-    output  [NUM_AGENTS-1:0]    sys_mem_wren,
-    output  [NUM_AGENTS-1:0]    sys_mem_rden,
-    output  [SYS_MEM_ADDR_W-1:0]sys_mem_addr  [NUM_AGENTS-1:0],
-    output  [SYS_MEM_DATA_W-1:0]sys_mem_wdata [NUM_AGENTS-1:0],
-    input   [NUM_AGENTS-1:0]    sys_mem_rd_valid,
-    input   [SYS_MEM_DATA_W-1:0]sys_mem_rdata [NUM_AGENTS-1:0],
+    input   [SYS_MEM_NUM_AGENTS-1:0]  sys_mem_wait,
+    output  [SYS_MEM_NUM_AGENTS-1:0]  sys_mem_wren,
+    output  [SYS_MEM_NUM_AGENTS-1:0]  sys_mem_rden,
+    output  [SYS_MEM_ADDR_W-1:0]      sys_mem_addr  [SYS_MEM_NUM_AGENTS-1:0],
+    output  [SYS_MEM_DATA_W-1:0]      sys_mem_wdata [SYS_MEM_NUM_AGENTS-1:0],
+    input   [SYS_MEM_NUM_AGENTS-1:0]  sys_mem_rd_valid,
+    input   [SYS_MEM_DATA_W-1:0]      sys_mem_rdata [SYS_MEM_NUM_AGENTS-1:0],
 
     output  [23:0]              HDMI_TX_D,
     output                      HDMI_TX_DE,
@@ -124,7 +125,7 @@ module vcortex #(
     .LB_CHLD_ADDR_W    (CHILD_LB_ADDR_W),
     .NUM_CHILDREN      (NUM_LB_CHILDREN),
     .REGISTER_OUTPUTS  (0),
-    .DEFAULT_DATA_VAL  (DEFAULT_DATA_VAL)
+    .DEFAULT_DATA_VAL  (DEFAULT_REG_VAL)
 
   ) lb_splitter_inst  (
 
@@ -203,6 +204,8 @@ endmodule // vcortex
  
 
  -- <Log>
+
+[10-01-2015  11:49:47 AM][mammenx] Fixed Compilation Errors
 
 [08-01-2015  07:13:10 PM][mammenx] Initial Commit
 

@@ -108,7 +108,7 @@ module line_bffr #(
     end
     else
     begin
-      if~(line_bffr_en)
+      if(~line_bffr_en)
       begin
         pxl_cntr              <=  SYS_MEM_START_ADDR;
       end
@@ -189,6 +189,8 @@ endmodule // line_bffr
  
 
  -- <Log>
+
+[10-01-2015  11:49:47 AM][mammenx] Fixed Compilation Errors
 
 [18-12-2014  09:34:05 PM][mammenx] Moved to adv7513_cntrlr directory
 
