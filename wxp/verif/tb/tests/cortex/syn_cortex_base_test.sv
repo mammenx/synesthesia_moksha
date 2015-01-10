@@ -43,6 +43,9 @@ class syn_cortex_base_test extends ovm_test;
     parameter I2C_DATA_W          = 16;
     parameter CODEC_REG_MAP_W     = 9;
 
+    parameter SYS_MEM_ADDR_W      = 27;
+    parameter SYS_MEM_DATA_W      = 32;
+
     `ovm_component_utils(syn_cortex_base_test)
 
     //Declare environment
@@ -50,6 +53,7 @@ class syn_cortex_base_test extends ovm_test;
 
 
     syn_i2c_config_seq#(I2C_DATA_W,LB_SEQ_ITEM_T,LB_SEQR_T)   i2c_config_seq;
+    syn_sys_mem_part_mngr_config_seq#(LB_SEQ_ITEM_T,LB_SEQR_T)  sys_mem_part_config_seq;
 
     OVM_FILE  f;
     ovm_table_printer printer;
@@ -79,6 +83,7 @@ class syn_cortex_base_test extends ovm_test;
       env = new("syn_cortex_env", this);
 
       i2c_config_seq  = syn_i2c_config_seq#(I2C_DATA_W,LB_SEQ_ITEM_T,LB_SEQR_T)::type_id::create("i2c_config_seq");
+      sys_mem_part_config_seq = syn_sys_mem_part_mngr_config_seq#(LB_SEQ_ITEM_T,LB_SEQR_T)::type_id::create("sys_mem_part_config_seq");
 
       printer = new();
       printer.knobs.name_width  = 50; //width of Name collumn
@@ -165,6 +170,17 @@ class syn_cortex_base_test extends ovm_test;
     endtask : setup_codec
 
 
+    virtual task  configure_sys_mem_part(int  part_num, start_addr, end_addr);
+
+      sys_mem_part_config_seq.part_num    = part_num;
+      sys_mem_part_config_seq.start_addr  = start_addr;
+      sys_mem_part_config_seq.end_addr    = end_addr;
+      sys_mem_part_config_seq.start(this.env.lb_agent.seqr);
+
+      #1;
+
+    endtask : configure_sys_mem_part
+
 
 endclass : syn_cortex_base_test
 
@@ -175,6 +191,8 @@ endclass : syn_cortex_base_test
  
 
  -- <Log>
+
+[10-01-2015  07:18:24 PM][mammenx] Added task to configure sys mem partitions
 
 [30-11-2014  05:57:00 PM][mammenx] Added syn_fft_cache_sb components
 
