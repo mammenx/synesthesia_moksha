@@ -5,6 +5,8 @@
 +incdir+../../dgn/rtl/acortex/
 +incdir+../../dgn/rtl/fgyrus/
 +incdir+../../dgn/rtl/sys_mem_intf/
++incdir+../../dgn/rtl/vcortex/
++incdir+../../dgn/rtl/vcortex/adv7513_cntrlr/
 +incdir+../../dgn/rtl/cortex/
 
 //Altera Libraries
@@ -19,6 +21,7 @@
 ../../dgn/rtl/altera/ff_64x256_fwft.v
 ../../dgn/rtl/altera/ff_10x1024_fwft.v
 ../../dgn/rtl/altera/ff_80x32_fwft.v
+../../dgn/rtl/altera/ff_24x2048_fwft_async.v
 ../../dgn/rtl/altera/twiddle_ram.v
 ../../dgn/rtl/altera/win_ram.v
 
@@ -49,6 +52,13 @@
 ../../dgn/rtl/sys_mem_intf/sys_mem_arb.sv
 ../../dgn/rtl/sys_mem_intf/sys_mem_part_mngr.sv
 ../../dgn/rtl/sys_mem_intf/sys_mem_intf.sv
+
+//Vcortex
+../../dgn/rtl/vcortex/adv7513_cntrlr/adv7513_video_drvr.sv
+../../dgn/rtl/vcortex/adv7513_cntrlr/line_bffr.sv
+../../dgn/rtl/vcortex/adv7513_cntrlr/adv7513_cntrlr.sv
+../../dgn/rtl/vcortex/sys_mem_hst_acc.sv
+../../dgn/rtl/vcortex/vcortex.sv
 
 //Cortex
 ../../dgn/rtl/cortex/cortex.sv
