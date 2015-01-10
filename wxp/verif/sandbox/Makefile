@@ -3,7 +3,8 @@
 #TEST_NAME=syn_acortex_pcm_test
 #TEST_NAME=syn_cortex_base_test
 #TEST_NAME=syn_cortex_i2c_test
-TEST_NAME=syn_cortex_pcm_test
+#TEST_NAME=syn_cortex_pcm_test
+TEST_NAME=syn_cortex_sys_mem_acc_test
 
 #TB_TOP=syn_acortex_tb_top
 TB_TOP=syn_cortex_tb_top
@@ -69,7 +70,7 @@ dll:
 
 sim:
 	echo  Running test : $(TEST_NAME)
-	vsim -c -novopt +OVM_TESTNAME=$(TEST_NAME) -sv_lib syn_dpi_lib $(TB_TOP) +define+SIMULATION -l $(TEST_NAME).vsim.log -permit_unmatched_virtual_intf -do "add wave -r /*;run -all" -suppress 8233
+	vsim -c -novopt +OVM_TESTNAME=$(TEST_NAME) -sv_lib syn_dpi_lib $(TB_TOP) +define+SIMULATION -l $(TEST_NAME).vsim.log -permit_unmatched_virtual_intf -do "set WildcardFilter none;add wave -r /*;run -all;radix -hex" -suppress 8233
 
 gui:
-	vsim vsim.wlf
+	vsim -do "radix -hex" vsim.wlf
