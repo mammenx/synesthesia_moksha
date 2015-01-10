@@ -186,6 +186,14 @@
 
             //@(intf.cb);
             @(posedge intf.clk_ir);
+
+            if(pkt.gap.size > 0)
+            begin
+              intf.cb.wr_en     <=  0;
+              intf.cb.rd_en     <=  0;
+
+              repeat(pkt.gap[i])  @(posedge intf.clk_ir);
+            end
           end
 
           intf.cb.wr_en     <=  0;

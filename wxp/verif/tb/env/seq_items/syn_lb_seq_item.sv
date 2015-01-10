@@ -43,12 +43,14 @@
     rand  bit [ADDR_W-1:0]  addr[];
     rand  bit [DATA_W-1:0]  data[];
     rand  lb_xtn_t          lb_xtn;
+    rand  int               gap[];
 
     //registering with factory
     `ovm_object_param_utils_begin(syn_lb_seq_item#(DATA_W,ADDR_W))
       `ovm_field_array_int(addr,  OVM_ALL_ON | OVM_HEX);
       `ovm_field_array_int(data,  OVM_ALL_ON | OVM_HEX);
       `ovm_field_enum(lb_xtn_t, lb_xtn,  OVM_ALL_ON  | OVM_ENUM);
+      `ovm_field_array_int(gap,  OVM_ALL_ON | OVM_HEX);
     `ovm_object_utils_end
 
     /*  Constructor */
@@ -139,6 +141,8 @@
  
 
  -- <Log>
+
+[10-01-2015  07:15:05 PM][mammenx] Added gap interval between transactions
 
 [15-10-2014  11:44:12 PM][mammenx] Initial Commit
 
