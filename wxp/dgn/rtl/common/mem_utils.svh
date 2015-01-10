@@ -50,6 +50,15 @@
       .p_prefix``rdata``p_postfix       (w_prefix``rdata``w_postfix )   \
 
 
+  `define drop_mem_wires_multi(DATA_W,ADDR_W,DIM_W,prefix,postfix) \
+      wire    [DIM_W-1:0]         prefix``wren``postfix;           \
+      wire    [DIM_W-1:0]         prefix``rden``postfix;           \
+      wire    [ADDR_W-1:0]        prefix``addr``postfix [DIM_W-1:0];  \
+      wire    [DATA_W-1:0]        prefix``wdata``postfix [DIM_W-1:0]; \
+      wire    [DIM_W-1:0]         prefix``rd_valid``postfix;        \
+      wire    [DATA_W-1:0]        prefix``rdata``postfix [DIM_W-1:0]; \
+
+
 `endif
 
 /*
