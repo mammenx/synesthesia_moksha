@@ -53,6 +53,8 @@
 
     bit acortex_rst_n;
     bit fgyrus_rst_n;
+    bit sys_mem_mngr_rst_n;
+    bit vcortex_rst_n;
 
     /*  Constructor */
     function new(string name  = "syn_rst_config_seq");
@@ -60,6 +62,8 @@
 
       acortex_rst_n = 0;
       fgyrus_rst_n  = 0;
+      sys_mem_mngr_rst_n  = 0;
+      vcortex_rst_n = 0;
     endfunction
 
     /*  Body of sequence  */
@@ -79,6 +83,8 @@
       $cast(pkt.addr[0],  build_addr(RST_SYNC_BLK,0,RST_CNTRL_REG_ADDR));
       pkt.data[0][ACORTEX_BLK]  = acortex_rst_n;
       pkt.data[0][FGYRUS_BLK]   = fgyrus_rst_n;
+      pkt.data[0][SYS_MEM_MNGR_BLK] = sys_mem_mngr_rst_n;
+      pkt.data[0][VCORTEX_BLK]  = vcortex_rst_n;
 
       p_sequencer.ovm_report_info(get_name(),$psprintf("Generated pkt - \n%s", pkt.sprint()),OVM_LOW);
 
@@ -100,6 +106,8 @@
  
 
  -- <Log>
+
+[10-01-2015  07:17:47 PM][mammenx] Added support for SYS_MEM & VCORTEX blocks
 
 [19-11-2014  10:47:50 PM][mammenx] Added i2c read support
 
