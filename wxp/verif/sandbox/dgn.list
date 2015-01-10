@@ -15,6 +15,7 @@
 ../../dgn/rtl/altera/cyclonev_atoms.v
 ../../dgn/rtl/altera/async_dpram_32W_256D.v
 ../../dgn/rtl/altera/sync_dpram_32W_256D.v
+../../dgn/rtl/altera/sync_spram_40W_256D.v
 ../../dgn/rtl/altera/complex_mult.v
 ../../dgn/rtl/altera/cordic_ram.v
 ../../dgn/rtl/altera/divider.v
@@ -30,6 +31,7 @@
 ../../dgn/rtl/common/dd_sync.sv
 ../../dgn/rtl/common/pulse_toggle_sync.sv
 ../../dgn/rtl/common/lb_splitter.sv
+../../dgn/rtl/common/least_filter.sv
 
 //Clock Reset Control
 ../../dgn/rtl/rst_cntrl/rst_cntrl.sv
