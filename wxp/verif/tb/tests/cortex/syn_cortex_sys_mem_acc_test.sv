@@ -37,6 +37,7 @@ class syn_cortex_sys_mem_acc_test extends syn_cortex_base_test;
     //Sequences
     syn_rst_config_seq#(super.LB_SEQ_ITEM_T,super.LB_SEQR_T)    rst_config_seq;
     syn_adv7513_cntrlr_config_seq#(super.LB_SEQ_ITEM_T,super.LB_SEQR_T)    adv7513_cntrlr_config_seq;
+    syn_sys_mem_hst_acc_seq#(super.LB_SEQ_ITEM_T,super.LB_SEQR_T)   sys_mem_hst_acc_seq;
 
 
     OVM_FILE  f;
@@ -64,6 +65,7 @@ class syn_cortex_sys_mem_acc_test extends syn_cortex_base_test;
 
       rst_config_seq  = syn_rst_config_seq#(super.LB_SEQ_ITEM_T,super.LB_SEQR_T)::type_id::create("rst_config_seq");
       adv7513_cntrlr_config_seq = syn_adv7513_cntrlr_config_seq#(super.LB_SEQ_ITEM_T,super.LB_SEQR_T)::type_id::create("adv7513_cntrlr_config_seq");
+      sys_mem_hst_acc_seq = syn_sys_mem_hst_acc_seq#(super.LB_SEQ_ITEM_T,super.LB_SEQR_T)::type_id::create("sys_mem_hst_acc_seq");
 
       ovm_report_info(get_full_name(),"End of build",OVM_LOW);
     endfunction : build
@@ -108,6 +110,15 @@ class syn_cortex_sys_mem_acc_test extends syn_cortex_base_test;
       adv7513_cntrlr_config_seq.drvr_en       = 1;
       adv7513_cntrlr_config_seq.start(super.env.lb_agent.seqr);
 
+      for(int i=0;  i<16; i++)
+      begin
+        sys_mem_hst_acc_seq.mem_addr      = 'h4000160  + i;
+        sys_mem_hst_acc_seq.mem_data      = i;
+        sys_mem_hst_acc_seq.read_n_write  = 0;
+        sys_mem_hst_acc_seq.start(super.env.lb_agent.seqr);
+        #1;
+      end
+
       #1us;
 
       ovm_report_info(get_name(),"Calling global_stop_request().....",OVM_LOW);
@@ -126,6 +137,8 @@ endclass : syn_cortex_sys_mem_acc_test
  
 
  -- <Log>
+
+[11-01-2015  05:33:50 PM][mammenx] Added sys_mem_hst_acc_seq
 
 [11-01-2015  01:23:03 PM][mammenx] Initial Commit
 
