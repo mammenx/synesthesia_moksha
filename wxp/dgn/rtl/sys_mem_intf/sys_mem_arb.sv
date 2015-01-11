@@ -43,8 +43,8 @@ module sys_mem_arb #(
   parameter NUM_AGENTS          = 2,
   parameter DEFAULT_DATA_VAL    = 'hdeadbabe,
 
-  parameter int ARB_WEIGHT_LIST [NUM_AGENTS-1:0]  = '{8,8},
   parameter ARB_TOTAL_WEIGHT    = 16,
+  parameter bit [NUM_AGENTS-1:0]  [31:0]  ARB_WEIGHT_LIST = '{8,8},
 
   parameter AGENT_ID_W          = $clog2(NUM_AGENTS)  //Do not override
 
@@ -104,7 +104,7 @@ module sys_mem_arb #(
 
 
 //----------------------- Internal Register Declarations ------------------
-  reg   [ARB_WEIGHT_CNTR_W-1:0]   arb_run_cntr [NUM_AGENTS-1:0];
+  reg   [NUM_AGENTS-1:0]  [ARB_WEIGHT_CNTR_W-1:0] arb_run_cntr_f;
   reg   [ARB_WEIGHT_CNTR_W-1:0]   arb_total_cnt_c;
   reg   [BFFR_DELAY-1:0]          ingr_bffr_del_f;
   reg                             ingr_bffr_oflw_f;
@@ -113,9 +113,17 @@ module sys_mem_arb #(
   reg                             egr_bffr_uflw_f;
 
 //----------------------- Internal Wire Declarations ----------------------
+  wire  [ARB_WEIGHT_CNTR_W-1:0]   arb_high_cnt_list_c [NUM_AGENTS-1:0];
+  wire  [ARB_WEIGHT_CNTR_W-1:0]   arb_low_cnt_list_c  [NUM_AGENTS-1:0];
+  wire  [ARB_WEIGHT_CNTR_W-1:0]   least_arb_high_cnt;
+  wire  [ARB_WEIGHT_CNTR_W-1:0]   least_arb_low_cnt;
+  wire  [AGENT_ID_W-1:0]          next_agent_id_high;
+  wire  [AGENT_ID_W-1:0]          next_agent_id_low;
+
   wire                            arb_cntr_rst_c;
   wire  [NUM_AGENTS-1:0]          arb_slot_valid_c;
   wire  [NUM_AGENTS-1:0]          arb_req_c;
+  wire  [NUM_AGENTS-1:0]          agent_priority_high_n_low_c;
 
   wire                            ingr_bffr_wr_en;
   wire  [BFFR_W-1:0]              ingr_bffr_wdata;
@@ -162,7 +170,12 @@ module sys_mem_arb #(
 
           SYS_MEM_ARB_STATUS_REG  :
           begin
-            lb_rd_data        <=  {{(LB_DATA_W-4){1'b0}},egr_bffr_uflw_f,egr_bffr_oflw_f,ingr_bffr_uflw_f,ingr_bffr_oflw_f};
+            lb_rd_data        <=  { {(LB_DATA_W-4){1'b0}},
+                                    egr_bffr_uflw_f,
+                                    egr_bffr_oflw_f,
+                                    ingr_bffr_uflw_f,
+                                    ingr_bffr_oflw_f
+                                  };
           end
 
           default :
@@ -225,17 +238,17 @@ module sys_mem_arb #(
       begin
         if(~rst_n)
         begin
-          arb_run_cntr[i]     <=  0;
+          arb_run_cntr_f[i]  <=  0;
         end
         else
         begin
           if(arb_cntr_rst_c)
           begin
-            arb_run_cntr[i]   <=  0;
+            arb_run_cntr_f[i]  <=  0;
           end
-          else if(arb_run_cntr[i] < ARB_WEIGHT_LIST[i])
+          else if(arb_run_cntr_f[i] < ARB_WEIGHT_LIST[i])
           begin
-            arb_run_cntr[i]   <=  arb_run_cntr[i] + arb_slot_valid_c[i];
+            arb_run_cntr_f[i] <=  arb_run_cntr_f[i] + arb_slot_valid_c[i];
           end
         end
       end
@@ -248,25 +261,77 @@ module sys_mem_arb #(
 
     for(n=0;  n<NUM_AGENTS; n++)
     begin
-      arb_total_cnt_c = arb_total_cnt_c + arb_run_cntr[n];
+      arb_total_cnt_c = arb_total_cnt_c + arb_run_cntr_f[n];
     end
   end
 
   assign  arb_cntr_rst_c  = (arb_total_cnt_c  ==  ARB_TOTAL_WEIGHT) ? 1'b1  : 1'b0;
 
 
-  /*  Decde Agent ID */
+  /*  Generate Priorities */
+  generate
+  begin
+    for(i=0;  i<NUM_AGENTS; i++)
+    begin : gen_agent_priority
+      assign  agent_priority_high_n_low_c[i]  = (arb_run_cntr_f[i]  < ARB_WEIGHT_LIST[i]) ? 1'b1  : 1'b0;
+    end
+  end
+  endgenerate
+
+  /*  Prepare list of high/low cnts to be sent to least filter  */
+  generate
+    for(i=0;  i<NUM_AGENTS; i++)
+    begin : gen_cnt_list
+      assign  arb_high_cnt_list_c[i]  = (agent_priority_high_n_low_c[i] & arb_req_c[i])   ? arb_run_cntr_f[i] :
+                                                                                            {ARB_WEIGHT_CNTR_W{1'b1}};
+
+      assign  arb_low_cnt_list_c[i]   = (~agent_priority_high_n_low_c[i] & arb_req_c[i])  ? arb_run_cntr_f[i] :
+                                                                                            {ARB_WEIGHT_CNTR_W{1'b1}};
+    end
+  endgenerate
+
+  /*
+    * Decde Agent ID
+    * Method:
+    *   - Agents are classified into high & low priorities based on the credits consumed in
+            the present arbitration cycle
+        - The next agent is selected for each of the two groups based on least credits consumed
+        - Final choice between the two agents selected from the two groups is made
+  */
+
+  least_filter #(
+    .NUM_DATA     (NUM_AGENTS),
+    .DATA_W       (ARB_WEIGHT_CNTR_W)
+  ) least_filter_high_inst  (
+
+    .clk          (clk),
+    .rst_n        (rst_n),
+
+    .data_i       (arb_high_cnt_list_c),
+
+    .data_o       (least_arb_high_cnt),
+    .data_idx_o   (next_agent_id_high)
+  );
+
+  least_filter #(
+    .NUM_DATA     (NUM_AGENTS),
+    .DATA_W       (ARB_WEIGHT_CNTR_W)
+  ) least_filter_low_inst  (
+
+    .clk          (clk),
+    .rst_n        (rst_n),
+
+    .data_i       (arb_low_cnt_list_c),
+
+    .data_o       (least_arb_low_cnt),
+    .data_idx_o   (next_agent_id_low)
+  );
+
+
   always@(*)
   begin
-    agent_id  = 0;
-
-    for(n=1;  n<NUM_AGENTS; n++)  //Select agent with least run time count from
-    begin                         //list of competing agents
-      if(arb_req_c[n] & (arb_run_cntr[n]  < arb_run_cntr[agent_id]))
-      begin
-        agent_id  = n;
-      end
-    end
+    //Select final agent
+    agent_id  = |(agent_priority_high_n_low_c & arb_req_c)  ? next_agent_id_high  : next_agent_id_low;
   end
 
   /*  Traffic Management Logic  */
@@ -302,17 +367,17 @@ module sys_mem_arb #(
                                agent_addr[agent_id]
                              };
 
-  ff_80x32_fwft   ingr_bffr_inst
+  ff_80x32_fwft         ingr_bffr_inst
   (
-    .aclr         (~rst_n),
-    .clock        (clk),
-    .data         (ingr_bffr_wdata),
-    .rdreq        (ingr_bffr_rd_en),
-    .wrreq        (ingr_bffr_wr_en),
-    .empty        (ingr_bffr_empty),
-    .full         (ingr_bffr_full),
-    .q            (ingr_bffr_rdata),
-    .usedw        ()
+    .aclr               (~rst_n),
+    .data               (ingr_bffr_wdata),
+    .rdreq              (ingr_bffr_rd_en),
+    .clock              (clk),
+    .wrreq              (ingr_bffr_wr_en),
+    .q                  (ingr_bffr_rdata),
+    .empty              (ingr_bffr_empty),
+    .full               (ingr_bffr_full),
+    .usedw              ()
   );
 
   assign  ingr_bffr_rd_en = ingr_bffr_del_f[BFFR_DELAY-1]  & ~cntrlr_wait;
@@ -327,17 +392,17 @@ module sys_mem_arb #(
   assign  egr_bffr_wr_en  = |(agent_rden  & ~agent_wait);
   assign  egr_bffr_wdata  = {{(10-AGENT_ID_W){1'b0}}, agent_id};
 
-  ff_10x1024_fwft egr_bffr_inst
+  ff_10x1024_fwft         egr_bffr_inst
   (
-    .aclr         (~rst_n),
-    .clock        (clk),
-    .data         (egr_bffr_wdata),
-    .rdreq        (egr_bffr_rd_en),
-    .wrreq        (egr_bffr_wr_en),
-    .empty        (egr_bffr_empty),
-    .full         (egr_bffr_full),
-    .q            (egr_bffr_rdata),
-    .usedw        ()
+    .aclr                 (~rst_n),
+    .data                 (egr_bffr_wdata),
+    .rdreq                (egr_bffr_rd_en),
+    .clock                (clk),
+    .wrreq                (egr_bffr_wr_en),
+    .q                    (egr_bffr_rdata),
+    .empty                (egr_bffr_empty),
+    .full                 (egr_bffr_full),
+    .usedw                ()
   );
 
   assign  egr_bffr_rd_en  = cntrlr_rd_valid;
@@ -370,6 +435,8 @@ endmodule // sys_mem_arb
  
 
  -- <Log>
+
+[11-01-2015  01:08:31 PM][mammenx] Fixed arbitration logic based on simulation
 
 [14-12-2014  07:55:45 PM][mammenx] Fixed misc compilation errors
 
