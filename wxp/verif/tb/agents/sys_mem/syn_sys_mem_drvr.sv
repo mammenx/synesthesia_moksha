@@ -192,6 +192,7 @@
             begin
               $cast(mem_waddr,intf.cb_drvr.mem_addr);
               sys_mem[mem_waddr] = intf.cb_drvr.mem_wdata;
+              //ovm_report_info({get_name(),"[talk_to_dut]"},$psprintf("Updated sys_mem[0x%x] to 0x%x",mem_waddr,sys_mem[mem_waddr]),OVM_LOW);
             end
             else if(intf.cb_drvr.mem_rden && ~intf.cb_drvr.mem_wait)
             begin
@@ -225,6 +226,8 @@
 
             intf.cb_drvr.mem_rd_valid <=  1;
 
+            //ovm_report_info({get_name(),"[talk_to_dut]"},$psprintf("Got mem_raddr : 0x%x",mem_raddr),OVM_LOW);
+
             if(sys_mem.exists(mem_raddr))
               intf.cb_drvr.mem_rdata  <=  sys_mem[mem_raddr];
             else
@@ -251,6 +254,8 @@
  
 
  -- <Log>
+
+[11-01-2015  05:33:26 PM][mammenx] Misc changes for debug
 
 [11-01-2015  01:23:03 PM][mammenx] Initial Commit
 
