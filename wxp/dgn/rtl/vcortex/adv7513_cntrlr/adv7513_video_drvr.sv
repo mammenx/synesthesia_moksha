@@ -119,7 +119,7 @@ module adv7513_video_drvr #(
 
 
 //----------------------- FSM Declarations --------------------------------
-typedef enum  logic [3:0] {IDLE_S=0,  FP_S, SYNC_S, BP_S, VALID_S}  vga_fsm_t;
+typedef enum  logic [3:0] {IDLE_S=4'd0,  FP_S, SYNC_S, BP_S, VALID_S}  vga_fsm_t;
 vga_fsm_t   hfsm_pstate,  hfsm_nstate /* synthesis syn_encoding = "user" */;
 vga_fsm_t   vfsm_pstate,  vfsm_nstate /* synthesis syn_encoding = "user" */;
 

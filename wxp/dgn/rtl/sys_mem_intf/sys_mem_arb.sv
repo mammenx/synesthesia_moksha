@@ -93,7 +93,7 @@ module sys_mem_arb #(
   localparam  BFFR_W              = 80;
   localparam  BFFR_DEPTH          = 32;
   localparam  BFFR_USED_W         = $clog2(BFFR_DEPTH);
-  localparam  BFFR_AFULL_VAL      = BFFR_DEPTH  - 4;
+  localparam  BFFR_AFULL_VAL      = BFFR_DEPTH  - 8;
   localparam  BFFR_OCC_W          = 2 + MEM_ADDR_W  + MEM_DATA_W;
   localparam  BFFR_DELAY          = 2;
 
@@ -117,6 +117,8 @@ module sys_mem_arb #(
   reg                             ingr_bffr0_uflw_f;
   reg                             egr_bffr0_oflw_f;
   reg                             egr_bffr0_uflw_f;
+  reg                             ingr_bffr0_afull;
+  reg                             ingr_bffr1_afull;
 
 //----------------------- Internal Wire Declarations ----------------------
   wire  [ARB_WEIGHT_CNTR_W-1:0]   arb_high_cnt_list_c [NUM_AGENTS-1:0];
@@ -138,7 +140,6 @@ module sys_mem_arb #(
   wire                            ingr_bffr0_full;
   wire                            ingr_bffr0_empty;
   wire  [BFFR_USED_W-1:0]         ingr_bffr0_used;
-  wire                            ingr_bffr0_afull;
 
   wire                            ingr_bffr1_wr_en;
   wire  [BFFR_W-1:0]              ingr_bffr1_wdata;
@@ -147,7 +148,6 @@ module sys_mem_arb #(
   wire                            ingr_bffr1_full;
   wire                            ingr_bffr1_empty;
   wire  [BFFR_USED_W-1:0]         ingr_bffr1_used;
-  wire                            ingr_bffr1_afull;
 
   wire                            egr_bffr0_wr_en;
   wire  [9:0]                     egr_bffr0_wdata;
@@ -374,11 +374,17 @@ module sys_mem_arb #(
     if(~rst_n)
     begin
       ingr_bffr0_del_f        <=  0;
+
+      ingr_bffr0_afull        <=  0;
+      ingr_bffr1_afull        <=  0;
     end
     else
     begin
       ingr_bffr0_del_f[BFFR_DELAY-1:1] <=  ingr_bffr0_del_f[BFFR_DELAY-2:0];
       ingr_bffr0_del_f[0]              <=  ingr_bffr0_wr_en;
+
+      ingr_bffr0_afull        <= (ingr_bffr0_used  >=  BFFR_AFULL_VAL) ? 1'b1  : 1'b0;
+      ingr_bffr1_afull        <= (ingr_bffr1_used  >=  BFFR_AFULL_VAL) ? 1'b1  : 1'b0;
     end
   end
 
@@ -402,7 +408,6 @@ module sys_mem_arb #(
     .full               (ingr_bffr0_full),
     .usedw              (ingr_bffr0_used)
   );
-  assign  ingr_bffr0_afull  = (ingr_bffr1_used  >=  BFFR_AFULL_VAL) ? 1'b1  : 1'b0;
 
   assign  ingr_bffr0_rd_en = ingr_bffr0_del_f[BFFR_DELAY-1];
 
@@ -425,7 +430,6 @@ module sys_mem_arb #(
     .wrfull             (ingr_bffr1_full),
     .wrusedw            (ingr_bffr1_used)
   );
-  assign  ingr_bffr1_afull  = (ingr_bffr1_used  >=  BFFR_AFULL_VAL) ? 1'b1  : 1'b0;
 
   assign  ingr_bffr1_rd_en  = ~ingr_bffr1_empty & ~cntrlr_wait;
 
@@ -476,7 +480,7 @@ module sys_mem_arb #(
 
   generate
     for(i=0;  i<NUM_AGENTS; i++)
-    begin
+    begin : gen_agent_rd_rsp
       always@(posedge clk,  negedge rst_n)
       begin
         if(~rst_n)

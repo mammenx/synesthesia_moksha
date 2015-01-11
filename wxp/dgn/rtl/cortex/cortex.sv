@@ -133,7 +133,7 @@ module cortex #(
   `drop_mem_wires(PCM_MEM_DATA_W,PCM_MEM_ADDR_W,pcm_,_w /*synthesis keep*/)
 
   wire  [NUM_SYS_MEM_AGENTS-1:0]  sys_mem_agent_wait_w;
-  `drop_mem_wires_multi(SYS_MEM_DATA_W,SYS_MEM_ADDR_W,NUM_SYS_MEM_AGENTS,sys_mem_agent_,_w);
+  `drop_mem_wires_multi(SYS_MEM_DATA_W,SYS_MEM_ADDR_W,NUM_SYS_MEM_AGENTS,sys_mem_agent_,_w)
 
 
 //----------------------- Internal Interface Declarations -----------------
