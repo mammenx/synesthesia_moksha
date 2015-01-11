@@ -57,6 +57,7 @@
     //Clock Reset signals
     logic   sys_clk_50;
     logic   sys_clk_100;
+    logic   sys_clk_150;
     logic   hdmi_clk_74_25;
     logic   sys_rst;
 
@@ -67,7 +68,7 @@
 
     syn_wm8731_intf                   wm8731_intf(sys_rst);
 
-    syn_sys_mem_intf#(SYS_MEM_DATA_W,SYS_MEM_ADDR_W)  sys_mem_intf(sys_clk_100,sys_rst);
+    syn_sys_mem_intf#(SYS_MEM_DATA_W,SYS_MEM_ADDR_W)  sys_mem_intf(sys_clk_150,sys_rst);
 
 
     /////////////////////////////////////////////////////
@@ -90,6 +91,16 @@
 
       forever #5ns sys_clk_100  = ~sys_clk_100;
     end
+
+    initial
+    begin
+      sys_clk_150   = 1;
+
+      #100;
+
+      forever #6.67ns sys_clk_150  = ~sys_clk_150;
+    end
+
 
     initial
     begin
@@ -131,8 +142,12 @@
 
       .clk                        (sys_clk_100),
       .rst_n                      (sys_rst),
+
       .clk_hdmi                   (hdmi_clk_74_25),
       .hdmi_rst_n                 (sys_rst),
+
+      .cntrlr_clk                 (sys_clk_150),
+      .cntrlr_rst_n               (sys_rst),
 
       .lb_wr_en                   (lb_tb_intf.wr_en   ),
       .lb_rd_en                   (lb_tb_intf.rd_en   ),
@@ -184,6 +199,8 @@
  
 
  -- <Log>
+
+[11-01-2015  06:19:45 PM][mammenx] Added cntrlr_clk
 
 [11-01-2015  01:20:27 PM][mammenx] .
 

@@ -112,7 +112,7 @@ class syn_cortex_sys_mem_acc_test extends syn_cortex_base_test;
 
       for(int i=0;  i<16; i++)
       begin
-        sys_mem_hst_acc_seq.mem_addr      = 'h4000160  + i;
+        sys_mem_hst_acc_seq.mem_addr      = 'h4000100  + i;
         sys_mem_hst_acc_seq.mem_data      = i;
         sys_mem_hst_acc_seq.read_n_write  = 0;
         sys_mem_hst_acc_seq.start(super.env.lb_agent.seqr);
@@ -137,6 +137,8 @@ endclass : syn_cortex_sys_mem_acc_test
  
 
  -- <Log>
+
+[11-01-2015  06:19:45 PM][mammenx] Added cntrlr_clk
 
 [11-01-2015  05:33:50 PM][mammenx] Added sys_mem_hst_acc_seq
 
