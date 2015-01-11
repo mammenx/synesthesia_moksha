@@ -322,6 +322,8 @@ endmodule // cortex
 
  -- <Log>
 
+[11-01-2015  01:07:10 PM][mammenx] Fixed misc issues found in simulation
+
 [10-01-2015  11:49:47 AM][mammenx] Fixed Compilation Errors
 
 [08-01-2015  08:01:08 PM][mammenx] Added Vcortex
