@@ -50,9 +50,13 @@ module cortex #(
 
   //--------------------- Ports -------------------------
     input                       clk,
-    input                       clk_hdmi,
     input                       rst_n,
+
+    input                       clk_hdmi,
     input                       hdmi_rst_n,
+
+    input                       cntrlr_clk,
+    input                       cntrlr_rst_n,
 
     input                       lb_wr_en,
     input                       lb_rd_en,
@@ -263,6 +267,9 @@ module cortex #(
     .clk                      (clk),
     .rst_n                    (cortex_rst_vec[SYS_MEM_MNGR_BLK]),
 
+    .cntrlr_clk               (cntrlr_clk),
+    .cntrlr_rst_n             (cntrlr_rst_n),
+
     `drop_lb_ports_split(SYS_MEM_MNGR_BLK,lb_, ,lb_chld_,_w)
     ,
 
@@ -321,6 +328,8 @@ endmodule // cortex
  
 
  -- <Log>
+
+[11-01-2015  06:18:40 PM][mammenx] Converted system memory controller interface to seperate clock domain
 
 [11-01-2015  01:07:10 PM][mammenx] Fixed misc issues found in simulation
 

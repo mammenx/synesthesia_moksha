@@ -54,6 +54,9 @@ module sys_mem_arb #(
   input                           clk,
   input                           rst_n,
 
+  input                           cntrlr_clk,
+  input                           cntrlr_rst_n,
+
   input                           lb_wr_en,
   input                           lb_rd_en,
   input       [LB_ADDR_W-1:0]     lb_addr,
@@ -112,8 +115,8 @@ module sys_mem_arb #(
   reg   [BFFR_DELAY-1:0]          ingr_bffr0_del_f;
   reg                             ingr_bffr0_oflw_f;
   reg                             ingr_bffr0_uflw_f;
-  reg                             egr_bffr_oflw_f;
-  reg                             egr_bffr_uflw_f;
+  reg                             egr_bffr0_oflw_f;
+  reg                             egr_bffr0_uflw_f;
 
 //----------------------- Internal Wire Declarations ----------------------
   wire  [ARB_WEIGHT_CNTR_W-1:0]   arb_high_cnt_list_c [NUM_AGENTS-1:0];
@@ -146,12 +149,20 @@ module sys_mem_arb #(
   wire  [BFFR_USED_W-1:0]         ingr_bffr1_used;
   wire                            ingr_bffr1_afull;
 
-  wire                            egr_bffr_wr_en;
-  wire  [9:0]                     egr_bffr_wdata;
-  wire                            egr_bffr_rd_en;
-  wire  [9:0]                     egr_bffr_rdata;
-  wire                            egr_bffr_full;
-  wire                            egr_bffr_empty;
+  wire                            egr_bffr0_wr_en;
+  wire  [9:0]                     egr_bffr0_wdata;
+  wire                            egr_bffr0_rd_en;
+  wire  [9:0]                     egr_bffr0_rdata;
+  wire                            egr_bffr0_full;
+  wire                            egr_bffr0_empty;
+
+  wire                            egr_bffr1_wr_en;
+  wire  [BFFR_W-1:0]              egr_bffr1_wdata;
+  wire                            egr_bffr1_rd_en;
+  wire  [BFFR_W-1:0]              egr_bffr1_rdata;
+  wire                            egr_bffr1_full;
+  wire                            egr_bffr1_empty;
+  wire  [BFFR_USED_W-1:0]         egr_bffr1_used;
 
   genvar  i;
   integer n;
@@ -169,10 +180,10 @@ module sys_mem_arb #(
       lb_rd_valid             <=  0;
       lb_rd_data              <=  0;
 
-      egr_bffr_oflw_f         <=  0;
-      egr_bffr_uflw_f         <=  0;
-      ingr_bffr0_oflw_f        <=  0;
-      ingr_bffr0_uflw_f        <=  0;
+      egr_bffr0_oflw_f        <=  0;
+      egr_bffr0_uflw_f        <=  0;
+      ingr_bffr0_oflw_f       <=  0;
+      ingr_bffr0_uflw_f       <=  0;
     end
     else
     begin
@@ -185,8 +196,8 @@ module sys_mem_arb #(
           SYS_MEM_ARB_STATUS_REG  :
           begin
             lb_rd_data        <=  { {(LB_DATA_W-4){1'b0}},
-                                    egr_bffr_uflw_f,
-                                    egr_bffr_oflw_f,
+                                    egr_bffr0_uflw_f,
+                                    egr_bffr0_oflw_f,
                                     ingr_bffr0_uflw_f,
                                     ingr_bffr0_oflw_f
                                   };
@@ -204,38 +215,38 @@ module sys_mem_arb #(
 
       if(ingr_bffr0_uflw_f)
       begin
-        ingr_bffr0_uflw_f      <=  (lb_addr  ==  SYS_MEM_ARB_STATUS_REG) ? ~lb_rd_en : ingr_bffr0_uflw_f;
+        ingr_bffr0_uflw_f     <=  (lb_addr  ==  SYS_MEM_ARB_STATUS_REG) ? ~lb_rd_en : ingr_bffr0_uflw_f;
       end
       else
       begin
-        ingr_bffr0_uflw_f      <=  ingr_bffr0_rd_en & ingr_bffr0_empty;
+        ingr_bffr0_uflw_f     <=  ingr_bffr0_rd_en & ingr_bffr0_empty;
       end
 
       if(ingr_bffr0_oflw_f)
       begin
-        ingr_bffr0_oflw_f      <=  (lb_addr  ==  SYS_MEM_ARB_STATUS_REG) ? ~lb_rd_en : ingr_bffr0_oflw_f;
+        ingr_bffr0_oflw_f     <=  (lb_addr  ==  SYS_MEM_ARB_STATUS_REG) ? ~lb_rd_en : ingr_bffr0_oflw_f;
       end
       else
       begin
-        ingr_bffr0_oflw_f      <=  ingr_bffr0_wr_en & ingr_bffr0_full;
+        ingr_bffr0_oflw_f     <=  ingr_bffr0_wr_en & ingr_bffr0_full;
       end
  
-      if(egr_bffr_uflw_f)
+      if(egr_bffr0_uflw_f)
       begin
-        egr_bffr_uflw_f       <=  (lb_addr  ==  SYS_MEM_ARB_STATUS_REG) ? ~lb_rd_en : egr_bffr_uflw_f;
+        egr_bffr0_uflw_f      <=  (lb_addr  ==  SYS_MEM_ARB_STATUS_REG) ? ~lb_rd_en : egr_bffr0_uflw_f;
       end
       else
       begin
-        egr_bffr_uflw_f       <=  egr_bffr_rd_en & egr_bffr_empty;
+        egr_bffr0_uflw_f      <=  egr_bffr0_rd_en & egr_bffr0_empty;
       end
 
-      if(egr_bffr_oflw_f)
+      if(egr_bffr0_oflw_f)
       begin
-        egr_bffr_oflw_f       <=  (lb_addr  ==  SYS_MEM_ARB_STATUS_REG) ? ~lb_rd_en : egr_bffr_oflw_f;
+        egr_bffr0_oflw_f      <=  (lb_addr  ==  SYS_MEM_ARB_STATUS_REG) ? ~lb_rd_en : egr_bffr0_oflw_f;
       end
       else
       begin
-        egr_bffr_oflw_f       <=  egr_bffr_wr_en & egr_bffr_full;
+        egr_bffr0_oflw_f      <=  egr_bffr0_wr_en & egr_bffr0_full;
       end
  
     end
@@ -252,13 +263,13 @@ module sys_mem_arb #(
       begin
         if(~rst_n)
         begin
-          arb_run_cntr_f[i]  <=  0;
+          arb_run_cntr_f[i]   <=  0;
         end
         else
         begin
           if(arb_cntr_rst_c)
           begin
-            arb_run_cntr_f[i]  <=  0;
+            arb_run_cntr_f[i] <=  0;
           end
           else if(arb_run_cntr_f[i] < ARB_WEIGHT_LIST[i])
           begin
@@ -362,7 +373,7 @@ module sys_mem_arb #(
   begin
     if(~rst_n)
     begin
-      ingr_bffr0_del_f         <=  0;
+      ingr_bffr0_del_f        <=  0;
     end
     else
     begin
@@ -400,17 +411,19 @@ module sys_mem_arb #(
   assign  ingr_bffr1_wdata[BFFR_W-1:MEM_ADDR_W] = ingr_bffr0_rdata[BFFR_W-1:MEM_ADDR_W];
   assign  ingr_bffr1_wdata[MEM_ADDR_W-1:0]      = ingr_bffr0_rdata[MEM_ADDR_W-1:0]  + agent_offset;
 
-  ff_80x32_fwft         ingr_bffr1_inst
+  ff_80x32_fwft_async   ingr_bffr1_inst
   (
     .aclr               (~rst_n),
     .data               (ingr_bffr1_wdata),
+    .rdclk              (cntrlr_clk),
     .rdreq              (ingr_bffr1_rd_en),
-    .clock              (clk),
+    .wrclk              (clk),
     .wrreq              (ingr_bffr1_wr_en),
     .q                  (ingr_bffr1_rdata),
-    .empty              (ingr_bffr1_empty),
-    .full               (ingr_bffr1_full),
-    .usedw              (ingr_bffr1_used)
+    .rdempty            (ingr_bffr1_empty),
+    .rdusedw            (),
+    .wrfull             (ingr_bffr1_full),
+    .wrusedw            (ingr_bffr1_used)
   );
   assign  ingr_bffr1_afull  = (ingr_bffr1_used  >=  BFFR_AFULL_VAL) ? 1'b1  : 1'b0;
 
@@ -422,23 +435,44 @@ module sys_mem_arb #(
   assign  cntrlr_addr     = ingr_bffr1_rdata[MEM_ADDR_W-1:0];
 
 
-  assign  egr_bffr_wr_en  = |(agent_rden  & ~agent_wait);
-  assign  egr_bffr_wdata  = {{(10-AGENT_ID_W){1'b0}}, agent_id};
+  assign  egr_bffr0_wr_en  = |(agent_rden  & ~agent_wait);
+  assign  egr_bffr0_wdata  = {{(10-AGENT_ID_W){1'b0}}, agent_id};
 
-  ff_10x1024_fwft         egr_bffr_inst
+  ff_10x1024_fwft         egr_bffr0_inst
   (
     .aclr                 (~rst_n),
-    .data                 (egr_bffr_wdata),
-    .rdreq                (egr_bffr_rd_en),
+    .data                 (egr_bffr0_wdata),
+    .rdreq                (egr_bffr0_rd_en),
     .clock                (clk),
-    .wrreq                (egr_bffr_wr_en),
-    .q                    (egr_bffr_rdata),
-    .empty                (egr_bffr_empty),
-    .full                 (egr_bffr_full),
+    .wrreq                (egr_bffr0_wr_en),
+    .q                    (egr_bffr0_rdata),
+    .empty                (egr_bffr0_empty),
+    .full                 (egr_bffr0_full),
     .usedw                ()
   );
 
-  assign  egr_bffr_rd_en  = cntrlr_rd_valid;
+  assign  egr_bffr0_rd_en  = ~egr_bffr1_empty;
+
+
+  assign  egr_bffr1_wr_en = cntrlr_rd_valid;
+  assign  egr_bffr1_wdata = {{(BFFR_W-MEM_DATA_W){1'b0}}, cntrlr_rdata};
+
+  ff_80x32_fwft_async   egr_bffr1_inst
+  (
+    .aclr               (~rst_n),
+    .data               (egr_bffr1_wdata),
+    .rdclk              (clk),
+    .rdreq              (egr_bffr1_rd_en),
+    .wrclk              (cntrlr_clk),
+    .wrreq              (egr_bffr1_wr_en),
+    .q                  (egr_bffr1_rdata),
+    .rdempty            (egr_bffr1_empty),
+    .rdusedw            (),
+    .wrfull             (egr_bffr1_full),
+    .wrusedw            (egr_bffr1_used)
+  );
+
+  assign  egr_bffr1_rd_en = ~egr_bffr1_empty; //self emptying
 
   generate
     for(i=0;  i<NUM_AGENTS; i++)
@@ -452,8 +486,8 @@ module sys_mem_arb #(
         end
         else
         begin
-          agent_rd_valid[i]   <=  (egr_bffr_rdata[AGENT_ID_W-1:0] ==  i)  ? cntrlr_rd_valid : 1'b0;
-          agent_rdata[i]      <=  cntrlr_rdata;
+          agent_rd_valid[i]   <=  (egr_bffr0_rdata[AGENT_ID_W-1:0] ==  i)  ? ~egr_bffr1_empty : 1'b0;
+          agent_rdata[i]      <=  egr_bffr1_rdata[MEM_DATA_W-1:0];
         end
       end
     end
@@ -468,6 +502,8 @@ endmodule // sys_mem_arb
  
 
  -- <Log>
+
+[11-01-2015  06:18:40 PM][mammenx] Converted system memory controller interface to seperate clock domain
 
 [11-01-2015  05:34:59 PM][mammenx] Added one more FIFO in the ingress path to fix address offset issue
 

@@ -57,6 +57,9 @@ module sys_mem_intf #(
   input                           clk,
   input                           rst_n,
 
+  input                           cntrlr_clk,
+  input                           cntrlr_rst_n,
+
   input                           lb_wr_en,
   input                           lb_rd_en,
   input       [LB_ADDR_W-1:0]     lb_addr,
@@ -156,6 +159,9 @@ module sys_mem_intf #(
     .clk                      (clk),
     .rst_n                    (rst_n),
 
+    .cntrlr_clk               (cntrlr_clk),
+    .cntrlr_rst_n             (cntrlr_rst_n),
+
     `drop_lb_ports_split(SYS_MEM_INTF_ARB_BLK_CODE,lb_, ,lb_chld_,_w)
     ,
 
@@ -204,6 +210,8 @@ endmodule // sys_mem_intf
  
 
  -- <Log>
+
+[11-01-2015  06:18:41 PM][mammenx] Converted system memory controller interface to seperate clock domain
 
 [11-01-2015  01:07:10 PM][mammenx] Fixed misc issues found in simulation
 
