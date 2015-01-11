@@ -22,6 +22,7 @@
 ../../dgn/rtl/altera/ff_64x256_fwft.v
 ../../dgn/rtl/altera/ff_10x1024_fwft.v
 ../../dgn/rtl/altera/ff_80x32_fwft.v
+../../dgn/rtl/altera/ff_80x32_fwft_async.v
 ../../dgn/rtl/altera/ff_24x2048_fwft_async.v
 ../../dgn/rtl/altera/twiddle_ram.v
 ../../dgn/rtl/altera/win_ram.v
