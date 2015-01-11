@@ -88,6 +88,9 @@ module sys_mem_arb #(
 
   localparam  ARB_WEIGHT_CNTR_W   = $clog2(ARB_TOTAL_WEIGHT);
   localparam  BFFR_W              = 80;
+  localparam  BFFR_DEPTH          = 32;
+  localparam  BFFR_USED_W         = $clog2(BFFR_DEPTH);
+  localparam  BFFR_AFULL_VAL      = BFFR_DEPTH  - 4;
   localparam  BFFR_OCC_W          = 2 + MEM_ADDR_W  + MEM_DATA_W;
   localparam  BFFR_DELAY          = 2;
 
@@ -106,9 +109,9 @@ module sys_mem_arb #(
 //----------------------- Internal Register Declarations ------------------
   reg   [NUM_AGENTS-1:0]  [ARB_WEIGHT_CNTR_W-1:0] arb_run_cntr_f;
   reg   [ARB_WEIGHT_CNTR_W-1:0]   arb_total_cnt_c;
-  reg   [BFFR_DELAY-1:0]          ingr_bffr_del_f;
-  reg                             ingr_bffr_oflw_f;
-  reg                             ingr_bffr_uflw_f;
+  reg   [BFFR_DELAY-1:0]          ingr_bffr0_del_f;
+  reg                             ingr_bffr0_oflw_f;
+  reg                             ingr_bffr0_uflw_f;
   reg                             egr_bffr_oflw_f;
   reg                             egr_bffr_uflw_f;
 
@@ -125,12 +128,23 @@ module sys_mem_arb #(
   wire  [NUM_AGENTS-1:0]          arb_req_c;
   wire  [NUM_AGENTS-1:0]          agent_priority_high_n_low_c;
 
-  wire                            ingr_bffr_wr_en;
-  wire  [BFFR_W-1:0]              ingr_bffr_wdata;
-  wire                            ingr_bffr_rd_en;
-  wire  [BFFR_W-1:0]              ingr_bffr_rdata;
-  wire                            ingr_bffr_full;
-  wire                            ingr_bffr_empty;
+  wire                            ingr_bffr0_wr_en;
+  wire  [BFFR_W-1:0]              ingr_bffr0_wdata;
+  wire                            ingr_bffr0_rd_en;
+  wire  [BFFR_W-1:0]              ingr_bffr0_rdata;
+  wire                            ingr_bffr0_full;
+  wire                            ingr_bffr0_empty;
+  wire  [BFFR_USED_W-1:0]         ingr_bffr0_used;
+  wire                            ingr_bffr0_afull;
+
+  wire                            ingr_bffr1_wr_en;
+  wire  [BFFR_W-1:0]              ingr_bffr1_wdata;
+  wire                            ingr_bffr1_rd_en;
+  wire  [BFFR_W-1:0]              ingr_bffr1_rdata;
+  wire                            ingr_bffr1_full;
+  wire                            ingr_bffr1_empty;
+  wire  [BFFR_USED_W-1:0]         ingr_bffr1_used;
+  wire                            ingr_bffr1_afull;
 
   wire                            egr_bffr_wr_en;
   wire  [9:0]                     egr_bffr_wdata;
@@ -157,8 +171,8 @@ module sys_mem_arb #(
 
       egr_bffr_oflw_f         <=  0;
       egr_bffr_uflw_f         <=  0;
-      ingr_bffr_oflw_f        <=  0;
-      ingr_bffr_uflw_f        <=  0;
+      ingr_bffr0_oflw_f        <=  0;
+      ingr_bffr0_uflw_f        <=  0;
     end
     else
     begin
@@ -173,8 +187,8 @@ module sys_mem_arb #(
             lb_rd_data        <=  { {(LB_DATA_W-4){1'b0}},
                                     egr_bffr_uflw_f,
                                     egr_bffr_oflw_f,
-                                    ingr_bffr_uflw_f,
-                                    ingr_bffr_oflw_f
+                                    ingr_bffr0_uflw_f,
+                                    ingr_bffr0_oflw_f
                                   };
           end
 
@@ -188,22 +202,22 @@ module sys_mem_arb #(
 
       lb_rd_valid             <=  lb_rd_en;
 
-      if(ingr_bffr_uflw_f)
+      if(ingr_bffr0_uflw_f)
       begin
-        ingr_bffr_uflw_f      <=  (lb_addr  ==  SYS_MEM_ARB_STATUS_REG) ? ~lb_rd_en : ingr_bffr_uflw_f;
+        ingr_bffr0_uflw_f      <=  (lb_addr  ==  SYS_MEM_ARB_STATUS_REG) ? ~lb_rd_en : ingr_bffr0_uflw_f;
       end
       else
       begin
-        ingr_bffr_uflw_f      <=  ingr_bffr_rd_en & ingr_bffr_empty;
+        ingr_bffr0_uflw_f      <=  ingr_bffr0_rd_en & ingr_bffr0_empty;
       end
 
-      if(ingr_bffr_oflw_f)
+      if(ingr_bffr0_oflw_f)
       begin
-        ingr_bffr_oflw_f      <=  (lb_addr  ==  SYS_MEM_ARB_STATUS_REG) ? ~lb_rd_en : ingr_bffr_oflw_f;
+        ingr_bffr0_oflw_f      <=  (lb_addr  ==  SYS_MEM_ARB_STATUS_REG) ? ~lb_rd_en : ingr_bffr0_oflw_f;
       end
       else
       begin
-        ingr_bffr_oflw_f      <=  ingr_bffr_wr_en & ingr_bffr_full;
+        ingr_bffr0_oflw_f      <=  ingr_bffr0_wr_en & ingr_bffr0_full;
       end
  
       if(egr_bffr_uflw_f)
@@ -338,7 +352,7 @@ module sys_mem_arb #(
   generate
     for(i=0;  i<NUM_AGENTS; i++)
     begin : traffic_mgmt_gen
-      assign  agent_wait[i]   =   arb_req_c[i]  ? ((agent_id == i)  ? cntrlr_wait : 1'b1)
+      assign  agent_wait[i]   =   arb_req_c[i]  ? ((agent_id == i)  ? (ingr_bffr0_afull | ingr_bffr1_afull) : 1'b1)
                                                 : 1'b0;
     end
   endgenerate
@@ -348,45 +362,64 @@ module sys_mem_arb #(
   begin
     if(~rst_n)
     begin
-      ingr_bffr_del_f         <=  0;
+      ingr_bffr0_del_f         <=  0;
     end
     else
     begin
-      if(~cntrlr_wait)
-      begin
-        ingr_bffr_del_f       <=  {ingr_bffr_del_f[BFFR_DELAY-2:0],ingr_bffr_wr_en};
-      end
+      ingr_bffr0_del_f[BFFR_DELAY-1:1] <=  ingr_bffr0_del_f[BFFR_DELAY-2:0];
+      ingr_bffr0_del_f[0]              <=  ingr_bffr0_wr_en;
     end
   end
 
-  assign  ingr_bffr_wr_en  = |arb_slot_valid_c;
-  assign  ingr_bffr_wdata  = { {(BFFR_W-BFFR_OCC_W){1'b0}},
+  assign  ingr_bffr0_wr_en  = |arb_slot_valid_c;
+  assign  ingr_bffr0_wdata  = { {(BFFR_W-BFFR_OCC_W){1'b0}},
                                agent_wren[agent_id],
                                agent_rden[agent_id],
                                agent_wdata[agent_id],
                                agent_addr[agent_id]
                              };
 
-  ff_80x32_fwft         ingr_bffr_inst
+  ff_80x32_fwft         ingr_bffr0_inst
   (
     .aclr               (~rst_n),
-    .data               (ingr_bffr_wdata),
-    .rdreq              (ingr_bffr_rd_en),
+    .data               (ingr_bffr0_wdata),
+    .rdreq              (ingr_bffr0_rd_en),
     .clock              (clk),
-    .wrreq              (ingr_bffr_wr_en),
-    .q                  (ingr_bffr_rdata),
-    .empty              (ingr_bffr_empty),
-    .full               (ingr_bffr_full),
-    .usedw              ()
+    .wrreq              (ingr_bffr0_wr_en),
+    .q                  (ingr_bffr0_rdata),
+    .empty              (ingr_bffr0_empty),
+    .full               (ingr_bffr0_full),
+    .usedw              (ingr_bffr0_used)
   );
+  assign  ingr_bffr0_afull  = (ingr_bffr1_used  >=  BFFR_AFULL_VAL) ? 1'b1  : 1'b0;
 
-  assign  ingr_bffr_rd_en = ingr_bffr_del_f[BFFR_DELAY-1]  & ~cntrlr_wait;
+  assign  ingr_bffr0_rd_en = ingr_bffr0_del_f[BFFR_DELAY-1];
 
-  assign  cntrlr_wren     = ingr_bffr_rdata[BFFR_OCC_W-1]  & ingr_bffr_rd_en;
-  assign  cntrlr_rden     = ingr_bffr_rdata[BFFR_OCC_W-2]  & ingr_bffr_rd_en;
-  assign  cntrlr_wdata    = ingr_bffr_rdata[BFFR_OCC_W-3:MEM_ADDR_W];
-  assign  cntrlr_addr     = ingr_bffr_rdata[MEM_ADDR_W-1:0]  + agent_offset;
 
+  assign  ingr_bffr1_wr_en  = ingr_bffr0_del_f[BFFR_DELAY-1];
+  assign  ingr_bffr1_wdata[BFFR_W-1:MEM_ADDR_W] = ingr_bffr0_rdata[BFFR_W-1:MEM_ADDR_W];
+  assign  ingr_bffr1_wdata[MEM_ADDR_W-1:0]      = ingr_bffr0_rdata[MEM_ADDR_W-1:0]  + agent_offset;
+
+  ff_80x32_fwft         ingr_bffr1_inst
+  (
+    .aclr               (~rst_n),
+    .data               (ingr_bffr1_wdata),
+    .rdreq              (ingr_bffr1_rd_en),
+    .clock              (clk),
+    .wrreq              (ingr_bffr1_wr_en),
+    .q                  (ingr_bffr1_rdata),
+    .empty              (ingr_bffr1_empty),
+    .full               (ingr_bffr1_full),
+    .usedw              (ingr_bffr1_used)
+  );
+  assign  ingr_bffr1_afull  = (ingr_bffr1_used  >=  BFFR_AFULL_VAL) ? 1'b1  : 1'b0;
+
+  assign  ingr_bffr1_rd_en  = ~ingr_bffr1_empty & ~cntrlr_wait;
+
+  assign  cntrlr_wren     = ingr_bffr1_rdata[BFFR_OCC_W-1]  & ingr_bffr1_rd_en;
+  assign  cntrlr_rden     = ingr_bffr1_rdata[BFFR_OCC_W-2]  & ingr_bffr1_rd_en;
+  assign  cntrlr_wdata    = ingr_bffr1_rdata[BFFR_OCC_W-3:MEM_ADDR_W];
+  assign  cntrlr_addr     = ingr_bffr1_rdata[MEM_ADDR_W-1:0];
 
 
   assign  egr_bffr_wr_en  = |(agent_rden  & ~agent_wait);
@@ -435,6 +468,8 @@ endmodule // sys_mem_arb
  
 
  -- <Log>
+
+[11-01-2015  05:34:59 PM][mammenx] Added one more FIFO in the ingress path to fix address offset issue
 
 [11-01-2015  01:08:31 PM][mammenx] Fixed arbitration logic based on simulation
 
