@@ -57,6 +57,7 @@ module cortex #(
 
     input                       cntrlr_clk,
     input                       cntrlr_rst_n,
+    output                      cntrlr_sw_rst_n,
 
     input                       lb_wr_en,
     input                       lb_rd_en,
@@ -97,7 +98,7 @@ module cortex #(
   localparam  LB_CHLD_ADDR_W      = LB_ADDR_W - LB_ADDR_BLK_W;
   localparam  LB_CHLD_ADDR_BLK_W  = 4;
   localparam  NUM_LB_CHILDREN     = 5;
-  localparam  NUM_RESETS          = NUM_LB_CHILDREN - 1;
+  localparam  NUM_RESETS          = NUM_LB_CHILDREN;
   localparam  PCM_MEM_DATA_W      = 32;
   localparam  PCM_MEM_ADDR_W      = $clog2(NUM_AUD_SAMPLES) + 1;
   localparam  FFT_SAMPLE_W        = 32;
@@ -316,7 +317,7 @@ module cortex #(
 
   );
 
-
+  assign  cntrlr_sw_rst_n = cortex_rst_vec[NUM_RESETS-1];
 
 
 endmodule // cortex

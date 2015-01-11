@@ -167,6 +167,25 @@ wire              cortex_lb_wr_valid/*synthesis keep*/;
 wire              cortex_lb_rd_valid/*synthesis keep*/;
 wire  [31:0]      cortex_lb_rd_data/*synthesis keep*/;
 
+wire              lpddr2_cntrlr_sw_rst_n;
+wire              afi_half_clk/*synthesis keep*/;
+wire              afi_reset_n;
+
+wire              lpddr2_cntrlr_ready;
+wire              lpddr2_cntrlr_wren;
+wire              lpddr2_cntrlr_rden;
+wire [26:0]       lpddr2_cntrlr_addr;
+wire [31:0]       lpddr2_cntrlr_wdata;
+wire              lpddr2_cntrlr_rd_valid;
+wire [31:0]       lpddr2_cntrlr_rdata;
+wire              lpddr2_cntrlr_begin_burst_xfr;
+wire [3:0]        lpddr2_cntrlr_byte_en;
+wire [2:0]        lpddr2_cntrlr_burst_cnt;
+
+wire              lpddr2_local_init_done;
+wire              lpddr2_local_cal_success;
+wire              lpddr2_local_cal_fail;
+
 //=======================================================
 //  Structural coding
 //=======================================================
@@ -211,6 +230,68 @@ wire  [31:0]      cortex_lb_rd_data/*synthesis keep*/;
 
   );
 
+  /*  LPDDR2 Controller */
+  lpddr2_cntrlr       lpddr2_cntrlr_inst
+  (
+    /*  input  wire         */  .pll_ref_clk                  (CLOCK_50_B5B),
+
+    /*  input  wire         */  .global_reset_n               (KEY[0]),
+    /*  input  wire         */  .soft_reset_n                 (lpddr2_cntrlr_sw_rst_n),
+
+    /*  output wire         */  .afi_clk                      (),
+    /*  output wire         */  .afi_half_clk                 (afi_half_clk),
+    /*  output wire         */  .afi_reset_n                  (afi_reset_n),
+    /*  output wire         */  .afi_reset_export_n           (),
+
+    /*  output wire [9:0]   */  .mem_ca                       (DDR2LP_CA),
+    /*  output wire [0:0]   */  .mem_ck                       (DDR2LP_CK_p),
+    /*  output wire [0:0]   */  .mem_ck_n                     (DDR2LP_CK_n),
+    /*  output wire [0:0]   */  .mem_cke                      (DDR2LP_CKE[0]),
+    /*  output wire [0:0]   */  .mem_cs_n                     (DDR2LP_CS_n[0]),
+    /*  output wire [3:0]   */  .mem_dm                       (DDR2LP_DM),
+    /*  inout  wire [31:0]  */  .mem_dq                       (DDR2LP_DQ),
+    /*  inout  wire [3:0]   */  .mem_dqs                      (DDR2LP_DQS_p),
+    /*  inout  wire [3:0]   */  .mem_dqs_n                    (DDR2LP_DQS_n),
+
+    /*  output wire         */  .avl_ready_0                  (lpddr2_cntrlr_ready),
+    /*  input  wire         */  .avl_burstbegin_0             (lpddr2_cntrlr_begin_burst_xfr),
+    /*  input  wire [26:0]  */  .avl_addr_0                   (lpddr2_cntrlr_addr),
+    /*  output wire         */  .avl_rdata_valid_0            (lpddr2_cntrlr_rd_valid),
+    /*  output wire [31:0]  */  .avl_rdata_0                  (lpddr2_cntrlr_rdata),
+    /*  input  wire [31:0]  */  .avl_wdata_0                  (lpddr2_cntrlr_wdata),
+    /*  input  wire [3:0]   */  .avl_be_0                     (lpddr2_cntrlr_byte_en),
+    /*  input  wire         */  .avl_read_req_0               (lpddr2_cntrlr_rden),
+    /*  input  wire         */  .avl_write_req_0              (lpddr2_cntrlr_wren),
+    /*  input  wire [2:0]   */  .avl_size_0                   (lpddr2_cntrlr_burst_cnt),
+
+    /*  input  wire         */  .mp_cmd_clk_0_clk             (afi_half_clk),
+    /*  input  wire         */  .mp_cmd_reset_n_0_reset_n     (lpddr2_cntrlr_sw_rst_n),
+    /*  input  wire         */  .mp_rfifo_clk_0_clk           (afi_half_clk),
+    /*  input  wire         */  .mp_rfifo_reset_n_0_reset_n   (lpddr2_cntrlr_sw_rst_n),
+    /*  input  wire         */  .mp_wfifo_clk_0_clk           (afi_half_clk),
+    /*  input  wire         */  .mp_wfifo_reset_n_0_reset_n   (lpddr2_cntrlr_sw_rst_n),
+
+    /*  output wire         */  .local_init_done              (lpddr2_local_init_done),
+    /*  output wire         */  .local_cal_success            (lpddr2_local_cal_success),
+    /*  output wire         */  .local_cal_fail               (lpddr2_local_cal_fail),
+
+    /*  input  wire         */  .oct_rzqin                    (DDR2LP_OCT_RZQ),
+
+    /*  output wire         */  .pll_mem_clk                  (),
+    /*  output wire         */  .pll_write_clk                (),
+    /*  output wire         */  .pll_locked                   (),
+    /*  output wire         */  .pll_write_clk_pre_phy_clk    (),
+    /*  output wire         */  .pll_addr_cmd_clk             (),
+    /*  output wire         */  .pll_avl_clk                  (),
+    /*  output wire         */  .pll_config_clk               (),
+    /*  output wire         */  .pll_mem_phy_clk              (),
+    /*  output wire         */  .afi_phy_clk                  (),
+    /*  output wire         */  .pll_avl_phy_clk              ()
+  );
+
+  assign  lpddr2_cntrlr_begin_burst_xfr = lpddr2_cntrlr_wren  | lpddr2_cntrlr_rden;
+  assign  lpddr2_cntrlr_byte_en         = 4'b1111;
+  assign  lpddr2_cntrlr_burst_cnt       = 3'd1;
 
 
   /*  Cortex  */
@@ -233,8 +314,9 @@ wire  [31:0]      cortex_lb_rd_data/*synthesis keep*/;
       /*  input                         */  .clk_hdmi(HDMI_TX_CLK),
       /*  input                         */  .hdmi_rst_n(sys_rst_n),
 
-      /*  input                         */  .cntrlr_clk(),
-      /*  input                         */  .cntrlr_rst_n(),
+      /*  input                         */  .cntrlr_clk(afi_half_clk),
+      /*  input                         */  .cntrlr_rst_n(afi_reset_n),
+      /*  output                        */  .cntrlr_sw_rst_n(lpddr2_cntrlr_sw_rst_n),
 
 
       /*  input                         */  .lb_wr_en(cortex_lb_wr_en),
@@ -248,13 +330,13 @@ wire  [31:0]      cortex_lb_rd_data/*synthesis keep*/;
       /*  output                        */  .scl(I2C_SCL),
       /*  inout                         */  .sda(I2C_SDA),
 
-      /*  input                         */  .sys_mem_cntrlr_wait(),
-      /*  output                        */  .sys_mem_cntrlr_wren(),
-      /*  output                        */  .sys_mem_cntrlr_rden(),
-      /*  output  [SYS_MEM_ADDR_W-1:0]  */  .sys_mem_cntrlr_addr(),
-      /*  output  [SYS_MEM_DATA_W-1:0]  */  .sys_mem_cntrlr_wdata(),
-      /*  input                         */  .sys_mem_cntrlr_rd_valid(),
-      /*  input   [SYS_MEM_DATA_W-1:0]  */  .sys_mem_cntrlr_rdata(),
+      /*  input                         */  .sys_mem_cntrlr_wait(~lpddr2_cntrlr_ready),
+      /*  output                        */  .sys_mem_cntrlr_wren(lpddr2_cntrlr_wren),
+      /*  output                        */  .sys_mem_cntrlr_rden(lpddr2_cntrlr_rden),
+      /*  output  [SYS_MEM_ADDR_W-1:0]  */  .sys_mem_cntrlr_addr(lpddr2_cntrlr_addr),
+      /*  output  [SYS_MEM_DATA_W-1:0]  */  .sys_mem_cntrlr_wdata(lpddr2_cntrlr_wdata),
+      /*  input                         */  .sys_mem_cntrlr_rd_valid(lpddr2_cntrlr_rd_valid),
+      /*  input   [SYS_MEM_DATA_W-1:0]  */  .sys_mem_cntrlr_rdata(lpddr2_cntrlr_rdata),
 
       /*  input                         */  .AUD_ADCDAT(AUD_ADCDAT),
       /*  output                        */  .AUD_ADCLRCK(AUD_ADCLRCK),
@@ -277,8 +359,13 @@ wire  [31:0]      cortex_lb_rd_data/*synthesis keep*/;
 
   /*  LED Assignments */
   assign  LEDG[0]   = ~sys_rst_n;
-  assign  LEDG[1]   = ~cortex_rst_n;
-  assign  LEDG[7:2] = 0;
+  assign  LEDG[1]   = ~afi_reset_n;
+  assign  LEDG[2]   = ~cortex_rst_n;
+  assign  LEDG[3]   = ~lpddr2_cntrlr_sw_rst_n;
+  assign  LEDG[4]   = lpddr2_local_init_done;
+  assign  LEDG[5]   = lpddr2_local_cal_success;
+  assign  LEDG[6]   = lpddr2_local_cal_fail;
+  assign  LEDG[7:7] = 0;
 
   assign  LEDR[9:0] = 0;
 
