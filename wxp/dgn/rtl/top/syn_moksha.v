@@ -151,6 +151,7 @@ input             DDR2LP_OCT_RZQ;
 
 wire              sys_clk_100/*synthesis keep*/;
 wire              sys_clk_12;
+wire              sys_clk_75;
 wire              sys_rst_n;
 
 wire              cortex_rst_n  /*synthesis keep*/;
@@ -177,6 +178,7 @@ wire  [31:0]      cortex_lb_rd_data/*synthesis keep*/;
     /*  input  wire */  .rst(~KEY[0]),
     /*  output wire */  .outclk_0(sys_clk_100),
     /*  output wire */  .outclk_1(sys_clk_12),
+    /*  output wire */  .outclk_2(sys_clk_75),
     /*  output wire */  .locked(sys_rst_n)
   );
 
@@ -218,34 +220,59 @@ wire  [31:0]      cortex_lb_rd_data/*synthesis keep*/;
     .LB_ADDR_W         (16),
     .LB_ADDR_BLK_W     (4),
     .NUM_AUD_SAMPLES   (128),
+    .SYS_MEM_DATA_W    (32),
+    .SYS_MEM_ADDR_W    (27),
     .DEFAULT_DATA_VAL  ('hdeadbabe)
 
   ) cortex_inst (
 
     //--------------------- Ports -------------------------
-      /*  input                   */  .clk(sys_clk_100),
-      /*  input                   */  .rst_n(sys_rst_n),
+      /*  input                         */  .clk(sys_clk_100),
+      /*  input                         */  .rst_n(sys_rst_n),
 
-      /*  input                   */  .lb_wr_en(cortex_lb_wr_en),
-      /*  input                   */  .lb_rd_en(cortex_lb_rd_en),
-      /*  input   [LB_ADDR_W-1:0] */  .lb_addr(cortex_lb_addr),
-      /*  input   [LB_DATA_W-1:0] */  .lb_wr_data(cortex_lb_wr_data),
-      /*  output                  */  .lb_wr_valid(cortex_lb_wr_valid),
-      /*  output                  */  .lb_rd_valid(cortex_lb_rd_valid),
-      /*  output  [LB_DATA_W-1:0] */  .lb_rd_data(cortex_lb_rd_data),
+      /*  input                         */  .clk_hdmi(HDMI_TX_CLK),
+      /*  input                         */  .hdmi_rst_n(sys_rst_n),
 
-      /*  output                  */  .scl(I2C_SCL),
-      /*  inout                   */  .sda(I2C_SDA),
+      /*  input                         */  .cntrlr_clk(),
+      /*  input                         */  .cntrlr_rst_n(),
 
-      /*  input                   */  .AUD_ADCDAT(AUD_ADCDAT),
-      /*  output                  */  .AUD_ADCLRCK(AUD_ADCLRCK),
-      /*  output                  */  .AUD_BCLK(AUD_BCLK),
-      /*  output                  */  .AUD_DACDAT(AUD_DACDAT),
-      /*  output                  */  .AUD_DACLRCK(AUD_DACLRCK)
+
+      /*  input                         */  .lb_wr_en(cortex_lb_wr_en),
+      /*  input                         */  .lb_rd_en(cortex_lb_rd_en),
+      /*  input   [LB_ADDR_W-1:0]       */  .lb_addr(cortex_lb_addr),
+      /*  input   [LB_DATA_W-1:0]       */  .lb_wr_data(cortex_lb_wr_data),
+      /*  output                        */  .lb_wr_valid(cortex_lb_wr_valid),
+      /*  output                        */  .lb_rd_valid(cortex_lb_rd_valid),
+      /*  output  [LB_DATA_W-1:0]       */  .lb_rd_data(cortex_lb_rd_data),
+
+      /*  output                        */  .scl(I2C_SCL),
+      /*  inout                         */  .sda(I2C_SDA),
+
+      /*  input                         */  .sys_mem_cntrlr_wait(),
+      /*  output                        */  .sys_mem_cntrlr_wren(),
+      /*  output                        */  .sys_mem_cntrlr_rden(),
+      /*  output  [SYS_MEM_ADDR_W-1:0]  */  .sys_mem_cntrlr_addr(),
+      /*  output  [SYS_MEM_DATA_W-1:0]  */  .sys_mem_cntrlr_wdata(),
+      /*  input                         */  .sys_mem_cntrlr_rd_valid(),
+      /*  input   [SYS_MEM_DATA_W-1:0]  */  .sys_mem_cntrlr_rdata(),
+
+      /*  input                         */  .AUD_ADCDAT(AUD_ADCDAT),
+      /*  output                        */  .AUD_ADCLRCK(AUD_ADCLRCK),
+      /*  output                        */  .AUD_BCLK(AUD_BCLK),
+      /*  output                        */  .AUD_DACDAT(AUD_DACDAT),
+      /*  output                        */  .AUD_DACLRCK(AUD_DACLRCK),
+
+      /*  output  [23:0]                */  .HDMI_TX_D(HDMI_TX_D),
+      /*  output                        */  .HDMI_TX_DE(HDMI_TX_DE),
+      /*  output                        */  .HDMI_TX_HS(HDMI_TX_HS),
+      /*  input                         */  .HDMI_TX_INT(HDMI_TX_INT),
+      /*  output                        */  .HDMI_TX_VS(HDMI_TX_VS)
 
   );
 
   assign  AUD_XCK = sys_clk_12;
+
+  assign  HDMI_TX_CLK = sys_clk_75;
 
 
   /*  LED Assignments */
