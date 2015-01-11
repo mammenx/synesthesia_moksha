@@ -62,6 +62,7 @@
 `include  "syn_fgyrus_fft_poll_seq.sv"
 `include  "syn_adv7513_cntrlr_config_seq.sv"
 `include  "syn_sys_mem_part_mngr_config_seq.sv"
+`include  "syn_sys_mem_hst_acc_seq.sv"
 
 
 //Tests
