@@ -370,6 +370,8 @@
 
  -- <Log>
 
+[11-01-2015  01:13:54 PM][mammenx] Added sys_mem_agent & fixed misc simulation issues
+
 [06-12-2014  05:48:30 PM][mammenx] Added fft_sb to environment
 
 [30-11-2014  05:57:00 PM][mammenx] Added syn_fft_cache_sb components

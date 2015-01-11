@@ -194,6 +194,8 @@ endclass : syn_cortex_base_test
 
  -- <Log>
 
+[11-01-2015  01:13:54 PM][mammenx] Added sys_mem_agent & fixed misc simulation issues
+
 [10-01-2015  07:18:24 PM][mammenx] Added task to configure sys mem partitions
 
 [30-11-2014  05:57:00 PM][mammenx] Added syn_fft_cache_sb components
