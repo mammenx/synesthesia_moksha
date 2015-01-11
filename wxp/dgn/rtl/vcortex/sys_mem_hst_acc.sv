@@ -204,6 +204,8 @@ endmodule // sys_mem_hst_acc
 
  -- <Log>
 
+[11-01-2015  01:07:10 PM][mammenx] Fixed misc issues found in simulation
+
 [10-01-2015  11:49:47 AM][mammenx] Fixed Compilation Errors
 
 [08-01-2015  07:13:10 PM][mammenx] Initial Commit
