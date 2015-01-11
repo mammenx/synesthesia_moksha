@@ -74,6 +74,10 @@
     parameter type  FFT_CACHE_PKT_TYPE  = syn_fft_cache_seq_item;
     parameter type  FFT_CACHE_INTF_TYPE = virtual syn_fft_cache_intf#(32,8);
 
+    parameter SYS_MEM_DATA_W  = 32;
+    parameter SYS_MEM_ADDR_W  = 27;
+    parameter type  SYS_MEM_PKT_TYPE  = syn_sys_mem_seq_item#(SYS_MEM_DATA_W,SYS_MEM_ADDR_W);
+    parameter type  SYS_MEM_INTF_TYPE = virtual syn_sys_mem_intf#(SYS_MEM_DATA_W,SYS_MEM_ADDR_W);
 
 
     /*  Register with factory */
@@ -107,6 +111,8 @@
     syn_fft_cache_sb#(PCM_PKT_TYPE,FFT_CACHE_PKT_TYPE)                        fft_cache_sb;
 
     syn_fft_sb#(PCM_PKT_TYPE,PCM_PKT_TYPE)                                    fft_sb;
+
+    syn_sys_mem_agent#(SYS_MEM_DATA_W,SYS_MEM_ADDR_W,SYS_MEM_PKT_TYPE,SYS_MEM_INTF_TYPE)  sys_mem_agent;
 
     OVM_FILE  f;
 
@@ -148,6 +154,8 @@
       fft_cache_sniffer = syn_fft_cache_sniffer#(FFT_CACHE_PKT_TYPE,FFT_CACHE_INTF_TYPE)::type_id::create("fft_cache_sniffer",  this);
       fft_cache_sb  = syn_fft_cache_sb#(PCM_PKT_TYPE,FFT_CACHE_PKT_TYPE)::type_id::create("fft_cache_sb",  this);
       fft_sb        = syn_fft_sb#(PCM_PKT_TYPE,PCM_PKT_TYPE)::type_id::create("fft_sb",  this);
+
+      sys_mem_agent = syn_sys_mem_agent#(SYS_MEM_DATA_W,SYS_MEM_ADDR_W,SYS_MEM_PKT_TYPE,SYS_MEM_INTF_TYPE)::type_id::create("sys_mem_agent", this);
 
       LB2Env_ff       = new("LB2Env_ff",this);
 

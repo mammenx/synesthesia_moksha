@@ -3,6 +3,7 @@
 `include  "syn_pcm_seq_item.sv"
 `include  "syn_but_seq_item.sv"
 `include  "syn_fft_cache_seq_item.sv"
+`include  "syn_sys_mem_seq_item.sv"
 
 //RAL
 `include  "syn_reg_map.sv"
@@ -30,6 +31,10 @@
 `include  "syn_acortex_codec_i2c_mon.sv"
 `include  "syn_acortex_codec_agent.sv"
 
+`include  "syn_sys_mem_drvr.sv"
+`include  "syn_sys_mem_seqr.sv"
+`include  "syn_sys_mem_agent.sv"
+
 //Sniffers
 `include  "syn_but_sniffer.sv"
 `include  "syn_fft_cache_sniffer.sv"
@@ -55,9 +60,12 @@
 `include  "syn_rst_config_seq.sv"
 `include  "syn_fgyrus_fsm_config_seq.sv"
 `include  "syn_fgyrus_fft_poll_seq.sv"
+`include  "syn_adv7513_cntrlr_config_seq.sv"
+`include  "syn_sys_mem_part_mngr_config_seq.sv"
 
 
 //Tests
 `include  "syn_cortex_base_test.sv"
 `include  "syn_cortex_i2c_test.sv"
 `include  "syn_cortex_pcm_test.sv"
+`include  "syn_cortex_sys_mem_acc_test.sv"

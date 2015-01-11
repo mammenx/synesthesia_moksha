@@ -8,6 +8,7 @@
 +incdir+../../verif/tb/agents/acortex/
 +incdir+../../verif/tb/agents/acortex/codec/
 +incdir+../../verif/tb/agents/pcm_mem/
++incdir+../../verif/tb/agents/sys_mem/
 +incdir+../../verif/tb/env/
 +incdir+../../verif/tb/env/seq_items/
 +incdir+../../verif/tb/sb/
@@ -27,7 +28,9 @@
 +incdir+../../verif/tb/tests/fgyrus/
 +incdir+../../verif/tb/tests/sram_acc/
 +incdir+../../verif/tb/tests/cortex/
++incdir+../../dgn/rtl/vcortex/adv7513_cntrlr/
 +incdir+../../dgn/rtl/vcortex/
++incdir+../../dgn/rtl/sys_mem_intf/
 +incdir+../../dgn/rtl/acortex/
 +incdir+../../dgn/rtl/i2c/
 +incdir+../../dgn/rtl/fgyrus/
@@ -57,6 +60,7 @@
 ../../verif/tb/env/interfaces/syn_wm8731_intf.sv
 ../../verif/tb/env/interfaces/syn_but_intf.sv
 ../../verif/tb/env/interfaces/syn_fft_cache_intf.sv
+../../verif/tb/env/interfaces/syn_sys_mem_intf.sv
 
 
 //TB TOP

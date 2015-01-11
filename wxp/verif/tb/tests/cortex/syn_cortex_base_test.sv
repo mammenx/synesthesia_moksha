@@ -118,6 +118,8 @@ class syn_cortex_base_test extends ovm_test;
       this.env.but_sniffer.intf         = $root.syn_cortex_tb_top.cortex_inst.fgyrus_inst.but_intf;
       this.env.fft_cache_sniffer.intf   = $root.syn_cortex_tb_top.cortex_inst.fgyrus_inst.fft_cache_intf;
 
+      this.env.sys_mem_agent.drvr.intf  = $root.syn_cortex_tb_top.sys_mem_intf;
+
       ovm_report_info(get_full_name(),"End of connect",OVM_LOW);
     endfunction : connect
 
