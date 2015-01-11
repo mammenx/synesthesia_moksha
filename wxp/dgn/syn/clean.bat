@@ -37,3 +37,5 @@ rem del /f /q *.sof
 rem del /f /q *.pof
 del /f /q *.done
 del /f /q *.smsg
+del /f /q *.csv
+del /f /q *.qws
