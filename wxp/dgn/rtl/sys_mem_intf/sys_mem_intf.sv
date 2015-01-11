@@ -46,8 +46,8 @@ module sys_mem_intf #(
   parameter NUM_AGENTS          = 2,
   parameter DEFAULT_DATA_VAL    = 'hdeadbabe,
 
-  parameter int ARB_WEIGHT_LIST [NUM_AGENTS-1:0] = '{8,8},
   parameter ARB_TOTAL_WEIGHT    = 16,
+  parameter bit [NUM_AGENTS-1:0]  [31:0]  ARB_WEIGHT_LIST = '{8,8},
 
   parameter AGENT_ID_W          = $clog2(NUM_AGENTS)  //Do not override
 
@@ -175,8 +175,8 @@ module sys_mem_intf #(
   sys_mem_part_mngr #(
     .MEM_ADDR_W        (MEM_ADDR_W),
     .NUM_AGENTS        (NUM_AGENTS),
-    .LB_DATA_W         (LB_DATA_W),
-    .LB_ADDR_W         (LB_ADDR_W),
+    .LB_DATA_W         (CHILD_LB_DATA_W),
+    .LB_ADDR_W         (CHILD_LB_ADDR_W),
     .DEFAULT_DATA_VAL  (DEFAULT_DATA_VAL)
 
   ) sys_mem_part_mngr_inst  (
@@ -204,6 +204,8 @@ endmodule // sys_mem_intf
  
 
  -- <Log>
+
+[11-01-2015  01:07:10 PM][mammenx] Fixed misc issues found in simulation
 
 [14-12-2014  07:55:45 PM][mammenx] Fixed misc compilation errors
 

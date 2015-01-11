@@ -99,7 +99,7 @@ module cortex #(
   localparam  FFT_SAMPLE_W        = 32;
   localparam  FFT_TWDL_W          = 10;
   localparam  NUM_SYS_MEM_AGENTS  = 2;
-  localparam  int SYS_MEM_ARB_WIEGHT_LIST [NUM_SYS_MEM_AGENTS-1:0]  = '{8,8};
+  localparam  bit [NUM_SYS_MEM_AGENTS-1:0]  [31:0]  SYS_MEM_ARB_WIEGHT_LIST = '{8,8};
   localparam  SYS_MEM_ARB_TOTAL_WEIGHT    = 16;
   localparam  SYS_MEM_VCORTEX_START_ADDR  = 0;
   localparam  SYS_MEM_VCORTEX_STOP_ADDR   = 921599;
@@ -128,7 +128,7 @@ module cortex #(
   `drop_mem_wires(PCM_MEM_DATA_W,PCM_MEM_ADDR_W,pcm_,_w /*synthesis keep*/)
 
   wire  [NUM_SYS_MEM_AGENTS-1:0]  sys_mem_agent_wait_w;
-  `drop_mem_wires(SYS_MEM_DATA_W,SYS_MEM_ADDR_W,sys_mem_agent_,_w [NUM_SYS_MEM_AGENTS-1:0]);
+  `drop_mem_wires_multi(SYS_MEM_DATA_W,SYS_MEM_ADDR_W,NUM_SYS_MEM_AGENTS,sys_mem_agent_,_w);
 
 
 //----------------------- Internal Interface Declarations -----------------

@@ -192,7 +192,6 @@ module sys_mem_hst_acc #(
   assign  sys_mem_wdata       =   mem_data;
 
 
-//----------------------- Start of Code -----------------------------------
 
 
 endmodule // sys_mem_hst_acc
