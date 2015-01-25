@@ -529,7 +529,6 @@ set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to DDR2LP_CS_n[0]
 set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to DDR2LP_CK_p
 set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to DDR2LP_CK_n
 set_global_assignment -name UNIPHY_SEQUENCER_DQS_CONFIG_ENABLE ON
-set_global_assignment -name OPTIMIZE_MULTI_CORNER_TIMING ON
 set_instance_assignment -name GLOBAL_SIGNAL "DUAL-REGIONAL CLOCK" -to lpddr2_cntrlr_inst|lpddr2_cntrlr_inst|pll0|pll_avl_clk
 set_instance_assignment -name GLOBAL_SIGNAL "DUAL-REGIONAL CLOCK" -to lpddr2_cntrlr_inst|lpddr2_cntrlr_inst|pll0|pll_config_clk
 set_instance_assignment -name GLOBAL_SIGNAL OFF -to lpddr2_cntrlr_inst|lpddr2_cntrlr_inst|p0|umemphy|ureset|phy_reset_mem_stable_n
@@ -582,6 +581,7 @@ set_global_assignment -name SEARCH_PATH ../../dgn/syn/limbus/synthesis/submodule
 # Altera Megafunctions
 #set_global_assignment -name VERILOG_FILE ../../dgn/rtl/altera/sys_pll/sys_pll.v
 set_global_assignment -name VERILOG_FILE ../../dgn/rtl/altera/async_dpram_32W_256D.v
+set_global_assignment -name VERILOG_FILE ../../dgn/rtl/altera/async_dpram_40W_32D.v
 set_global_assignment -name VERILOG_FILE ../../dgn/rtl/altera/sync_dpram_32W_256D.v
 set_global_assignment -name VERILOG_FILE ../../dgn/rtl/altera/sync_spram_40W_256D.v
 set_global_assignment -name VERILOG_FILE ../../dgn/rtl/altera/complex_mult.v
@@ -589,6 +589,7 @@ set_global_assignment -name VERILOG_FILE ../../dgn/rtl/altera/cordic_ram.v
 set_global_assignment -name VERILOG_FILE ../../dgn/rtl/altera/divider.v
 set_global_assignment -name VERILOG_FILE ../../dgn/rtl/altera/ff_64x256_fwft.v
 set_global_assignment -name VERILOG_FILE ../../dgn/rtl/altera/ff_10x1024_fwft.v
+set_global_assignment -name VERILOG_FILE ../../dgn/rtl/altera/ff_10x1024_fwft_async.v
 set_global_assignment -name VERILOG_FILE ../../dgn/rtl/altera/ff_80x32_fwft.v
 set_global_assignment -name VERILOG_FILE ../../dgn/rtl/altera/ff_80x32_fwft_async.v
 set_global_assignment -name VERILOG_FILE ../../dgn/rtl/altera/ff_24x2048_fwft_async.v
@@ -598,6 +599,7 @@ set_global_assignment -name VERILOG_FILE ../../dgn/rtl/altera/win_ram.v
 # Common
 set_global_assignment -name SYSTEMVERILOG_FILE ../../dgn/rtl/common/clk_mux.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../../dgn/rtl/common/dd_sync.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../../dgn/rtl/common/rst_sync.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../../dgn/rtl/common/pulse_toggle_sync.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../../dgn/rtl/common/lb_splitter.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../../dgn/rtl/common/least_filter.sv
@@ -620,7 +622,8 @@ set_global_assignment -name SYSTEMVERILOG_FILE ../../dgn/rtl/fgyrus/fgyrus_fsm.s
 set_global_assignment -name SYSTEMVERILOG_FILE ../../dgn/rtl/fgyrus/fgyrus.sv
 
 # System Memory Interface
-set_global_assignment -name SYSTEMVERILOG_FILE ../../dgn/rtl/sys_mem_intf/sys_mem_arb.sv
+#set_global_assignment -name SYSTEMVERILOG_FILE ../../dgn/rtl/sys_mem_intf/sys_mem_arb.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../../dgn/rtl/sys_mem_intf/sys_mem_arb_rr.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../../dgn/rtl/sys_mem_intf/sys_mem_part_mngr.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../../dgn/rtl/sys_mem_intf/sys_mem_intf.sv
 
@@ -647,11 +650,14 @@ set_global_assignment -name VERILOG_FILE ../../dgn/rtl/top/syn_moksha.v
 # Misc
 set_global_assignment -name OPTIMIZE_HOLD_TIMING "ALL PATHS"
 set_global_assignment -name FITTER_EFFORT "STANDARD FIT"
-#set_global_assignment -name PHYSICAL_SYNTHESIS_COMBO_LOGIC ON
-#set_global_assignment -name PHYSICAL_SYNTHESIS_REGISTER_RETIMING ON
-#set_global_assignment -name PHYSICAL_SYNTHESIS_ASYNCHRONOUS_SIGNAL_PIPELINING ON
-#set_global_assignment -name PHYSICAL_SYNTHESIS_REGISTER_DUPLICATION ON
-#set_global_assignment -name PHYSICAL_SYNTHESIS_EFFORT EXTRA
+set_global_assignment -name SYNTH_TIMING_DRIVEN_SYNTHESIS ON
+set_global_assignment -name PHYSICAL_SYNTHESIS_COMBO_LOGIC ON
+set_global_assignment -name PHYSICAL_SYNTHESIS_REGISTER_RETIMING ON
+set_global_assignment -name PHYSICAL_SYNTHESIS_ASYNCHRONOUS_SIGNAL_PIPELINING ON
+set_global_assignment -name PHYSICAL_SYNTHESIS_REGISTER_DUPLICATION ON
+set_global_assignment -name PHYSICAL_SYNTHESIS_EFFORT EXTRA
+set_global_assignment -name OPTIMIZE_MULTI_CORNER_TIMING ON
+#set_global_assignment -name ROUTER_EFFORT_MULTIPLIER  3.0
 
 
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
@@ -663,6 +669,13 @@ set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_global_assignment -name ENABLE_SIGNALTAP ON
 set_global_assignment -name USE_SIGNALTAP_FILE stp1.stp
 set_global_assignment -name SIGNALTAP_FILE stp1.stp
+
+
+
+
+
+
+
 
 
 
