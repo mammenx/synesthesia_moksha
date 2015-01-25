@@ -8,8 +8,9 @@ rem set TEST_NAME=syn_acortex_i2c_test
 rem set TEST_NAME=syn_acortex_mclk_test
 
 rem set TEST_NAME=syn_cortex_base_test
-set TEST_NAME=syn_cortex_i2c_test
+rem set TEST_NAME=syn_cortex_i2c_test
 rem set TEST_NAME=syn_cortex_mclk_test
+set TEST_NAME=syn_cortex_sys_mem_acc_test
 
 rem set TB_TOP=syn_acortex_tb_top
 set TB_TOP=syn_cortex_tb_top

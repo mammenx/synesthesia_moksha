@@ -14,6 +14,7 @@
 ../../dgn/rtl/altera/altera_lnsim.sv
 ../../dgn/rtl/altera/cyclonev_atoms.v
 ../../dgn/rtl/altera/async_dpram_32W_256D.v
+../../dgn/rtl/altera/async_dpram_40W_32D.v
 ../../dgn/rtl/altera/sync_dpram_32W_256D.v
 ../../dgn/rtl/altera/sync_spram_40W_256D.v
 ../../dgn/rtl/altera/complex_mult.v
@@ -21,8 +22,10 @@
 ../../dgn/rtl/altera/divider.v
 ../../dgn/rtl/altera/ff_64x256_fwft.v
 ../../dgn/rtl/altera/ff_10x1024_fwft.v
+../../dgn/rtl/altera/ff_10x1024_fwft_async.v
 ../../dgn/rtl/altera/ff_80x32_fwft.v
 ../../dgn/rtl/altera/ff_80x32_fwft_async.v
+../../dgn/rtl/altera/ff_40x32_fwft_async.v
 ../../dgn/rtl/altera/ff_24x2048_fwft_async.v
 ../../dgn/rtl/altera/twiddle_ram.v
 ../../dgn/rtl/altera/win_ram.v
@@ -52,7 +55,8 @@
 ../../dgn/rtl/fgyrus/fgyrus.sv
 
 //System Memory Interface
-../../dgn/rtl/sys_mem_intf/sys_mem_arb.sv
+//../../dgn/rtl/sys_mem_intf/sys_mem_arb.sv
+../../dgn/rtl/sys_mem_intf/sys_mem_arb_rr.sv
 ../../dgn/rtl/sys_mem_intf/sys_mem_part_mngr.sv
 ../../dgn/rtl/sys_mem_intf/sys_mem_intf.sv
 
