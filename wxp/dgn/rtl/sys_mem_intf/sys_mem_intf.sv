@@ -37,19 +37,17 @@
 
 module sys_mem_intf #(
   //----------------- Parameters  -----------------------
-  parameter MODULE_NAME         = "SYS_MEM_INTF",
-  parameter LB_DATA_W           = 32,
-  parameter LB_ADDR_W           = 12,
-  parameter LB_ADDR_BLK_W       = 4,
-  parameter MEM_DATA_W          = 32,
-  parameter MEM_ADDR_W          = 27,
-  parameter NUM_AGENTS          = 2,
-  parameter DEFAULT_DATA_VAL    = 'hdeadbabe,
+  parameter MODULE_NAME             = "SYS_MEM_INTF",
+  parameter LB_DATA_W               = 32,
+  parameter LB_ADDR_W               = 12,
+  parameter LB_ADDR_BLK_W           = 4,
+  parameter MEM_DATA_W              = 32,
+  parameter MEM_ADDR_W              = 27,
+  parameter NUM_AGENTS              = 2,
+  parameter REGISTER_CNTRLR_OUTPUTS = 0,
+  parameter DEFAULT_DATA_VAL        = 'hdeadbabe,
 
-  parameter ARB_TOTAL_WEIGHT    = 16,
-  parameter bit [NUM_AGENTS-1:0]  [31:0]  ARB_WEIGHT_LIST = '{8,8},
-
-  parameter AGENT_ID_W          = $clog2(NUM_AGENTS)  //Do not override
+  parameter AGENT_ID_W              = $clog2(NUM_AGENTS)  //Do not override
 
 ) (
 
@@ -76,7 +74,7 @@ module sys_mem_intf #(
   output      [NUM_AGENTS-1:0]    agent_rd_valid,
   output      [MEM_DATA_W-1:0]    agent_rdata [NUM_AGENTS-1:0],
 
-  input                           cntrlr_wait,
+  input                           cntrlr_rdy,
   output                          cntrlr_wren,
   output                          cntrlr_rden,
   output      [MEM_ADDR_W-1:0]    cntrlr_addr,
@@ -143,16 +141,14 @@ module sys_mem_intf #(
   );
 
 
-  sys_mem_arb #(
-    .LB_DATA_W           (CHILD_LB_DATA_W),
-    .LB_ADDR_W           (CHILD_LB_ADDR_W),
-    .MEM_DATA_W          (MEM_DATA_W),
-    .MEM_ADDR_W          (MEM_ADDR_W),
-    .NUM_AGENTS          (NUM_AGENTS),
-    .DEFAULT_DATA_VAL    (DEFAULT_DATA_VAL),
-
-    .ARB_WEIGHT_LIST     (ARB_WEIGHT_LIST),
-    .ARB_TOTAL_WEIGHT    (ARB_TOTAL_WEIGHT)
+  sys_mem_arb_rr #(
+    .LB_DATA_W                (CHILD_LB_DATA_W),
+    .LB_ADDR_W                (CHILD_LB_ADDR_W),
+    .MEM_DATA_W               (MEM_DATA_W),
+    .MEM_ADDR_W               (MEM_ADDR_W),
+    .NUM_AGENTS               (NUM_AGENTS),
+    .REGISTER_CNTRLR_OUTPUTS  (REGISTER_CNTRLR_OUTPUTS),
+    .DEFAULT_DATA_VAL         (DEFAULT_DATA_VAL)
 
   ) sys_mem_arb_inst  (
 
@@ -170,9 +166,10 @@ module sys_mem_intf #(
     ,
 
     .agent_id                (agent_id_w),
-    .agent_offset            (mem_start_addr_w),
+    .agent_start_addr        (mem_start_addr_w),
+    .agent_end_addr          (mem_end_addr_w),
 
-    .cntrlr_wait              (cntrlr_wait),
+    .cntrlr_rdy              (cntrlr_rdy),
     `drop_mem_ports(cntrlr_, ,cntrlr_, )
 
   );
@@ -189,6 +186,9 @@ module sys_mem_intf #(
 
     .clk                      (clk),
     .rst_n                    (rst_n),
+
+    .cntrlr_clk               (cntrlr_clk),
+    .cntrlr_rst_n             (cntrlr_rst_n),
 
     `drop_lb_ports_split(SYS_MEM_INTF_PART_BLK_CODE,lb_, ,lb_chld_,_w)
     ,

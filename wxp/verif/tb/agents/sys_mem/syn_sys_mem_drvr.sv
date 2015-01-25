@@ -24,7 +24,7 @@
  -- Project Code      : synesthesia-moksha
  -- Component Name    : syn_sys_mem_drvr
  -- Author            : mammenx
- -- Function          : This clas contains logic for modelling the system
+ -- Function          : This class contains logic for modelling the system
                         memory.
  --------------------------------------------------------------------------
 */

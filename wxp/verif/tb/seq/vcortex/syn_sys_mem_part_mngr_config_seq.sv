@@ -75,30 +75,18 @@
 
       start_item(pkt);  //start_item has wait_for_grant()
       
-      pkt.addr  = new[5];
-      pkt.data  = new[5];
-      pkt.gap   = new[5];
+      pkt.addr  = new[2];
+      pkt.data  = new[2];
+      pkt.gap   = new[2];
       pkt.lb_xtn= WRITE;
 
-      $cast(pkt.addr[0],  build_addr(SYS_MEM_MNGR_BLK,SYS_MEM_INTF_PART_BLK_CODE,SYS_MEM_PART_MNGR_CNTRL_REG));
-      pkt.data[0][0]  = 1;  //mode=config
+      $cast(pkt.addr[0],  build_addr(SYS_MEM_MNGR_BLK,SYS_MEM_INTF_PART_BLK_CODE,part_num));
+      pkt.data[0]     = start_addr;
       pkt.gap[0]      = 5;
 
-      $cast(pkt.addr[1],  build_addr(SYS_MEM_MNGR_BLK,SYS_MEM_INTF_PART_BLK_CODE,SYS_MEM_PART_MNGR_ADDR_REG));
-      pkt.data[1]     = part_num;
+      $cast(pkt.addr[1],  build_addr(SYS_MEM_MNGR_BLK,SYS_MEM_INTF_PART_BLK_CODE,32+part_num));
+      pkt.data[1]     = end_addr;
       pkt.gap[1]      = 5;
-
-      $cast(pkt.addr[2],  build_addr(SYS_MEM_MNGR_BLK,SYS_MEM_INTF_PART_BLK_CODE,SYS_MEM_PART_MNGR_START_DATA_REG));
-      pkt.data[2]     = start_addr;
-      pkt.gap[2]      = 5;
-
-      $cast(pkt.addr[3],  build_addr(SYS_MEM_MNGR_BLK,SYS_MEM_INTF_PART_BLK_CODE,SYS_MEM_PART_MNGR_END_DATA_REG));
-      pkt.data[3]     = end_addr;
-      pkt.gap[3]      = 5;
-
-      $cast(pkt.addr[4],  build_addr(SYS_MEM_MNGR_BLK,SYS_MEM_INTF_PART_BLK_CODE,SYS_MEM_PART_MNGR_CNTRL_REG));
-      pkt.data[4][0]  = 0;  //mode=config
-      pkt.gap[4]      = 5;
 
       p_sequencer.ovm_report_info(get_name(),$psprintf("Generated pkt - \n%s", pkt.sprint()),OVM_LOW);
 

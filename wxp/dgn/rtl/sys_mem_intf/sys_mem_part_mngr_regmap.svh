@@ -1,5 +1,0 @@
-parameter SYS_MEM_PART_MNGR_CNTRL_REG       = 0;
-parameter SYS_MEM_PART_MNGR_NUM_AGENTS_REG  = 1;
-parameter SYS_MEM_PART_MNGR_ADDR_REG        = 2;
-parameter SYS_MEM_PART_MNGR_START_DATA_REG  = 3;
-parameter SYS_MEM_PART_MNGR_END_DATA_REG    = 4;

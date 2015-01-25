@@ -98,7 +98,7 @@
 
       #100;
 
-      forever #6.67ns sys_clk_150  = ~sys_clk_150;
+      forever #3.33ns sys_clk_150  = ~sys_clk_150;
     end
 
 
@@ -157,7 +157,7 @@
       .lb_rd_valid                (lb_tb_intf.rd_valid),
       .lb_rd_data                 (lb_tb_intf.rd_data ),
 
-      .sys_mem_cntrlr_wait        (sys_mem_intf.mem_wait     ),
+      .sys_mem_cntrlr_rdy         (~sys_mem_intf.mem_wait    ),
       .sys_mem_cntrlr_wren        (sys_mem_intf.mem_wren     ),
       .sys_mem_cntrlr_rden        (sys_mem_intf.mem_rden     ),
       .sys_mem_cntrlr_addr        (sys_mem_intf.mem_addr     ),
