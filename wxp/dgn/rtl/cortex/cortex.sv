@@ -70,7 +70,7 @@ module cortex #(
     output                      scl,
     inout                       sda,
 
-    input                       sys_mem_cntrlr_wait,
+    input                       sys_mem_cntrlr_rdy,
     output                      sys_mem_cntrlr_wren,
     output                      sys_mem_cntrlr_rden,
     output  [SYS_MEM_ADDR_W-1:0]sys_mem_cntrlr_addr,
@@ -104,8 +104,6 @@ module cortex #(
   localparam  FFT_SAMPLE_W        = 32;
   localparam  FFT_TWDL_W          = 10;
   localparam  NUM_SYS_MEM_AGENTS  = 2;
-  localparam  bit [NUM_SYS_MEM_AGENTS-1:0]  [31:0]  SYS_MEM_ARB_WIEGHT_LIST = '{8,8};
-  localparam  SYS_MEM_ARB_TOTAL_WEIGHT    = 16;
   localparam  SYS_MEM_VCORTEX_START_ADDR  = 0;
   localparam  SYS_MEM_VCORTEX_STOP_ADDR   = 921599;
 
@@ -258,10 +256,7 @@ module cortex #(
     .MEM_DATA_W          (SYS_MEM_DATA_W),
     .MEM_ADDR_W          (SYS_MEM_ADDR_W),
     .NUM_AGENTS          (NUM_SYS_MEM_AGENTS),
-    .DEFAULT_DATA_VAL    (DEFAULT_DATA_VAL),
-
-    .ARB_WEIGHT_LIST     (SYS_MEM_ARB_WIEGHT_LIST),
-    .ARB_TOTAL_WEIGHT    (SYS_MEM_ARB_TOTAL_WEIGHT)
+    .DEFAULT_DATA_VAL    (DEFAULT_DATA_VAL)
 
   ) sys_mem_intf_inst (
 
@@ -278,7 +273,7 @@ module cortex #(
     `drop_mem_ports(agent_, ,sys_mem_agent_,_w)
     ,
 
-    .cntrlr_wait              (sys_mem_cntrlr_wait),
+    .cntrlr_rdy              (sys_mem_cntrlr_rdy),
     `drop_mem_ports(cntrlr_, ,sys_mem_cntrlr_, )
 
   );
@@ -317,7 +312,7 @@ module cortex #(
 
   );
 
-  assign  cntrlr_sw_rst_n = cortex_rst_vec[NUM_RESETS-1];
+  assign  cntrlr_sw_rst_n   = cortex_rst_vec[NUM_RESETS-1];
 
 
 endmodule // cortex

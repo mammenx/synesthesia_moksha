@@ -168,6 +168,7 @@ wire              cortex_lb_rd_valid/*synthesis keep*/;
 wire  [31:0]      cortex_lb_rd_data/*synthesis keep*/;
 
 wire              lpddr2_cntrlr_sw_rst_n;
+wire              lpddr2_cntrlr_sw_rst_sync_n;
 wire              afi_half_clk/*synthesis keep*/;
 wire              afi_reset_n;
 
@@ -199,6 +200,19 @@ wire              lpddr2_local_cal_fail;
     /*  output wire */  .outclk_1(sys_clk_12),
     /*  output wire */  .outclk_2(sys_clk_75),
     /*  output wire */  .locked(sys_rst_n)
+  );
+
+  /*  Synchronize Resets  */
+  rst_sync #(
+    .ACTIVE_LOW_N_HIGH  (1)
+
+  ) cntrlr_sw_rst_sync_inst (
+
+    .clk          (afi_half_clk),
+    .rst_async    (lpddr2_cntrlr_sw_rst_n),
+
+    .rst_sync     (lpddr2_cntrlr_sw_rst_sync_n)
+
   );
 
 
@@ -236,7 +250,7 @@ wire              lpddr2_local_cal_fail;
     /*  input  wire         */  .pll_ref_clk                  (CLOCK_50_B5B),
 
     /*  input  wire         */  .global_reset_n               (KEY[0]),
-    /*  input  wire         */  .soft_reset_n                 (lpddr2_cntrlr_sw_rst_n),
+    /*  input  wire         */  .soft_reset_n                 (lpddr2_cntrlr_sw_rst_sync_n),
 
     /*  output wire         */  .afi_clk                      (),
     /*  output wire         */  .afi_half_clk                 (afi_half_clk),
@@ -265,11 +279,11 @@ wire              lpddr2_local_cal_fail;
     /*  input  wire [2:0]   */  .avl_size_0                   (lpddr2_cntrlr_burst_cnt),
 
     /*  input  wire         */  .mp_cmd_clk_0_clk             (afi_half_clk),
-    /*  input  wire         */  .mp_cmd_reset_n_0_reset_n     (lpddr2_cntrlr_sw_rst_n),
+    /*  input  wire         */  .mp_cmd_reset_n_0_reset_n     (lpddr2_cntrlr_sw_rst_sync_n),
     /*  input  wire         */  .mp_rfifo_clk_0_clk           (afi_half_clk),
-    /*  input  wire         */  .mp_rfifo_reset_n_0_reset_n   (lpddr2_cntrlr_sw_rst_n),
+    /*  input  wire         */  .mp_rfifo_reset_n_0_reset_n   (lpddr2_cntrlr_sw_rst_sync_n),
     /*  input  wire         */  .mp_wfifo_clk_0_clk           (afi_half_clk),
-    /*  input  wire         */  .mp_wfifo_reset_n_0_reset_n   (lpddr2_cntrlr_sw_rst_n),
+    /*  input  wire         */  .mp_wfifo_reset_n_0_reset_n   (lpddr2_cntrlr_sw_rst_sync_n),
 
     /*  output wire         */  .local_init_done              (lpddr2_local_init_done),
     /*  output wire         */  .local_cal_success            (lpddr2_local_cal_success),
@@ -330,7 +344,7 @@ wire              lpddr2_local_cal_fail;
       /*  output                        */  .scl(I2C_SCL),
       /*  inout                         */  .sda(I2C_SDA),
 
-      /*  input                         */  .sys_mem_cntrlr_wait(~lpddr2_cntrlr_ready),
+      /*  input                         */  .sys_mem_cntrlr_rdy(lpddr2_cntrlr_ready),
       /*  output                        */  .sys_mem_cntrlr_wren(lpddr2_cntrlr_wren),
       /*  output                        */  .sys_mem_cntrlr_rden(lpddr2_cntrlr_rden),
       /*  output  [SYS_MEM_ADDR_W-1:0]  */  .sys_mem_cntrlr_addr(lpddr2_cntrlr_addr),
@@ -361,7 +375,7 @@ wire              lpddr2_local_cal_fail;
   assign  LEDG[0]   = ~sys_rst_n;
   assign  LEDG[1]   = ~afi_reset_n;
   assign  LEDG[2]   = ~cortex_rst_n;
-  assign  LEDG[3]   = ~lpddr2_cntrlr_sw_rst_n;
+  assign  LEDG[3]   = ~lpddr2_cntrlr_sw_rst_sync_n;
   assign  LEDG[4]   = lpddr2_local_init_done;
   assign  LEDG[5]   = lpddr2_local_cal_success;
   assign  LEDG[6]   = lpddr2_local_cal_fail;
