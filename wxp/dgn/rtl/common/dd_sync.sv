@@ -34,6 +34,7 @@
 
 module dd_sync  #(
   //--------------------- Global parameters Declarations ------------------
+  parameter SIGNAL_W          = 1,
   parameter P_NO_SYNC_STAGES  = 2
 
 ) (
@@ -49,17 +50,19 @@ module dd_sync  #(
   input                       clk;
   input                       rst_n;
 
-  input                       signal_id;
+  input   [SIGNAL_W-1:0]      signal_id;
 
 
 //----------------------- Output Declarations -----------------------------
-  output                      signal_od;
+  output  [SIGNAL_W-1:0]      signal_od;
 
 //----------------------- Output Register Declaration ---------------------
 
 
 //----------------------- Internal Register Declarations ------------------
-  reg   [P_NO_SYNC_STAGES-1:0]  sync_f;
+  reg   [P_NO_SYNC_STAGES-1:0]  sync_f  [SIGNAL_W-1:0];
+
+  genvar  i;
 
 //----------------------- Internal Wire Declarations ----------------------
 
@@ -67,19 +70,24 @@ module dd_sync  #(
 
 //----------------------- Start of Code -----------------------------------
 
-  always@(posedge clk, negedge rst_n)
-  begin
-    if(~rst_n)
-    begin
-      sync_f                  <=  {P_NO_SYNC_STAGES{1'b0}};
-    end
-    else
-    begin
-      sync_f                  <=  {sync_f[P_NO_SYNC_STAGES-2:0],signal_id};
-    end
-  end
+  generate
+    for(i=0;  i<SIGNAL_W; i++)
+    begin : gen_dd_sync
+      always@(posedge clk, negedge rst_n)
+      begin
+        if(~rst_n)
+        begin
+          sync_f[i]           <=  {P_NO_SYNC_STAGES{1'b0}};
+        end
+        else
+        begin
+          sync_f[i]           <=  {sync_f[i][P_NO_SYNC_STAGES-2:0],signal_id[i]};
+        end
+      end
 
-  assign  signal_od           =   sync_f[P_NO_SYNC_STAGES-1];
+      assign  signal_od[i]    =   sync_f[i][P_NO_SYNC_STAGES-1];
+    end
+  endgenerate
 
 endmodule // dd_sync
 

@@ -137,6 +137,8 @@ module cortex #(
 //----------------------- Internal Interface Declarations -----------------
   `ifdef  SIMULATION
     syn_pcm_mem_intf_mon#(PCM_MEM_DATA_W,PCM_MEM_ADDR_W,2)  pcm_mem_intf(clk,rst_n);
+
+    syn_sys_mem_intf#(SYS_MEM_DATA_W,SYS_MEM_ADDR_W,NUM_SYS_MEM_AGENTS) sys_mem_agent_intf(clk,rst_n);
   `endif
 
 //----------------------- FSM Declarations --------------------------------
@@ -250,13 +252,14 @@ module cortex #(
 
   /*  Instantiate System Memory Interface */
   sys_mem_intf #(
-    .LB_DATA_W           (LB_CHLD_DATA_W),
-    .LB_ADDR_W           (LB_CHLD_ADDR_W),
-    .LB_ADDR_BLK_W       (LB_CHLD_ADDR_BLK_W),
-    .MEM_DATA_W          (SYS_MEM_DATA_W),
-    .MEM_ADDR_W          (SYS_MEM_ADDR_W),
-    .NUM_AGENTS          (NUM_SYS_MEM_AGENTS),
-    .DEFAULT_DATA_VAL    (DEFAULT_DATA_VAL)
+    .LB_DATA_W                (LB_CHLD_DATA_W),
+    .LB_ADDR_W                (LB_CHLD_ADDR_W),
+    .LB_ADDR_BLK_W            (LB_CHLD_ADDR_BLK_W),
+    .MEM_DATA_W               (SYS_MEM_DATA_W),
+    .MEM_ADDR_W               (SYS_MEM_ADDR_W),
+    .NUM_AGENTS               (NUM_SYS_MEM_AGENTS),
+    .REGISTER_CNTRLR_OUTPUTS  (0),
+    .DEFAULT_DATA_VAL         (DEFAULT_DATA_VAL)
 
   ) sys_mem_intf_inst (
 
@@ -277,6 +280,25 @@ module cortex #(
     `drop_mem_ports(cntrlr_, ,sys_mem_cntrlr_, )
 
   );
+
+  `ifdef  SIMULATION
+    integer i;
+
+    always@(*)
+    begin
+      for(i=0;  i<NUM_SYS_MEM_AGENTS; i++)
+      begin
+        sys_mem_agent_intf.mem_wait[i]      = sys_mem_agent_wait_w[i];
+        sys_mem_agent_intf.mem_wren[i]      = sys_mem_agent_wren_w[i];
+        sys_mem_agent_intf.mem_rden[i]      = sys_mem_agent_rden_w[i];
+        sys_mem_agent_intf.mem_addr[i]      = sys_mem_agent_addr_w[i];
+        sys_mem_agent_intf.mem_wdata[i]     = sys_mem_agent_wdata_w[i];
+        sys_mem_agent_intf.mem_rd_valid[i]  = sys_mem_agent_rd_valid_w[i];
+        sys_mem_agent_intf.mem_rdata[i]     = sys_mem_agent_rdata_w[i];
+      end
+    end
+
+  `endif
 
   vcortex #(
     .LB_DATA_W            (LB_CHLD_DATA_W),

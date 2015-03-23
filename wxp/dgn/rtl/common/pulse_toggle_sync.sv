@@ -25,7 +25,7 @@
  -- Module Name       : pulse_toggle_sync
  -- Author            : mammenx
  -- Associated modules: 
- -- Function          : This module has logic to synchronize pulses accross
+ -- Function          : This module has logic to synchronize pulses across
                         clock domains using a toggling signal.
  --------------------------------------------------------------------------
 */

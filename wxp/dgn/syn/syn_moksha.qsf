@@ -603,6 +603,7 @@ set_global_assignment -name SYSTEMVERILOG_FILE ../../dgn/rtl/common/rst_sync.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../../dgn/rtl/common/pulse_toggle_sync.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../../dgn/rtl/common/lb_splitter.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../../dgn/rtl/common/least_filter.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../../dgn/rtl/common/ff_flags.sv
 
 # Reset Sync Control
 set_global_assignment -name SYSTEMVERILOG_FILE ../../dgn/rtl/rst_cntrl/rst_cntrl.sv
@@ -681,4 +682,5 @@ set_global_assignment -name SIGNALTAP_FILE stp1.stp
 
 
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
+
 set_global_assignment -name SLD_FILE db/stp1_auto_stripped.stp

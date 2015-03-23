@@ -76,8 +76,8 @@ set_clock_groups -exclusive -group  $afiHalfClk \
 #**************************************************************
 # Set Maximum Delay
 #**************************************************************
-set_max_delay -from [get_registers *sys_mem_arb_rr*]  -to [get_registers *lpddr2_cntrlr*]   5.000
-set_max_delay -from [get_registers *lpddr2_cntrlr*]   -to [get_registers *sys_mem_arb_rr*]  5.000
+set_max_delay -from [get_registers *sys_mem_arb_rr*]  -to [get_registers *lpddr2_cntrlr*]   6.000
+set_max_delay -from [get_registers *lpddr2_cntrlr*]   -to [get_registers *sys_mem_arb_rr*]  6.000
 
 set_max_delay -from $lpddr2CntrlrSwRst  -to [get_registers  *lpddr2_cntrlr*]  6.000
 

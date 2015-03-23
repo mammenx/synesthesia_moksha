@@ -93,7 +93,7 @@ module sys_mem_arb_rr #(
   localparam  INGR_BFFR_DEPTH         = 32;
   localparam  INGR_BFFR_USED_W        = $clog2(INGR_BFFR_DEPTH);
   localparam  INGR_BFFR_OCC_W         = 2 + MEM_ADDR_W  + MEM_DATA_W;
-  localparam  PART_MEM_DELAY          = 2;
+  localparam  PART_MEM_DELAY          = 2 + 1;
 
   localparam  EGR_BFFR_0_W            = 10;
   localparam  EGR_BFFR_0_DEPTH        = 1024;
@@ -118,7 +118,23 @@ module sys_mem_arb_rr #(
 
   reg   [PART_MEM_DELAY-1:0]  part_mem_del_vec_f;
 
+  reg   [MEM_ADDR_W-1:0]      agent_start_addr_f;
+  reg   [MEM_ADDR_W-1:0]      agent_end_addr_f;
+
 //----------------------- Internal Wire Declarations ----------------------
+  wire                        clear_ff_flags_c;
+  wire  [NUM_AGENTS-1:0]      ingr_bffr_ovrflow;
+  wire  [NUM_AGENTS-1:0]      ingr_bffr_undrflow;
+  wire  [NUM_AGENTS-1:0]      ingr_bffr_undrflow_sync;
+  wire  [1:0]                 ingr_del_bffr_ovrflow;
+  wire  [1:0]                 ingr_del_bffr_undrflow;
+  wire  [1:0]                 ingr_del_bffr_ovrflow_sync;
+  wire  [1:0]                 ingr_del_bffr_undrflow_sync;
+  wire                        egr_bffr_0_ovrflow;
+  wire                        egr_bffr_0_undrflow;
+  wire                        egr_bffr_1_ovrflow;
+  wire                        egr_bffr_1_undrflow;
+
   wire  [NUM_AGENTS-1:0]                    ingr_bffr_wren_c;
   wire  [NUM_AGENTS-1:0] [INGR_BFFR_W-1:0]  ingr_bffr_wdata_w;
   wire  [NUM_AGENTS-1:0]                    ingr_bffr_wfull_w;
@@ -134,6 +150,7 @@ module sys_mem_arb_rr #(
   wire  [1:0]                    ingr_del_bffr_rden_c;
   wire  [1:0] [INGR_BFFR_W-1:0]  ingr_del_bffr_rdata_w;
   wire  [1:0]                    ingr_del_bffr_empty_w;
+  wire                           ingr_del_bffr_full_all_c;
 
   wire                        cntrlr_unpack_wren_w;
   wire                        cntrlr_unpack_rden_w;
@@ -156,6 +173,7 @@ module sys_mem_arb_rr #(
 
   genvar  i;
 
+  integer n;
 
 //----------------------- Start of Code -----------------------------------
 
@@ -178,7 +196,22 @@ module sys_mem_arb_rr #(
 
           SYS_MEM_ARB_STATUS_REG  :
           begin
-            lb_rd_data        <=  0;
+            lb_rd_data[7:0]   <=  {
+                                    ingr_del_bffr_ovrflow_sync[1],
+                                    ingr_del_bffr_undrflow_sync[1],
+                                    ingr_del_bffr_ovrflow_sync[0],
+                                    ingr_del_bffr_undrflow_sync[0],
+                                    egr_bffr_1_ovrflow,
+                                    egr_bffr_1_undrflow,
+                                    egr_bffr_0_ovrflow,
+                                    egr_bffr_0_undrflow
+                                  };
+
+            for(n=0;  n<NUM_AGENTS; n++)
+            begin
+              lb_rd_data[8 + (n*2)]     <=  ingr_bffr_undrflow_sync[n];
+              lb_rd_data[8 + (n*2) + 1] <=  ingr_bffr_ovrflow[n];
+            end
           end
 
           default :
@@ -193,8 +226,11 @@ module sys_mem_arb_rr #(
     end
   end
 
+  //Clear FIFO flags each time they are read
+  assign  clear_ff_flags_c    =   (lb_addr  ==  SYS_MEM_ARB_STATUS_REG) ? lb_rd_en  : 1'b0;
 
-  /*  
+
+  /*
     * Ingress Buffer Logic
     * These buffers (one per agent) hold xtns while waiting to be serviced by the arbiter
   */
@@ -227,8 +263,46 @@ module sys_mem_arb_rr #(
         .wrusedw            ()
       );
 
-      assign  ingr_bffr_rden_c[i] = (arb_rr_cntr_f  ==  i)  ? ~ingr_bffr_rempty_w[i]  & cntrlr_rdy  : 1'b0;
+      //assign  ingr_bffr_rden_c[i] = (arb_rr_cntr_f  ==  i)  ? ~ingr_bffr_rempty_w[i]  & cntrlr_rdy  : 1'b0;
+      assign  ingr_bffr_rden_c[i] = (arb_rr_cntr_f  ==  i)  ? ~ingr_bffr_rempty_w[i]  & ~ingr_del_bffr_full_all_c
+                                                            : 1'b0;
 
+      ff_flags #(
+        .NUM_INTFS  (1)
+
+      ) ingr_bffr_flags (
+
+        .clear_clk          (clk),
+        .clear_clk_rst_n    (rst_n),
+
+        .wr_clk             (clk),
+        .wr_clk_rst_n       (rst_n),
+
+        .rd_clk             (cntrlr_clk),
+        .rd_clk_rst_n       (cntrlr_rst_n),
+
+        .clear_flags        (clear_ff_flags_c),
+
+        .ff_wren            (ingr_bffr_wren_c[i]),
+        .ff_full            (ingr_bffr_wfull_w[i]),
+
+        .ff_rden            (ingr_bffr_rden_c[i]),
+        .ff_empty           (ingr_bffr_rempty_w[i]),
+
+        .ff_ovrflw          (ingr_bffr_ovrflow[i]),
+        .ff_undrflw         (ingr_bffr_undrflow[i])
+
+      );
+
+      dd_sync ingr_bffr_undrflow_dd_sync_inst
+      (
+        .clk          (clk),
+        .rst_n        (rst_n),
+
+        .signal_id    (ingr_bffr_undrflow[i]),
+
+        .signal_od    (ingr_bffr_undrflow_sync[i])
+      );
     end
   endgenerate
 
@@ -243,16 +317,26 @@ module sys_mem_arb_rr #(
       arb_rr_cntr_f           <=  0;
 
       part_mem_del_vec_f      <=  0;
+
+      agent_start_addr_f      <=  0;
+      agent_end_addr_f        <=  0;
     end
     else
     begin
-      arb_rr_cntr_f           <=  arb_cntr_rst_c  ? 0 : arb_rr_cntr_f + cntrlr_rdy;
+      //arb_rr_cntr_f           <=  arb_cntr_rst_c  ? 0 : arb_rr_cntr_f + cntrlr_rdy;
+      arb_rr_cntr_f           <=  arb_cntr_rst_c  ? 0 : arb_rr_cntr_f + ~ingr_del_bffr_full_all_c;
 
       part_mem_del_vec_f      <=  {part_mem_del_vec_f[PART_MEM_DELAY-2:0],  ingr_bffr_rden_c[arb_rr_cntr_f]};
+
+      //Register start/end addresses from part_mngr
+      //This will increase pipe delay by 1 clock
+      agent_start_addr_f      <=  agent_start_addr;
+      agent_end_addr_f        <=  agent_end_addr;
     end
   end
 
-  assign  arb_cntr_rst_c      =   (arb_rr_cntr_f  ==  NUM_AGENTS-1) ? cntrlr_rdy : 1'b0;
+  //assign  arb_cntr_rst_c      =   (arb_rr_cntr_f  ==  NUM_AGENTS-1) ? cntrlr_rdy : 1'b0;
+  assign  arb_cntr_rst_c      =   (arb_rr_cntr_f  ==  NUM_AGENTS-1) ? ~ingr_del_bffr_full_all_c : 1'b0;
 
 
   /*  
@@ -275,8 +359,10 @@ module sys_mem_arb_rr #(
     .usedw          ()
   );
 
+
   assign  ingr_del_bffr_rden_c[0]   = part_mem_del_vec_f[PART_MEM_DELAY-1];
 
+  assign  ingr_del_bffr_full_all_c  = ingr_del_bffr_full_w[0] | ingr_del_bffr_full_w[1];
 
   /*  
     * Ingress Delay Buffer 1
@@ -284,7 +370,7 @@ module sys_mem_arb_rr #(
   */
   assign  ingr_del_bffr_wren_c[1]   = part_mem_del_vec_f[PART_MEM_DELAY-1];
   assign  ingr_del_bffr_wdata_w[1][INGR_BFFR_W-1:MEM_ADDR_W]  = ingr_del_bffr_rdata_w[0][INGR_BFFR_W-1:MEM_ADDR_W];
-  assign  ingr_del_bffr_wdata_w[1][MEM_ADDR_W-1:0]            = ingr_del_bffr_rdata_w[0][MEM_ADDR_W-1:0]  + agent_start_addr;
+  assign  ingr_del_bffr_wdata_w[1][MEM_ADDR_W-1:0]            = ingr_del_bffr_rdata_w[0][MEM_ADDR_W-1:0]  + agent_start_addr_f;
 
   ff_80x32_fwft     ingr_del_bffr1_inst
   (
@@ -306,6 +392,43 @@ module sys_mem_arb_rr #(
             cntrlr_unpack_wdata_w,
             cntrlr_unpack_addr_w
           } = ingr_del_bffr_rdata_w[1][INGR_BFFR_OCC_W-1:0];
+
+  ff_flags #(
+    .NUM_INTFS  (2)
+
+  ) ingr_del_bffr_flags (
+
+    .clear_clk          (clk),
+    .clear_clk_rst_n    (rst_n),
+
+    .wr_clk             (cntrlr_clk),
+    .wr_clk_rst_n       (cntrlr_rst_n),
+
+    .rd_clk             (cntrlr_clk),
+    .rd_clk_rst_n       (cntrlr_rst_n),
+
+    .clear_flags        (clear_ff_flags_c),
+
+    .ff_wren            (ingr_del_bffr_wren_c),
+    .ff_full            (ingr_del_bffr_full_w),
+
+    .ff_rden            (ingr_del_bffr_rden_c),
+    .ff_empty           (ingr_del_bffr_empty_w),
+
+    .ff_ovrflw          (ingr_del_bffr_ovrflow),
+    .ff_undrflw         (ingr_del_bffr_undrflow)
+
+  );
+
+  dd_sync #(.SIGNAL_W(4)) ingr_bffr_flags_dd_sync_inst
+  (
+    .clk          (clk),
+    .rst_n        (rst_n),
+
+    .signal_id    ({ingr_del_bffr_ovrflow,ingr_del_bffr_undrflow}),
+
+    .signal_od    ({ingr_del_bffr_ovrflow_sync,ingr_del_bffr_undrflow_sync})
+  );
 
   generate
     if(REGISTER_CNTRLR_OUTPUTS)
@@ -360,7 +483,7 @@ module sys_mem_arb_rr #(
     * Egress Buffer 0
     * This Fifo holds the sequence of Agent IDs of read xtns that are yet to come from controller
   */
-  assign  egr_bffr_0_wren_c     = ingr_bffr_rden_c[arb_rr_cntr_f];
+  assign  egr_bffr_0_wren_c     = ingr_bffr_rden_c[arb_rr_cntr_f] & ingr_bffr_rdata_w[arb_rr_cntr_f][INGR_BFFR_OCC_W-2];
 
   assign  egr_bffr_0_wdata_w    = { {(EGR_BFFR_0_W-AGENT_ID_W){1'b0}},
                                     agent_id
@@ -383,6 +506,32 @@ module sys_mem_arb_rr #(
 
   assign  egr_bffr_0_rden_c   = ~egr_bffr_0_rempty_w  & ~egr_bffr_1_rempty_w;
 
+  ff_flags #(
+    .NUM_INTFS  (1)
+
+  ) egr_bffr_0_flags (
+
+    .clear_clk          (clk),
+    .clear_clk_rst_n    (rst_n),
+
+    .wr_clk             (cntrlr_clk),
+    .wr_clk_rst_n       (cntrlr_rst_n),
+
+    .rd_clk             (clk),
+    .rd_clk_rst_n       (rst_n),
+
+    .clear_flags        (clear_ff_flags_c),
+
+    .ff_wren            (egr_bffr_0_wren_c),
+    .ff_full            (egr_bffr_0_wfull_w),
+
+    .ff_rden            (egr_bffr_0_rden_c),
+    .ff_empty           (egr_bffr_0_rempty_w),
+
+    .ff_ovrflw          (egr_bffr_0_ovrflow),
+    .ff_undrflw         (egr_bffr_0_undrflow)
+
+  );
 
   /*
     * Egress Buffer 1
@@ -411,6 +560,32 @@ module sys_mem_arb_rr #(
 
   assign  egr_bffr_1_rden_c   = ~egr_bffr_0_rempty_w  & ~egr_bffr_1_rempty_w;
 
+  ff_flags #(
+    .NUM_INTFS  (1)
+
+  ) egr_bffr_1_flags (
+
+    .clear_clk          (clk),
+    .clear_clk_rst_n    (rst_n),
+
+    .wr_clk             (cntrlr_clk),
+    .wr_clk_rst_n       (cntrlr_rst_n),
+
+    .rd_clk             (clk),
+    .rd_clk_rst_n       (rst_n),
+
+    .clear_flags        (clear_ff_flags_c),
+
+    .ff_wren            (egr_bffr_1_wren_c),
+    .ff_full            (egr_bffr_1_wfull_w),
+
+    .ff_rden            (egr_bffr_1_rden_c),
+    .ff_empty           (egr_bffr_1_rempty_w),
+
+    .ff_ovrflw          (egr_bffr_1_ovrflow),
+    .ff_undrflw         (egr_bffr_1_undrflow)
+
+  );
 
   /*  Demux Read Data to Agent  */
   generate
