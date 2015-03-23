@@ -36,6 +36,7 @@
 ../../dgn/rtl/common/pulse_toggle_sync.sv
 ../../dgn/rtl/common/lb_splitter.sv
 ../../dgn/rtl/common/least_filter.sv
+../../dgn/rtl/common/ff_flags.sv
 
 //Clock Reset Control
 ../../dgn/rtl/rst_cntrl/rst_cntrl.sv

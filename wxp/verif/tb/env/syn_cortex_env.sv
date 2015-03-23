@@ -43,6 +43,12 @@
     `include  "pcm_bffr_regmap.svh"
     `include  "ssm2603_drvr_regmap.svh"
     `include  "fgyrus_reg_map.svh"
+    `include  "vcortex_regmap.svh"
+    `include  "sys_mem_hst_acc_regmap.svh"
+    `include  "adv7513_cntrlr_regmap.svh"
+    `include  "sys_mem_intf_regmap.svh"
+    `include  "sys_mem_part_mngr_regmap.svh"
+    `include  "sys_mem_arb_regmap.svh"
 
     //Parameters
     parameter       LB_DATA_W   = syn_env_pkg::LB_DATA_W;
@@ -76,8 +82,10 @@
 
     parameter SYS_MEM_DATA_W  = 32;
     parameter SYS_MEM_ADDR_W  = 27;
+    parameter SYS_MEM_NUM_AGENTS  = 2;
     parameter type  SYS_MEM_PKT_TYPE  = syn_sys_mem_seq_item#(SYS_MEM_DATA_W,SYS_MEM_ADDR_W);
-    parameter type  SYS_MEM_INTF_TYPE = virtual syn_sys_mem_intf#(SYS_MEM_DATA_W,SYS_MEM_ADDR_W);
+    parameter type  SYS_MEM_INTF_TYPE = virtual syn_sys_mem_intf#(SYS_MEM_DATA_W,SYS_MEM_ADDR_W,1);
+    parameter type  SYS_MEM_AGENT_INTF_TYPE = virtual syn_sys_mem_intf#(SYS_MEM_DATA_W,SYS_MEM_ADDR_W,SYS_MEM_NUM_AGENTS);
 
 
     /*  Register with factory */
@@ -104,6 +112,10 @@
 
     syn_reg_map#(LB_DATA_W)   fgyrus_reg_map;
 
+    syn_reg_map#(LB_DATA_W)   vcortex_reg_map;
+
+    syn_reg_map#(LB_DATA_W)   sys_mem_intf_reg_map;
+
     syn_but_sniffer#(BUT_PKT_TYPE,BUT_INTF_TYPE)              but_sniffer;
     syn_but_sb#(BUT_PKT_TYPE,BUT_PKT_TYPE)                    but_sb;
 
@@ -112,7 +124,9 @@
 
     syn_fft_sb#(PCM_PKT_TYPE,PCM_PKT_TYPE)                                    fft_sb;
 
-    syn_sys_mem_agent#(SYS_MEM_DATA_W,SYS_MEM_ADDR_W,SYS_MEM_PKT_TYPE,SYS_MEM_INTF_TYPE)  sys_mem_agent;
+    syn_sys_mem_agent#(SYS_MEM_DATA_W,SYS_MEM_ADDR_W,SYS_MEM_NUM_AGENTS,SYS_MEM_PKT_TYPE,SYS_MEM_INTF_TYPE,SYS_MEM_AGENT_INTF_TYPE)  sys_mem_agent;
+
+    syn_sys_mem_intf_sb#(SYS_MEM_DATA_W,SYS_MEM_ADDR_W,SYS_MEM_NUM_AGENTS,LB_DATA_W,SYS_MEM_PKT_TYPE,SYS_MEM_PKT_TYPE)  sys_mem_intf_sb;
 
     OVM_FILE  f;
 
@@ -155,7 +169,9 @@
       fft_cache_sb  = syn_fft_cache_sb#(PCM_PKT_TYPE,FFT_CACHE_PKT_TYPE)::type_id::create("fft_cache_sb",  this);
       fft_sb        = syn_fft_sb#(PCM_PKT_TYPE,PCM_PKT_TYPE)::type_id::create("fft_sb",  this);
 
-      sys_mem_agent = syn_sys_mem_agent#(SYS_MEM_DATA_W,SYS_MEM_ADDR_W,SYS_MEM_PKT_TYPE,SYS_MEM_INTF_TYPE)::type_id::create("sys_mem_agent", this);
+      sys_mem_agent = syn_sys_mem_agent#(SYS_MEM_DATA_W,SYS_MEM_ADDR_W,SYS_MEM_NUM_AGENTS,SYS_MEM_PKT_TYPE,SYS_MEM_INTF_TYPE,SYS_MEM_AGENT_INTF_TYPE)::type_id::create("sys_mem_agent", this);
+
+      sys_mem_intf_sb = syn_sys_mem_intf_sb#(SYS_MEM_DATA_W,SYS_MEM_ADDR_W,SYS_MEM_NUM_AGENTS,LB_DATA_W,SYS_MEM_PKT_TYPE,SYS_MEM_PKT_TYPE)::type_id::create("sys_mem_intf_sb", this);
 
       LB2Env_ff       = new("LB2Env_ff",this);
 
@@ -170,6 +186,14 @@
       fgyrus_reg_map    = syn_reg_map#(LB_DATA_W)::type_id::create("fgyrus_reg_map",this);
       build_fgyrus_reg_map();
       ovm_report_info(get_name(),$psprintf("Fgyrus Reg Map Table%s",fgyrus_reg_map.sprintTable()),OVM_LOW);
+
+      vcortex_reg_map   = syn_reg_map#(LB_DATA_W)::type_id::create("vcortex_reg_map",this);
+      build_vcortex_reg_map();
+      ovm_report_info(get_name(),$psprintf("Vcortex Reg Map Table%s",vcortex_reg_map.sprintTable()),OVM_LOW);
+
+      sys_mem_intf_reg_map    = syn_reg_map#(LB_DATA_W)::type_id::create("sys_mem_intf_reg_map",this);
+      build_sys_mem_intf_reg_map();
+      ovm_report_info(get_name(),$psprintf("Sys Mem Intf Reg Map Table%s",sys_mem_intf_reg_map.sprintTable()),OVM_LOW);
 
       ovm_report_info(get_name(),"End of build ",OVM_LOW);
     endfunction
@@ -212,6 +236,14 @@
         this.pcm_mem_agent.mon.Mon2Sb_port.connect(fft_sb.Mon_sent_2Sb_port);
         this.lb_agent.seqr.LB2FFT_Sb_port.connect(fft_sb.Mon_rcvd_2Sb_port);
 
+        this.sys_mem_agent.agent_mon.Mon2Sb_ingr_port.connect(sys_mem_intf_sb.Mon_agent_sent_2Sb_port);
+        this.sys_mem_agent.agent_mon.Mon2Sb_egr_port.connect(sys_mem_intf_sb.Mon_agent_rcvd_2Sb_port);
+
+        this.sys_mem_agent.mon.Mon2Sb_ingr_port.connect(sys_mem_intf_sb.Mon_sent_2Sb_port);
+        this.sys_mem_agent.mon.Mon2Sb_egr_port.connect(sys_mem_intf_sb.Mon_rcvd_2Sb_port);
+
+        sys_mem_intf_sb.sys_mem_intf_reg_map  = this.sys_mem_intf_reg_map;
+
       ovm_report_info(get_name(),"END of connect ",OVM_LOW);
     endfunction
 
@@ -233,7 +265,7 @@
         begin
           for(int i=0;  i<lb_pkt.addr.size; i++)
           begin
-            if(lb_pkt.addr[i][LB_DATA_W-1  -:  LB_BLK_1_W] ==  ACORTEX_BLK)
+            if(lb_pkt.addr[i][LB_ADDR_W-1  -:  LB_BLK_1_W] ==  ACORTEX_BLK)
             begin
               if(!acortex_reg_map.set_reg(lb_pkt.addr[i],lb_pkt.data[i]))
               begin
@@ -244,7 +276,7 @@
                 ovm_report_warning({get_name(),"[run]"},"Could not update acortex_regmap!",OVM_LOW);
               end
             end
-            else if(lb_pkt.addr[i][LB_DATA_W-1  -:  LB_BLK_1_W] ==  FGYRUS_BLK)
+            else if(lb_pkt.addr[i][LB_ADDR_W-1  -:  LB_BLK_1_W] ==  FGYRUS_BLK)
             begin
               if(!fgyrus_reg_map.set_reg(lb_pkt.addr[i],lb_pkt.data[i]))
               begin
@@ -253,6 +285,17 @@
               else
               begin
                 ovm_report_warning({get_name(),"[run]"},"Could not update fgyrus_regmap!",OVM_LOW);
+              end
+            end
+            else if(lb_pkt.addr[i][LB_ADDR_W-1  -:  LB_BLK_1_W] ==  SYS_MEM_MNGR_BLK)
+            begin
+              if(!sys_mem_intf_reg_map.set_reg(lb_pkt.addr[i],lb_pkt.data[i]))
+              begin
+                ovm_report_info({get_name(),"[run]"},"Updated sys_mem_intf_reg_map",OVM_LOW);
+              end
+              else
+              begin
+                ovm_report_warning({get_name(),"[run]"},"Could not update sys_mem_intf_reg_map!",OVM_LOW);
               end
             end
             else
@@ -357,6 +400,27 @@
       fgyrus_reg_map.create_space("fgyrus_cordic_ram",    build_addr(FGYRUS_BLK,FGYRUS_CORDIC_RAM_CODE,0),    256);
       fgyrus_reg_map.create_space("fgyrus_win_ram",       build_addr(FGYRUS_BLK,FGYRUS_WIN_RAM_CODE,0),       128);
     endfunction : build_fgyrus_reg_map
+
+    function  void  build_vcortex_reg_map();
+      vcortex_reg_map.create_field("line_bffr_en",  build_addr(VCORTEX_BLK,VCORTEX_ADV7513_CNTRLR_BLK_CODE,ADV7513_CNTRLR_CONFIG_REG),  0,  0);
+      vcortex_reg_map.create_field("drvr_en",       build_addr(VCORTEX_BLK,VCORTEX_ADV7513_CNTRLR_BLK_CODE,ADV7513_CNTRLR_CONFIG_REG),  1,  1);
+
+      vcortex_reg_map.create_field("avd7513_lbffr_ovrflw",  build_addr(VCORTEX_BLK,VCORTEX_ADV7513_CNTRLR_BLK_CODE,ADV7513_CNTRLR_STATUS_REG),  0,  0);
+      vcortex_reg_map.create_field("avd7513_lbffr_undrflw", build_addr(VCORTEX_BLK,VCORTEX_ADV7513_CNTRLR_BLK_CODE,ADV7513_CNTRLR_STATUS_REG),  1,  1);
+
+      vcortex_reg_map.create_field("mem_addr",      build_addr(VCORTEX_BLK,VCORTEX_HST_ACCESS_BLK_CODE,SYS_MEM_HST_ACC_ADDR_REG),  SYS_MEM_ADDR_W-1,  0);
+      vcortex_reg_map.create_field("mem_data",      build_addr(VCORTEX_BLK,VCORTEX_HST_ACCESS_BLK_CODE,SYS_MEM_HST_ACC_DATA_REG),  SYS_MEM_DATA_W-1,  0);
+
+      vcortex_reg_map.create_field("sys_mem_hst_acc_wren", build_addr(VCORTEX_BLK,VCORTEX_HST_ACCESS_BLK_CODE,SYS_MEM_HST_ACC_STATUS_REG),  0,  0);
+      vcortex_reg_map.create_field("sys_mem_hst_acc_rden", build_addr(VCORTEX_BLK,VCORTEX_HST_ACCESS_BLK_CODE,SYS_MEM_HST_ACC_STATUS_REG),  1,  1);
+
+    endfunction : build_vcortex_reg_map
+
+    function  void  build_sys_mem_intf_reg_map();
+      sys_mem_intf_reg_map.create_space("sys_mem_part_start_ram",  build_addr(SYS_MEM_MNGR_BLK,SYS_MEM_INTF_PART_BLK_CODE,0),  SYS_MEM_NUM_AGENTS);
+      sys_mem_intf_reg_map.create_space("sys_mem_part_end_ram",    build_addr(SYS_MEM_MNGR_BLK,SYS_MEM_INTF_PART_BLK_CODE,32), SYS_MEM_NUM_AGENTS);
+
+    endfunction : build_sys_mem_intf_reg_map
 
   endclass  : syn_cortex_env
 

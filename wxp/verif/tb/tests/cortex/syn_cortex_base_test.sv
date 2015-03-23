@@ -45,6 +45,7 @@ class syn_cortex_base_test extends ovm_test;
 
     parameter SYS_MEM_ADDR_W      = 27;
     parameter SYS_MEM_DATA_W      = 32;
+    parameter SYS_MEM_NUM_AGENTS  = 2;
 
     `ovm_component_utils(syn_cortex_base_test)
 
@@ -119,6 +120,8 @@ class syn_cortex_base_test extends ovm_test;
       this.env.fft_cache_sniffer.intf   = $root.syn_cortex_tb_top.cortex_inst.fgyrus_inst.fft_cache_intf;
 
       this.env.sys_mem_agent.drvr.intf  = $root.syn_cortex_tb_top.sys_mem_intf;
+      this.env.sys_mem_agent.mon.intf   = $root.syn_cortex_tb_top.sys_mem_intf;
+      this.env.sys_mem_agent.agent_mon.intf = $root.syn_cortex_tb_top.cortex_inst.sys_mem_agent_intf;
 
       ovm_report_info(get_full_name(),"End of connect",OVM_LOW);
     endfunction : connect

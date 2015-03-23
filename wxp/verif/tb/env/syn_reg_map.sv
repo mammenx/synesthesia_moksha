@@ -103,6 +103,25 @@
 
     endfunction : create_space
 
+    function  int get_space_reg(string name,  int loc);
+
+      if(string2base_arry.exists(name)  &&  string2numlocs_arry.exists(name))
+      begin
+        if(loc  < string2numlocs_arry[name])
+        begin
+          return  get_reg($psprintf("%s_space[%1d]",name,loc));
+        end
+        else
+        begin
+          return  FAIL_OUT_OF_BOUNDS;
+        end
+      end
+      else
+      begin
+        return  FAIL_FIELD_N_EXIST;
+      end
+    endfunction : get_space_reg
+
     function  int set_field(string name, int val);
        bit[REG_W-1:0]  temp = 0;
        bit[REG_W-1:0]  val_b = 0;
@@ -230,7 +249,7 @@
 
       foreach(this.string2base_arry[space])
       begin
-        res = $psprintf("%s\n%-20s%-20d%-10d",res,space,string2base_arry[space],string2numlocs_arry[space]);
+        res = $psprintf("%s\n%-20s0x%-20x%-10d",res,space,string2base_arry[space],string2numlocs_arry[space]);
       end
 
       res = {res, "\n"};

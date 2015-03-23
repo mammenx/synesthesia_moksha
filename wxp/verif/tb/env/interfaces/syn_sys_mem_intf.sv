@@ -29,16 +29,16 @@
  --------------------------------------------------------------------------
 */
 
-interface syn_sys_mem_intf  #(DATA_W=32,ADDR_W=27) (input logic clk_ir,rst_il);
+interface syn_sys_mem_intf  #(DATA_W=32,ADDR_W=27,NUM_AGENTS=2) (input logic clk_ir,rst_il);
 
   //Logic signals
-  logic               mem_wait;
-  logic               mem_wren;
-  logic               mem_rden;
-  logic [ADDR_W-1:0]  mem_addr;
-  logic [DATA_W-1:0]  mem_wdata;
-  logic               mem_rd_valid;
-  logic [DATA_W-1:0]  mem_rdata;
+  logic [NUM_AGENTS-1:0]                mem_wait;
+  logic [NUM_AGENTS-1:0]                mem_wren;
+  logic [NUM_AGENTS-1:0]                mem_rden;
+  logic [NUM_AGENTS-1:0]  [ADDR_W-1:0]  mem_addr;
+  logic [NUM_AGENTS-1:0]  [DATA_W-1:0]  mem_wdata;
+  logic [NUM_AGENTS-1:0]                mem_rd_valid;
+  logic [NUM_AGENTS-1:0]  [DATA_W-1:0]  mem_rdata;
 
 
   //Clocking Blocks
@@ -55,10 +55,23 @@ interface syn_sys_mem_intf  #(DATA_W=32,ADDR_W=27) (input logic clk_ir,rst_il);
 
   endclocking : cb_drvr
 
+  clocking  cb_mon  @(posedge clk_ir);
+    default input #2ns  output  #2ns;
+
+    input   mem_wait;
+    input   mem_wren;
+    input   mem_rden;
+    input   mem_addr;
+    input   mem_wdata;
+    input   mem_rd_valid;
+    input   mem_rdata;
+
+  endclocking : cb_mon
 
   //Modports
   modport TB_DRVR   (input   clk_ir,rst_il, clocking  cb_drvr);
 
+  modport TB_MON    (input   clk_ir,rst_il, clocking  cb_mon);
 
 endinterface  //  syn_sys_mem_intf
 

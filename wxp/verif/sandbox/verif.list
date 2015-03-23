@@ -15,6 +15,7 @@
 +incdir+../../verif/tb/sb/vcortex/
 +incdir+../../verif/tb/sb/acortex/
 +incdir+../../verif/tb/sb/fgyrus/
++incdir+../../verif/tb/sb/sys_mem_intf/
 +incdir+../../verif/tb/seq/
 +incdir+../../verif/tb/seq/vcortex/
 +incdir+../../verif/tb/seq/acortex/

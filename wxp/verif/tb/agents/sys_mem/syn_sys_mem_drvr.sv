@@ -102,9 +102,9 @@
       ovm_report_info({get_name(),"[run]"},"Start of run ",OVM_LOW);
 
       //Wait for reset  ...
-      intf.cb_drvr.mem_wait     <=  0;
-      intf.cb_drvr.mem_rd_valid <=  0;
-      intf.cb_drvr.mem_rdata    <=  0;
+      intf.cb_drvr.mem_wait[0]     <=  0;
+      intf.cb_drvr.mem_rd_valid[0] <=  0;
+      intf.cb_drvr.mem_rdata[0]    <=  0;
 
       @(posedge intf.rst_il);
 
@@ -188,15 +188,15 @@
           begin
             @(posedge intf.clk_ir);
 
-            if(intf.cb_drvr.mem_wren  && ~intf.cb_drvr.mem_wait)
+            if(intf.cb_drvr.mem_wren[0]  && ~intf.cb_drvr.mem_wait[0])
             begin
-              $cast(mem_waddr,intf.cb_drvr.mem_addr);
-              sys_mem[mem_waddr] = intf.cb_drvr.mem_wdata;
+              $cast(mem_waddr,intf.cb_drvr.mem_addr[0]);
+              sys_mem[mem_waddr] = intf.cb_drvr.mem_wdata[0];
               //ovm_report_info({get_name(),"[talk_to_dut]"},$psprintf("Updated sys_mem[0x%x] to 0x%x",mem_waddr,sys_mem[mem_waddr]),OVM_LOW);
             end
-            else if(intf.cb_drvr.mem_rden && ~intf.cb_drvr.mem_wait)
+            else if(intf.cb_drvr.mem_rden[0] && ~intf.cb_drvr.mem_wait[0])
             begin
-              $cast(mem_waddr,intf.cb_drvr.mem_addr); //Dont freak, I just want to re-use this variable
+              $cast(mem_waddr,intf.cb_drvr.mem_addr[0]); //Dont freak, I just want to re-use this variable
               rd_mb.put(mem_waddr);
             end
           end
@@ -205,13 +205,13 @@
         begin
           forever
           begin
-            intf.cb_drvr.mem_wait <=  0;
+            intf.cb_drvr.mem_wait[0] <=  0;
 
             repeat  ($urandom_range(stall_freq_max,0))  @(posedge intf.clk_ir);
 
             repeat  ($urandom_range(stall_time_max,0))
             begin
-              intf.cb_drvr.mem_wait <=  1;
+              intf.cb_drvr.mem_wait[0] <=  1;
               @(posedge intf.clk_ir);
             end
           end
@@ -224,18 +224,18 @@
 
             rd_mb.get(mem_raddr);
 
-            intf.cb_drvr.mem_rd_valid <=  1;
+            intf.cb_drvr.mem_rd_valid[0] <=  1;
 
             //ovm_report_info({get_name(),"[talk_to_dut]"},$psprintf("Got mem_raddr : 0x%x",mem_raddr),OVM_LOW);
 
             if(sys_mem.exists(mem_raddr))
-              intf.cb_drvr.mem_rdata  <=  sys_mem[mem_raddr];
+              intf.cb_drvr.mem_rdata[0]  <=  sys_mem[mem_raddr];
             else
-              intf.cb_drvr.mem_rdata  <=  'd0;
+              intf.cb_drvr.mem_rdata[0]  <=  'd0;
 
             @(posedge intf.clk_ir);
 
-            intf.cb_drvr.mem_rd_valid <=  0;
+            intf.cb_drvr.mem_rd_valid[0] <=  0;
           end
         end
       join

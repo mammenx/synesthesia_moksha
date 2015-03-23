@@ -68,7 +68,7 @@
 
     syn_wm8731_intf                   wm8731_intf(sys_rst);
 
-    syn_sys_mem_intf#(SYS_MEM_DATA_W,SYS_MEM_ADDR_W)  sys_mem_intf(sys_clk_150,sys_rst);
+    syn_sys_mem_intf#(SYS_MEM_DATA_W,SYS_MEM_ADDR_W,1)  sys_mem_intf(sys_clk_150,sys_rst);
 
 
     /////////////////////////////////////////////////////

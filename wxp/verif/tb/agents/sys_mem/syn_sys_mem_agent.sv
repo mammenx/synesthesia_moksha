@@ -32,18 +32,22 @@
 `define __SYN_SYS_MEM_AGENT
 
   class syn_sys_mem_agent #(  parameter DATA_W  = 32,
-                          parameter ADDR_W  = 27,
-                          type  PKT_TYPE    = syn_sys_mem_seq_item,
-                          type  INTF_TYPE   = virtual syn_sys_mem_intf
+                          parameter ADDR_W      = 27,
+                          parameter NUM_AGENTS  = 2,
+                          type  PKT_TYPE        = syn_sys_mem_seq_item,
+                          type  INTF_TYPE       = virtual syn_sys_mem_intf,
+                          type  AGENT_INTF_TYPE = virtual syn_sys_mem_intf
                       ) extends ovm_component;
 
     /*  Register with factory */
-    `ovm_component_utils(syn_sys_mem_agent#(DATA_W,ADDR_W,PKT_TYPE,INTF_TYPE))
+    `ovm_component_utils(syn_sys_mem_agent#(DATA_W,ADDR_W,NUM_AGENTS,PKT_TYPE,INTF_TYPE,AGENT_INTF_TYPE))
 
 
     //Declare Seqr, Drvr, Mon, Sb objects
-    syn_sys_mem_drvr#(DATA_W,ADDR_W,PKT_TYPE,INTF_TYPE) drvr;
-    syn_sys_mem_seqr#(PKT_TYPE)                         seqr;
+    syn_sys_mem_drvr#(DATA_W,ADDR_W,PKT_TYPE,INTF_TYPE)   drvr;
+    syn_sys_mem_seqr#(PKT_TYPE)                           seqr;
+    syn_sys_mem_mon#(DATA_W,ADDR_W,1,PKT_TYPE,INTF_TYPE)  mon;
+    syn_sys_mem_mon#(DATA_W,ADDR_W,NUM_AGENTS,PKT_TYPE,AGENT_INTF_TYPE) agent_mon;
 
     OVM_FILE  f;
 
@@ -72,6 +76,8 @@
       //obj = class_name#(Parameters)::type_id::create("obj_name",  this);
       drvr  = syn_sys_mem_drvr#(DATA_W,ADDR_W,PKT_TYPE,INTF_TYPE)::type_id::create("sys_mem_drvr",  this);
       seqr  = syn_sys_mem_seqr#(PKT_TYPE)::type_id::create("sys_mem_seqr",  this);
+      mon   = syn_sys_mem_mon#(DATA_W,ADDR_W,1,PKT_TYPE,INTF_TYPE)::type_id::create("sys_mem_mon",  this);
+      agent_mon = syn_sys_mem_mon#(DATA_W,ADDR_W,NUM_AGENTS,PKT_TYPE,AGENT_INTF_TYPE)::type_id::create("sys_mem_agent_mon",  this);
 
       ovm_report_info(get_name(),"End of build ",OVM_LOW);
     endfunction
@@ -95,6 +101,8 @@
 
       //Disable sub-components by setting obj.enable to 0, or calling obj.disable_agent() function
       drvr.enable = 0;
+      mon.enable  = 0;
+      agent_mon.enable  = 0;
 
       ovm_report_info(get_name(),"Disabled myself & kids ...",OVM_LOW);
     endfunction : disable_agent

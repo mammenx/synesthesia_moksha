@@ -44,7 +44,7 @@
 
     //Queue to hold the sent pkts, till rcvd pkts come
     SENT_PKT_TYPE sent_que[$];
-    SENT_PKT_TYPE rcvd_que[$];
+    RCVD_PKT_TYPE rcvd_que[$];
 
     //Ports
     ovm_analysis_imp_sent_pkt #(SENT_PKT_TYPE,<sb_name>#(SENT_PKT_TYPE, RCVD_PKT_TYPE))  Mon_sent_2Sb_port;

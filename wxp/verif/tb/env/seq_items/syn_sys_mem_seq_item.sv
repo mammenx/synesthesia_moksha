@@ -41,12 +41,14 @@
     rand  bit [ADDR_W-1:0]  addr[];
     rand  bit [DATA_W-1:0]  data[];
     rand  bit               read_n_write;
+    rand  int               agent_id;
 
     //registering with factory
     `ovm_object_param_utils_begin(syn_sys_mem_seq_item#(DATA_W,ADDR_W))
       `ovm_field_array_int(addr,  OVM_ALL_ON | OVM_HEX);
       `ovm_field_array_int(data,  OVM_ALL_ON | OVM_HEX);
       `ovm_field_int(read_n_write,  OVM_ALL_ON | OVM_HEX);
+      `ovm_field_int(agent_id,  OVM_ALL_ON | OVM_HEX);
     `ovm_object_utils_end
 
     /*  Constructor */
@@ -73,6 +75,8 @@
       begin
         if(this.data[i] !=  item.data[i])   return  0;
       end
+
+      if(this.agent_id  !=  item.agent_id)  return  0;
 
       return  1;
 
@@ -104,6 +108,8 @@
           if(this.data[k] !=  item.data[k]) res = $psprintf("%s\nExpected data[%1d]:0x%x, Actual data[%1d]:0x%x",res,k,this.data[k],k,item.data[k]);
         end
       end
+
+      if(this.agent_id  !=  item.agent_id)  res = $psprintf("%s\nExpected agent_id:%1d, Actual agent_id:%1d",res,this.agent_id,item.agent_id);
 
       return  res;
 
