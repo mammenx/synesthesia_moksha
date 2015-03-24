@@ -7,9 +7,15 @@ if exist work (
     rmdir /S /Q work 2> nul
 )
 
+if exist dgn.lib (
+    rmdir /S /Q dgn.lib 2> nul
+)
+
 if exist logs (
     rmdir /S /Q logs 2> nul
 )
+
+del /f /q transcript
 
 del /f /q *.ini
 del /f /q *.log

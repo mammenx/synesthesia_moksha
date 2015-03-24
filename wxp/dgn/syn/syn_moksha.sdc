@@ -24,6 +24,8 @@ set afiHalfClk  [get_clocks lpddr2_cntrlr*pll0|pll5*divclk]
 
 set lpddr2CntrlrSwRst [get_registers  rst_sync:cntrlr_sw_rst_sync_inst|sync_vec_f[1]]
 
+set lpddr2CntrlrRst   [get_registers  lpddr2_cntrlr:lpddr2_cntrlr_inst|*|lpddr2_cntrlr_p0_reset:ureset|lpddr2_cntrlr_p0_reset_sync:ureset_afi_clk|reset_reg[*]]
+
 #**************************************************************
 # Set Clock Latency
 #**************************************************************
@@ -81,6 +83,8 @@ set_max_delay -from [get_registers *lpddr2_cntrlr*]   -to [get_registers *sys_me
 
 set_max_delay -from $lpddr2CntrlrSwRst  -to [get_registers  *lpddr2_cntrlr*]  6.000
 
+set_max_delay -from $lpddr2CntrlrRst    -to [get_registers  *sys_mem_intf*]   6.000
+
 #**************************************************************
 # Set Minimum Delay
 #**************************************************************
@@ -88,6 +92,8 @@ set_min_delay -from [get_registers  *sys_mem_arb_rr*]   -to [get_registers  *lpd
 set_min_delay -from [get_registers  *lpddr2_cntrlr*]    -to [get_registers  *sys_mem_arb_rr*] 0.500
 
 set_min_delay -from $lpddr2CntrlrSwRst  -to [get_registers  *lpddr2_cntrlr*]  0.500
+
+set_min_delay -from $lpddr2CntrlrRst    -to [get_registers  *sys_mem_intf*]   0.500
 
 #**************************************************************
 # Set Input Transition

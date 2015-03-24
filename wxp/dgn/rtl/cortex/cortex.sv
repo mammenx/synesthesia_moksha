@@ -120,9 +120,10 @@ module cortex #(
 
 
 //----------------------- Internal Register Declarations ------------------
-
+  reg                         cntrlr_rst_n_sync;
 
 //----------------------- Internal Wire Declarations ----------------------
+
   `drop_lb_splitter_wires(LB_CHLD_DATA_W,LB_CHLD_ADDR_W,NUM_LB_CHILDREN,lb_chld_,_w)
 
   wire  [NUM_RESETS-1:0]      cortex_rst_vec;
@@ -146,6 +147,19 @@ module cortex #(
 
 
 //----------------------- Start of Code -----------------------------------
+
+  /*  Synchronize sys_mem_controller reset for better reset recovery  */
+  always@(posedge cntrlr_clk, negedge cntrlr_rst_n)
+  begin
+    if(~cntrlr_rst_n)
+    begin
+      cntrlr_rst_n_sync       <=  0;
+    end
+    else
+    begin
+      cntrlr_rst_n_sync       <=  1'b1;
+    end
+  end
 
   /*  Local Bus Logic */
   lb_splitter #(
@@ -268,6 +282,7 @@ module cortex #(
 
     .cntrlr_clk               (cntrlr_clk),
     .cntrlr_rst_n             (cntrlr_rst_n),
+    //.cntrlr_rst_n             (cntrlr_rst_n_sync),
 
     `drop_lb_ports_split(SYS_MEM_MNGR_BLK,lb_, ,lb_chld_,_w)
     ,

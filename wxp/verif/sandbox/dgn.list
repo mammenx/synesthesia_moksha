@@ -56,7 +56,7 @@
 ../../dgn/rtl/fgyrus/fgyrus.sv
 
 //System Memory Interface
-//../../dgn/rtl/sys_mem_intf/sys_mem_arb.sv
+../../dgn/rtl/sys_mem_intf/sys_mem_arb_least_pend.sv
 ../../dgn/rtl/sys_mem_intf/sys_mem_arb_rr.sv
 ../../dgn/rtl/sys_mem_intf/sys_mem_part_mngr.sv
 ../../dgn/rtl/sys_mem_intf/sys_mem_intf.sv

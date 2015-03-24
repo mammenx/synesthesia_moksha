@@ -141,7 +141,8 @@ module sys_mem_intf #(
   );
 
 
-  sys_mem_arb_rr #(
+  //sys_mem_arb_rr #(
+  sys_mem_arb_least_pend  #(
     .LB_DATA_W                (CHILD_LB_DATA_W),
     .LB_ADDR_W                (CHILD_LB_ADDR_W),
     .MEM_DATA_W               (MEM_DATA_W),
