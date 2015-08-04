@@ -82,7 +82,7 @@
 #include "ledos/ledos.h"
 #include "ch.h"
 
-int main()
+int test_audio_fft()
 { 
 	alt_u32 b32[256];
 	alt_u16 b16[256];
@@ -94,6 +94,7 @@ int main()
 
   init_ledos(BPS_24);
   enable_fgyrus();
+
 
   //pcm_cap(FS_32KHZ,BPS_24);
 
@@ -157,4 +158,11 @@ int main()
   while (1);
 
   return 0;
+}
+
+int main ()
+{
+	  alt_putstr("Hello from Nios II!\n");
+
+	  return	0;
 }

@@ -32,7 +32,7 @@
 
 void init_cortex()	{
 	IOWR_RESET_CNTRL(0x0);
-	IOWR_RESET_CNTRL(0xf);
+	IOWR_RESET_CNTRL(0x1f);
 
 	init_acortex();
 }
