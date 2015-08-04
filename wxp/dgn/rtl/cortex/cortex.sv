@@ -349,7 +349,7 @@ module cortex #(
 
   );
 
-  assign  cntrlr_sw_rst_n   = cortex_rst_vec[NUM_RESETS-1];
+  assign  cntrlr_sw_rst_n   = cortex_rst_vec[SYS_MEM_DDR_SW_RST];
 
 
 endmodule // cortex

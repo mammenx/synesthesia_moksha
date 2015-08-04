@@ -110,14 +110,23 @@ module rst_cntrl #(
 
       if(lb_rd_en)
       begin
-        if(lb_addr  ==  RST_CNTRL_REG_ADDR)
-        begin
-          lb_rd_data          <=  {{(LB_DATA_W-NUM_RESETS){1'b0}},cntrl_rst_n};
-        end
-        else
-        begin
-          lb_rd_data          <=  DEFAULT_REG_VAL;
-        end
+        case(lb_addr)
+          RST_CNTRL_NUM_RESETS_ADDR :
+          begin
+            lb_rd_data        <=  NUM_RESETS;
+          end
+
+          RST_CNTRL_REG_ADDR  :
+          begin
+            lb_rd_data        <=  {{(LB_DATA_W-NUM_RESETS){1'b0}},cntrl_rst_n};
+          end
+
+          default :
+          begin
+            lb_rd_data        <=  DEFAULT_REG_VAL;
+          end
+
+        endcase
       end
 
       lb_rd_valid             <=  lb_rd_en;

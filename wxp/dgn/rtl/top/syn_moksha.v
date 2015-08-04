@@ -249,7 +249,7 @@ wire              lpddr2_local_cal_fail;
   (
     /*  input  wire         */  .pll_ref_clk                  (CLOCK_50_B5B),
 
-    /*  input  wire         */  .global_reset_n               (KEY[0]),
+    /*  input  wire         */  .global_reset_n               (sys_rst_n),
     /*  input  wire         */  .soft_reset_n                 (lpddr2_cntrlr_sw_rst_sync_n),
 
     /*  output wire         */  .afi_clk                      (),
