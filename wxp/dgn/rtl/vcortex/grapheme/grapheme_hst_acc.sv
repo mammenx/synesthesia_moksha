@@ -38,7 +38,8 @@ module grapheme_hst_acc #(
     parameter MODULE_NAME         = "GRAPHEME_HST_ACC"
   , parameter LB_DATA_W           = 32
   , parameter LB_ADDR_W           = 8
-  , parameter LB_ADDR_BLK_W       = 4
+  , parameter NODE_ID             = 0
+  , parameter BFFR_SIZE           = 5
 
 ) 
   import  grapheme_node_prot_pkg::*;
@@ -68,6 +69,9 @@ module grapheme_hst_acc #(
 );
 
 //----------------------- Local Parameters Declarations -------------------
+  `include  "grapheme_hst_acc_regmap.svh"
+
+  localparam  BFFR_IDX_W      = $clog2(BFFR_SIZE);
 
 
 //----------------------- Input Declarations ------------------------------
@@ -83,13 +87,118 @@ module grapheme_hst_acc #(
 
 
 //----------------------- Internal Register Declarations ------------------
+  integer   n;
 
+  reg                             eng2node_job_valid;
+  reg   [GNODE_PROT_DATA_W-1:0]   eng2node_job_bffr  [BFFR_SIZE-1:0];
+
+  reg                             job_rdy;
 
 //----------------------- Internal Wire Declarations ----------------------
+  wire                            bffr_hst_wr_en;
+  wire  [BFFR_IDX_W-1:0]          bffr_idx;
+
+  wire                            node2eng_job_valid;
+  wire  [GNODE_PROT_DATA_W-1:0]   node2eng_job_bffr  [BFFR_SIZE-1:0];
+  wire                            eng2node_ready;
+
+  wire                            node2eng_ready;
 
 
 //----------------------- Internal Interface Declarations -----------------
 
+  /*  Local Bus logic */
+  assign  bffr_hst_wr_en      = (lb_addr  > GRAPHEME_HST_ACC_BFFR_OFFSET) ? 1'b1  : 1'b0;
+  assign  bffr_idx            = lb_addr[BFFR_IDX_W:0] - GRAPHEME_HST_ACC_BFFR_OFFSET;
+
+  always@(posedge clk,  negedge rst_n)
+  begin
+    if(~rst_n)
+    begin
+      lb_wr_valid             <=  0;
+      lb_rd_valid             <=  0;
+      lb_rd_data              <=  0;
+
+      eng2node_job_valid      <=  0;
+
+      for(n=0;n<BFFR_SIZE;n++)
+      begin
+        eng2node_job_bffr[n]  <=  0;
+      end
+
+      job_rdy                 <=  0;
+    end
+    else
+    begin
+      if(eng2node_job_valid)
+      begin
+        eng2node_job_valid    <=  node2eng_ready  ? 1'b0  : 1'b1;
+      end
+      else
+      begin
+        eng2node_job_valid    <=  (lb_addr  ==  GRAPHEME_HST_ACC_CNTRL_REG) ? : lb_wr_en  : 1'b0;
+      end
+
+      lb_wr_valid             <=  lb_wr_en;
+
+
+      if(bffr_hst_wr_en)
+      begin
+        eng2node_job_bffr[bffr_idx]   <=  lb_wr_data[GNODE_PROT_DATA_W-1:0];
+      end
+      else if(node2eng_job_valid)
+      begin
+        for(n=0;n<BFFR_SIZE;n++)
+        begin
+          eng2node_job_bffr[n]        <=  node2eng_job_bffr[n];
+        end
+      end
+
+      if((lb_addr  ==  GRAPHEME_HST_ACC_STATUS_REG) & lb_rd_en)
+      begin
+        job_rdy               <=  0;
+
+        lb_rd_data            <=  {{(LB_DATA_W-5){1'b0}}, job_rdy,ingr_ready,egr_ready,eng2node_ready,node2eng_ready};
+      end
+      else
+      begin
+        job_rdy               <=  job_rdy | node2eng_ready;
+
+        lb_rd_data            <=  'hdeadbabe;
+      end
+    end
+  end
+
+  assign  eng2node_ready      =   1'b1;
+
+  /*  Instantiate GNODE */
+  grapheme_node_prot #(
+    ,.NODE_ID             (NODE_ID)
+    ,.BFFR_SIZE           (BFFR_SIZE)
+
+  ) gnode_inst  (
+
+     .clk                 (clk         )
+    ,.rst_n               (rst_n       )
+
+
+    ,.ingr_cmd            (ingr_cmd    )
+    ,.ingr_data           (ingr_data   )
+    ,.ingr_ready          (ingr_ready  )
+                                       
+    ,.egr_cmd             (egr_cmd     )
+    ,.egr_data            (egr_data    )
+    ,.egr_ready           (egr_ready   )
+
+    ,.node2eng_job_valid  (node2eng_job_valid  )
+    ,.node2eng_job_bffr   (node2eng_job_bffr   )
+    ,.eng2node_ready      (eng2node_ready      )
+                                               
+    ,.eng2node_job_valid  (eng2node_job_valid  )
+    ,.eng2node_job_bffr   (eng2node_job_bffr   )
+    ,.node2eng_ready      (node2eng_ready      )
+
+  );
 
 
 
@@ -105,6 +214,8 @@ endmodule // grapheme_hst_acc
  
 
  -- <Log>
+
+[21-08-2015  07:47:04 PM][mammenx] Initial Commit
 
 
  --------------------------------------------------------------------------

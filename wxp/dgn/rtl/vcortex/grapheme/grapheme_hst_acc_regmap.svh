@@ -1,0 +1,3 @@
+parameter GRAPHEME_HST_ACC_CNTRL_REG    = 0;
+parameter GRAPHEME_HST_ACC_STATUS_REG   = 1;
+parameter GRAPHEME_HST_ACC_BFFR_OFFSET  = 2;
