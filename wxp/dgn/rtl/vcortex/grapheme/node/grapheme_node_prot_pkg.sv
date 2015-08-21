@@ -44,9 +44,10 @@ package grapheme_node_prot_pkg;
   } gnode_prot_cmd_t;
 
   typedef enum  logic [GNODE_PROT_JOB_TYPE_W-1:0] {
-      READ_PXL  = 0
-    , WRITE_PXL = 1
-    , DRAW_LINE = 2
+      READ_PXL      = 0
+    , WRITE_PXL     = 1
+    , READ_PXL_RSP  = 2
+    , DRAW_LINE     = 3
   } gnode_prot_job_type_t;
 
   typedef struct  packed  {
@@ -65,6 +66,8 @@ endpackage  //  grapheme_node_prot_pkg
  
 
  -- <Log>
+
+[22-08-2015  01:42:44 AM][mammenx] Added READ_PXL_RSP code to job_type
 
  --------------------------------------------------------------------------
 */
