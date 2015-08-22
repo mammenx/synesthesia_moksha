@@ -117,7 +117,7 @@ module ff_ptr_mngr #(
               ff_wr_ptr[i]    <=  ff_wr_ptr[i];
               ff_rd_ptr[i]    <=  ff_rd_ptr[i] + (~ff_empty[i]);
               ff_occ[i]       <=  ff_occ[i] - (~ff_empty[i]);
-              ff_empty[i]     <=  (ff_occ[i] ==  1)  ? 1'b0  : ff_empty[i];
+              ff_empty[i]     <=  (ff_occ[i] ==  1)  ? 1'b1  : ff_empty[i];
               ff_full[i]      <=  1'b0;
             end
 
@@ -126,7 +126,7 @@ module ff_ptr_mngr #(
               ff_wr_ptr[i]    <=  ff_wr_ptr[i] + (~ff_full[i]);
               ff_rd_ptr[i]    <=  ff_rd_ptr[i];
               ff_occ[i]       <=  ff_occ[i]  + (~ff_full[i]);
-              ff_empty[i]     <=  1'b1;
+              ff_empty[i]     <=  1'b0;
               ff_full[i]      <=  (ff_occ ==  (FF_DEPTH-1)) ? 1'b1  : ff_full[i];
             end
 
@@ -154,6 +154,8 @@ endmodule // ff_ptr_mngr
  
 
  -- <Log>
+
+[22-08-2015  11:29:36 AM][mammenx] Fixed ff_empty logic
 
 [22-08-2015  02:09:38 AM][mammenx] Initial Commit
 
