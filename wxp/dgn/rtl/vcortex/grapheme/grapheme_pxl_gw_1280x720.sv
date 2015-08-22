@@ -66,6 +66,7 @@ module grapheme_pxl_gw_1280x720 #(
   , output  [GNODE_PROT_DATA_W-1:0]   egr_data
   , input                             egr_ready
 
+  , input                             node_en
   , input                             clear_flags
   , output  [STATUS_W-1:0]            status
 
@@ -252,6 +253,8 @@ module grapheme_pxl_gw_1280x720 #(
      .clk                 (clk         )
     ,.rst_n               (rst_n       )
 
+    ,.node_en             (node_en     )
+
     ,.ingr_cmd            (ingr_cmd    )
     ,.ingr_data           (ingr_data   )
     ,.ingr_ready          (ingr_ready  )
@@ -321,6 +324,8 @@ endmodule // grapheme_pxl_gw_1280x720
  
 
  -- <Log>
+
+[22-08-2015  02:58:28 PM][mammenx] Added node_en
 
 [22-08-2015  01:43:12 AM][mammenx] Initial Commit
 
