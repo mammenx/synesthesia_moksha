@@ -47,6 +47,7 @@ module grapheme_node_prot #(
     input                     clk
   , input                     rst_n
 
+  , input                     node_en
 
   , input   gnode_prot_cmd_t          ingr_cmd
   , input   [GNODE_PROT_DATA_W-1:0]   ingr_data
@@ -121,7 +122,7 @@ module grapheme_node_prot #(
   assign  ingr_data_valid_c   = (ingr_cmd !=  IDLE) ? ingr_ready  : 1'b0;
 
   //Check if the destination id of packet matches this node
-  assign  ingr_dst_id_match_c = (ingr_hdr_w.job_dst ==  NODE_ID)  & (ingr_cmd ==  SOP) ? 1'b1  : 1'b0;
+  assign  ingr_dst_id_match_c = (ingr_hdr_w.job_dst ==  NODE_ID)  & (ingr_cmd ==  SOP) ? node_en  : 1'b0;
 
   //Back-pressure ingress port
   assign  ingr_ready          = egr_ff_eng_n_port_sel ? 1'b0  :
@@ -184,7 +185,11 @@ module grapheme_node_prot #(
         bffr_cntr             <=  bffr_cntr + 1'b1;
       end
 
-      if(egr_ff_eng_n_port_sel) //Wait for end of buffer
+      if(~node_en)
+      begin
+        egr_ff_eng_n_port_sel <=  0;
+      end
+      else if(egr_ff_eng_n_port_sel) //Wait for end of buffer
       begin
         egr_ff_eng_n_port_sel <=  bffr_cntr_rst_c ? 1'b0  : eng2node_job_bffr;
       end
@@ -239,7 +244,7 @@ module grapheme_node_prot #(
                               ,ingr_sel_cmd_c
                             };
 
-  assign  egr_ff_wren_c   = egr_ff_eng_n_port_sel | ingr_data_valid_c;
+  assign  egr_ff_wren_c   = egr_ff_eng_n_port_sel | (ingr_data_valid_c  & ~ingr_dst_id_match  & ~ingr_dst_id_match_c);
 
   ff_40x32_fwft   egr_ff
   (
@@ -268,6 +273,8 @@ endmodule // grapheme_node_prot
  
 
  -- <Log>
+
+[22-08-2015  02:58:05 PM][mammenx] Added node_en
 
 
  --------------------------------------------------------------------------

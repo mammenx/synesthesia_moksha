@@ -57,6 +57,8 @@ module grapheme_hst_acc #(
   , output  reg                 lb_rd_valid
   , output  reg [LB_DATA_W-1:0] lb_rd_data
 
+  , input                       node_en
+
   , input   gnode_prot_cmd_t          ingr_cmd
   , input   [GNODE_PROT_DATA_W-1:0]   ingr_data
   , output                            ingr_ready
@@ -181,6 +183,7 @@ module grapheme_hst_acc #(
      .clk                 (clk         )
     ,.rst_n               (rst_n       )
 
+    ,.node_en             (node_en     )
 
     ,.ingr_cmd            (ingr_cmd    )
     ,.ingr_data           (ingr_data   )
@@ -214,6 +217,8 @@ endmodule // grapheme_hst_acc
  
 
  -- <Log>
+
+[22-08-2015  02:58:05 PM][mammenx] Added node_en
 
 [21-08-2015  07:47:04 PM][mammenx] Initial Commit
 
