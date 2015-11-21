@@ -1,0 +1,141 @@
+/*
+ --------------------------------------------------------------------------
+   Synesthesia-Moksha - Copyright (C) 2012 Gregory Matthew James.
+
+   This file is part of Synesthesia-Moksha.
+
+   Synesthesia-Moksha is free; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 3 of the License, or
+   (at your option) any later version.
+
+   Synesthesia-Moksha is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program. If not, see <http://www.gnu.org/licenses/>.
+ --------------------------------------------------------------------------
+*/
+
+/*
+ --------------------------------------------------------------------------
+ -- Project Code      : synesthesia-moksha
+ -- File Name         : encoder.c
+ -- Author            : mammenx
+ -- Function          : 
+ --------------------------------------------------------------------------
+*/
+
+#include "adv7513_common.h"
+#include "i2c.h"
+#include "system.h"
+#include "encoder.h"
+
+//#define REG_ACCESS_UDELAY  5000
+
+int reg_read(struct hdmi_encoder *ec, int reg, void *data)
+{
+	adv7513_i2c_bffr.byte_arry[0] = reg & 0xff;
+
+	if(i2c_xtn_write(ec->slave_addr,adv7513_i2c_bffr.byte_arry,1,1,0))	{
+		return -1;
+	}
+
+	if(i2c_xtn_read(ec->slave_addr,adv7513_i2c_bffr.byte_arry,1,1,1))	{
+		return -1;
+	}
+
+	*data = adv7513_i2c_bffr.byte_arry[0];
+
+	return 0;
+}
+
+int reg_write(struct hdmi_encoder *ec, int reg, int data)
+{
+
+	bool r = I2C_Write(I2C_SCL_BASE, I2C_SDA_BASE, ec->slave_addr, (alt_u8)reg, (alt_u8)data);
+	if (!r)
+		return -1;
+
+	//usleep(REG_ACCESS_UDELAY);
+
+	return 0;
+}
+
+int reg_update_bits(struct hdmi_encoder *ec, int reg, int mask, int data)
+{
+	bool r = 0;
+	alt_u8 regv = 0;
+
+	r = I2C_Read(I2C_SCL_BASE, I2C_SDA_BASE, ec->slave_addr, reg, &regv);
+	if (!r)
+		return -1;
+
+	regv &= ~((alt_u8)mask);
+
+	regv |= ((alt_u8)data & (alt_u8)mask);
+
+	//printf("[%02x] <- %02x\n", reg, regv);
+
+	//usleep(REG_ACCESS_UDELAY);
+
+	r = I2C_Write(I2C_SCL_BASE, I2C_SDA_BASE, ec->slave_addr, reg, regv);
+	if (!r)
+		return -1;
+
+	//usleep(REG_ACCESS_UDELAY);
+
+	return 0;
+}
+
+int reg_or_bits(struct hdmi_encoder *ec, int reg, int data)
+{
+	bool r = 0;
+	alt_u8 regv = 0;
+
+	r = I2C_Read(I2C_SCL_BASE, I2C_SDA_BASE, ec->slave_addr, reg, &regv);
+	if (!r)
+		return -1;
+
+	regv |= (alt_u8)data;
+
+	//printf("[%02x] <- %02x\n", reg, regv);
+
+	//usleep(REG_ACCESS_UDELAY);
+
+	r = I2C_Write(I2C_SCL_BASE, I2C_SDA_BASE, ec->slave_addr, reg, regv);
+	if (!r)
+		return -1;
+
+	//usleep(REG_ACCESS_UDELAY);
+
+	return 0;
+}
+
+int reg_clear_bits(struct hdmi_encoder *ec, int reg, int mask)
+{
+	bool r = 0;
+	alt_u8 regv = 0;
+
+	r = I2C_Read(I2C_SCL_BASE, I2C_SDA_BASE, ec->slave_addr, reg, &regv);
+	if (!r)
+		return -1;
+
+	regv &= ~((alt_u8)mask);
+
+	//printf("[%02x] <- %02x\n", reg, regv);
+
+	//usleep(REG_ACCESS_UDELAY);
+
+	r = I2C_Write(I2C_SCL_BASE, I2C_SDA_BASE, ec->slave_addr, reg, regv);
+	if (!r)
+		return -1;
+
+	//usleep(REG_ACCESS_UDELAY);
+
+	return 0;
+}
+
+

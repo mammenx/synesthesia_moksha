@@ -112,6 +112,8 @@ I2C_RES	i2c_xtn_read(alt_u8 addr, alt_u8 *bffr, alt_u8 num_bytes, alt_u8 start, 
 		return I2C_ERROR;
 	}
 
+	addr = addr | 0x1;	//Make sure LSB is set
+
 	configure_i2c_addr(addr);
 
 	IOWR_I2C_CONFIG((num_bytes << I2C_NUM_BYTES_OFFSET) + I2C_RD_N_WR_MSK + I2C_INIT_MSK + ((stop & 0x1) << 1) + (start & 0x1));

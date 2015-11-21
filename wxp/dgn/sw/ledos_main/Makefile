@@ -152,6 +152,9 @@ C_SRCS += ledos/ledos.c
 C_SRCS += ledos/cortex/acortex/acortex.c
 C_SRCS += ledos/cortex/fgyrus/fgyrus.c
 C_SRCS += ledos/cortex/sys_mem_intf/sys_mem_intf.c
+C_SRCS += ledos/adv7513/encoder/encoder.c
+C_SRCS += ledos/adv7513/edid/edid.c
+C_SRCS += ledos/adv7513/adv7513.c
 CXX_SRCS :=
 ASM_SRCS :=
 

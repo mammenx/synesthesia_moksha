@@ -1,7 +1,7 @@
 
-**** Clean-only build of configuration Nios II for project limbus_bsp ****
+**** Clean-only build of configuration Nios II for project ledos_main ****
 
 make clean 
-[BSP clean complete]
+[ledos_main clean complete]
 
 **** Build Finished ****

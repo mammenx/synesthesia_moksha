@@ -33,6 +33,7 @@
 
 #include "cortex/cortex.h"
 #include "aud_codec/aud_codec.h"
+#include "adv7513/adv7513.h"
 
 void init_ledos();
 

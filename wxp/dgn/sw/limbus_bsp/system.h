@@ -4,7 +4,7 @@
  * Machine generated for CPU 'cpu' in SOPC Builder design 'limbus'
  * SOPC Builder design path: ../../syn/limbus.sopcinfo
  *
- * Generated: Thu Nov 20 18:25:47 IST 2014
+ * Generated: Sat Nov 21 16:34:16 IST 2015
  */
 
 /*
@@ -124,6 +124,7 @@
  */
 
 #define __ALTERA_AVALON_JTAG_UART
+#define __ALTERA_AVALON_PIO
 #define __ALTERA_AVALON_TIMER
 #define __ALTERA_AVALON_UART
 #define __ALTERA_GENERIC_TRISTATE_CONTROLLER
@@ -147,19 +148,19 @@
 #define ALT_NUM_INTERNAL_INTERRUPT_CONTROLLERS 1
 #define ALT_NUM_INTERRUPT_CONTROLLERS 1
 #define ALT_STDERR "/dev/jtag_uart_0"
-#define ALT_STDERR_BASE 0x201048
+#define ALT_STDERR_BASE 0x201058
 #define ALT_STDERR_DEV jtag_uart_0
 #define ALT_STDERR_IS_JTAG_UART
 #define ALT_STDERR_PRESENT
 #define ALT_STDERR_TYPE "altera_avalon_jtag_uart"
 #define ALT_STDIN "/dev/jtag_uart_0"
-#define ALT_STDIN_BASE 0x201048
+#define ALT_STDIN_BASE 0x201058
 #define ALT_STDIN_DEV jtag_uart_0
 #define ALT_STDIN_IS_JTAG_UART
 #define ALT_STDIN_PRESENT
 #define ALT_STDIN_TYPE "altera_avalon_jtag_uart"
 #define ALT_STDOUT "/dev/jtag_uart_0"
-#define ALT_STDOUT_BASE 0x201048
+#define ALT_STDOUT_BASE 0x201058
 #define ALT_STDOUT_DEV jtag_uart_0
 #define ALT_STDOUT_IS_JTAG_UART
 #define ALT_STDOUT_PRESENT
@@ -230,12 +231,39 @@
 
 
 /*
+ * hdmi_tx_int_n configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_hdmi_tx_int_n altera_avalon_pio
+#define HDMI_TX_INT_N_BASE 0x201040
+#define HDMI_TX_INT_N_BIT_CLEARING_EDGE_REGISTER 1
+#define HDMI_TX_INT_N_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define HDMI_TX_INT_N_CAPTURE 1
+#define HDMI_TX_INT_N_DATA_WIDTH 1
+#define HDMI_TX_INT_N_DO_TEST_BENCH_WIRING 0
+#define HDMI_TX_INT_N_DRIVEN_SIM_VALUE 0
+#define HDMI_TX_INT_N_EDGE_TYPE "FALLING"
+#define HDMI_TX_INT_N_FREQ 100000000
+#define HDMI_TX_INT_N_HAS_IN 1
+#define HDMI_TX_INT_N_HAS_OUT 0
+#define HDMI_TX_INT_N_HAS_TRI 0
+#define HDMI_TX_INT_N_IRQ 4
+#define HDMI_TX_INT_N_IRQ_INTERRUPT_CONTROLLER_ID 0
+#define HDMI_TX_INT_N_IRQ_TYPE "LEVEL"
+#define HDMI_TX_INT_N_NAME "/dev/hdmi_tx_int_n"
+#define HDMI_TX_INT_N_RESET_VALUE 0
+#define HDMI_TX_INT_N_SPAN 16
+#define HDMI_TX_INT_N_TYPE "altera_avalon_pio"
+
+
+/*
  * jtag_uart_0 configuration
  *
  */
 
 #define ALT_MODULE_CLASS_jtag_uart_0 altera_avalon_jtag_uart
-#define JTAG_UART_0_BASE 0x201048
+#define JTAG_UART_0_BASE 0x201058
 #define JTAG_UART_0_IRQ 0
 #define JTAG_UART_0_IRQ_INTERRUPT_CONTROLLER_ID 0
 #define JTAG_UART_0_NAME "/dev/jtag_uart_0"

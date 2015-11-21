@@ -92,7 +92,6 @@ int test_audio_fft()
 
   alt_putstr("Hello from Nios II!\n");
 
-  init_ledos(BPS_24);
   enable_fgyrus();
 
 
@@ -163,6 +162,10 @@ int test_audio_fft()
 int main ()
 {
 	  alt_putstr("Hello from Nios II!\n");
+
+	  init_ledos(BPS_24);
+
+	  //test_audio_fft();
 
 	  return	0;
 }

@@ -34,4 +34,5 @@
 void init_ledos(BPS_T bps)	{
 	init_cortex(bps);
 	aud_codec_init(bps);
+	adv7513_init();
 }
