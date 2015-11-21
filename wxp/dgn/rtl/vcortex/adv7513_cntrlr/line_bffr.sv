@@ -39,18 +39,23 @@ module line_bffr #(
   parameter SYS_MEM_DATA_W      = 32,
   parameter SYS_MEM_ADDR_W      = 27,
   parameter SYS_MEM_START_ADDR  = 0,
-  parameter SYS_MEM_STOP_ADDR   = 921599
+  parameter SYS_MEM_STOP_ADDR   = 921599,
  
+  parameter BFFR_DEPTH          = 2**11,
+  parameter BFFR_USED_W         = $clog2(BFFR_DEPTH)
+
 ) (
 
   //--------------------- Ports -------------------------
   input                       clk,
   input                       clk_hdmi,
   input                       rst_n,
+  input                       rst_hdmi_n,
 
   input                       line_bffr_en,
   output  reg                 bffr_ovrflw,
-  output  reg                 bffr_undrflw,
+  output                      bffr_undrflw,
+  output  [BFFR_USED_W-1:0]   bffr_occ,
 
   output                      ff_empty,
   output      [23:0]          ff_rdata,
@@ -68,7 +73,6 @@ module line_bffr #(
 
 //----------------------- Local Parameters Declarations -------------------
   localparam  PXL_NUM_CNTR_W  = $clog2(SYS_MEM_STOP_ADDR);
-  localparam  BFFR_DEPTH      = 2**11;
 
 //----------------------- Input Declarations ------------------------------
 
@@ -84,13 +88,12 @@ module line_bffr #(
 
 //----------------------- Internal Register Declarations ------------------
   reg   [PXL_NUM_CNTR_W-1:0]  pxl_cntr;
+  reg                         bffr_undrflw_int;
 
 //----------------------- Internal Wire Declarations ----------------------
   wire                        bffr_rst_n;
   wire                        wrfull;
-  wire  [10:0]                rdusedw;
-  wire                        rdempty_sync;
-  wire                        rdreq_sync;
+  wire  [BFFR_USED_W-1:0]     wrusedw;
   wire                        bffr_afull;
 
 //----------------------- Internal Interface Declarations -----------------
@@ -130,18 +133,28 @@ module line_bffr #(
     if(~rst_n)
     begin
       bffr_ovrflw             <=  0;
-      bffr_undrflw            <=  0;
     end
     else
     begin
       bffr_ovrflw             <=  bffr_ovrflw   | (sys_mem_rd_valid & wrfull);
-      bffr_undrflw            <=  bffr_undrflw  | (rdreq_sync & rdempty_sync);
+    end
+  end
+
+  always@(posedge clk_hdmi,  negedge rst_hdmi_n)
+  begin
+    if(~rst_hdmi_n)
+    begin
+      bffr_undrflw_int        <=  0;
+    end
+    else
+    begin
+      bffr_undrflw_int        <=  bffr_undrflw_int  | (ff_rd_en & ff_empty);
     end
   end
 
   /*  Instantiate Buffer  */
   assign  bffr_rst_n          =   rst_n & line_bffr_en;
-  assign  bffr_afull          =   (rdusedw  > (BFFR_DEPTH - 32))  ? 1'b1  : 1'b0;
+  assign  bffr_afull          =   (wrusedw  > (BFFR_DEPTH - 32))  ? 1'b1  : 1'b0;
 
   ff_24x2048_fwft_async   bffr_inst
   (
@@ -153,29 +166,21 @@ module line_bffr #(
     .wrreq                (sys_mem_rd_valid),
     .q                    (ff_rdata),
     .rdempty              (ff_empty),
-    .rdusedw              (rdusedw),
+    .rdusedw              (),
     .wrfull               (wrfull),
-    .wrusedw              ()
+    .wrusedw              (wrusedw)
   );
 
-  dd_sync                 rdfull_sync_inst
+  assign  bffr_occ  = wrusedw;
+
+  dd_sync                 bffr_undrflw_sync_inst
   (
     .clk                  (clk),
     .rst_n                (rst_n),
 
-    .signal_id            (ff_empty),
+    .signal_id            (bffr_undrflw_int),
 
-    .signal_od            (rdempty_sync)
-  );
-
-  dd_sync                 rdreq_sync_inst
-  (
-    .clk                  (clk),
-    .rst_n                (rst_n),
-
-    .signal_id            (ff_rd_en),
-
-    .signal_od            (rdreq_sync)
+    .signal_od            (bffr_undrflw)
   );
 
 

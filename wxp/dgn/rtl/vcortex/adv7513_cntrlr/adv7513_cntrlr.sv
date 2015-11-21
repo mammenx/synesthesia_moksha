@@ -82,6 +82,9 @@ module adv7513_cntrlr #(
 //----------------------- Local Parameters Declarations -------------------
   `include  "adv7513_cntrlr_regmap.svh"
 
+  localparam  LBFFR_DEPTH   = 2**11;
+  localparam  LBFFR_USED_W  = $clog2(LBFFR_DEPTH);
+
 //----------------------- Input Declarations ------------------------------
 
 
@@ -104,6 +107,7 @@ module adv7513_cntrlr #(
   wire                        bffr_ovrflw;
   wire                        bffr_undrflw;
 
+  wire  [LBFFR_USED_W-1:0]    bffr_occ;
 
 //----------------------- Start of Code -----------------------------------
 
@@ -150,6 +154,11 @@ module adv7513_cntrlr #(
             lb_rd_data        <=  {{(LB_DATA_W-2){1'b0}}, bffr_undrflw, bffr_ovrflw};
           end
 
+          ADV7513_CNTRLR_LBFFR_OCC_REG:
+          begin
+            lb_rd_data        <=  {{(LB_DATA_W-LB_DATA_W){1'b0}}, bffr_occ};
+          end
+
           default :
           begin
             lb_rd_data        <=  DEFAULT_REG_VAL;
@@ -168,7 +177,9 @@ module adv7513_cntrlr #(
     .SYS_MEM_DATA_W      (32),
     .SYS_MEM_ADDR_W      (27),
     .SYS_MEM_START_ADDR  (0),
-    .SYS_MEM_STOP_ADDR   (921599)
+    .SYS_MEM_STOP_ADDR   (921599),
+
+    .BFFR_DEPTH          (LBFFR_DEPTH)
 
   ) line_bffr_inst  (
 
@@ -179,6 +190,7 @@ module adv7513_cntrlr #(
     .line_bffr_en       (line_bffr_en),
     .bffr_ovrflw        (bffr_ovrflw),
     .bffr_undrflw       (bffr_undrflw),
+    .bffr_occ           (bffr_occ),
 
     `drop_ff_rd_ports(ff_, ,bffr_,_w)
     ,
