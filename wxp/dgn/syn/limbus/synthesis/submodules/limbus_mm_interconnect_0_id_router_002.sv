@@ -50,9 +50,9 @@ module limbus_mm_interconnect_0_id_router_002_default_decode
                DEFAULT_DESTID = 1 
    )
   (output [66 - 64 : 0] default_destination_id,
-   output [6-1 : 0] default_wr_channel,
-   output [6-1 : 0] default_rd_channel,
-   output [6-1 : 0] default_src_channel
+   output [7-1 : 0] default_wr_channel,
+   output [7-1 : 0] default_rd_channel,
+   output [7-1 : 0] default_src_channel
   );
 
   assign default_destination_id = 
@@ -63,7 +63,7 @@ module limbus_mm_interconnect_0_id_router_002_default_decode
       assign default_src_channel = '0;
     end
     else begin
-      assign default_src_channel = 6'b1 << DEFAULT_CHANNEL;
+      assign default_src_channel = 7'b1 << DEFAULT_CHANNEL;
     end
   end
   endgenerate
@@ -74,8 +74,8 @@ module limbus_mm_interconnect_0_id_router_002_default_decode
       assign default_rd_channel = '0;
     end
     else begin
-      assign default_wr_channel = 6'b1 << DEFAULT_WR_CHANNEL;
-      assign default_rd_channel = 6'b1 << DEFAULT_RD_CHANNEL;
+      assign default_wr_channel = 7'b1 << DEFAULT_WR_CHANNEL;
+      assign default_rd_channel = 7'b1 << DEFAULT_RD_CHANNEL;
     end
   end
   endgenerate
@@ -105,7 +105,7 @@ module limbus_mm_interconnect_0_id_router_002
     // -------------------
     output                          src_valid,
     output reg [80-1    : 0] src_data,
-    output reg [6-1 : 0] src_channel,
+    output reg [7-1 : 0] src_channel,
     output                          src_startofpacket,
     output                          src_endofpacket,
     input                           src_ready
@@ -121,7 +121,7 @@ module limbus_mm_interconnect_0_id_router_002
     localparam PKT_PROTECTION_H = 70;
     localparam PKT_PROTECTION_L = 68;
     localparam ST_DATA_W = 80;
-    localparam ST_CHANNEL_W = 6;
+    localparam ST_CHANNEL_W = 7;
     localparam DECODER_TYPE = 1;
 
     localparam PKT_TRANS_WRITE = 42;
@@ -160,7 +160,7 @@ module limbus_mm_interconnect_0_id_router_002
     assign src_valid         = sink_valid;
     assign src_startofpacket = sink_startofpacket;
     assign src_endofpacket   = sink_endofpacket;
-    wire [6-1 : 0] default_src_channel;
+    wire [7-1 : 0] default_src_channel;
 
 
 
@@ -192,11 +192,11 @@ module limbus_mm_interconnect_0_id_router_002
 
 
         if (destid == 1  && read_transaction) begin
-            src_channel = 6'b01;
+            src_channel = 7'b01;
         end
 
         if (destid == 0 ) begin
-            src_channel = 6'b10;
+            src_channel = 7'b10;
         end
 
 

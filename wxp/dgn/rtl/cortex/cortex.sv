@@ -89,7 +89,6 @@ module cortex #(
     output  [23:0]              HDMI_TX_D,
     output                      HDMI_TX_DE,
     output                      HDMI_TX_HS,
-    input                       HDMI_TX_INT,
     output                      HDMI_TX_VS
 );
 
@@ -352,7 +351,7 @@ module cortex #(
 
   assign  cntrlr_sw_rst_n   = cortex_rst_vec[SYS_MEM_DDR_SW_RST];
 
-  assign  cortex_irq  = HDMI_TX_INT;
+  assign  cortex_irq  = 1'b0;
 
 endmodule // cortex
 

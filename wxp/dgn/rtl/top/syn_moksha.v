@@ -242,7 +242,9 @@ wire              cortex_irq;
     /*  input  wire         */  .cortex_irq_irq(cortex_irq),
 
     /*  input  wire         */  .uart_rxd(UART_RX),
-    /*  output wire         */  .uart_txd(UART_TX)
+    /*  output wire         */  .uart_txd(UART_TX),
+
+    /*  input  wire         */  .hdmi_tx_int_n_export(~HDMI_TX_INT)
 
   );
 
@@ -364,7 +366,6 @@ wire              cortex_irq;
       /*  output  [23:0]                */  .HDMI_TX_D(HDMI_TX_D),
       /*  output                        */  .HDMI_TX_DE(HDMI_TX_DE),
       /*  output                        */  .HDMI_TX_HS(HDMI_TX_HS),
-      /*  input                         */  .HDMI_TX_INT(HDMI_TX_INT),
       /*  output                        */  .HDMI_TX_VS(HDMI_TX_VS)
 
   );
