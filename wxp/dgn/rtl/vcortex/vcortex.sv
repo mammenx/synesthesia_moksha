@@ -75,7 +75,6 @@ module vcortex #(
     output  [23:0]              HDMI_TX_D,
     output                      HDMI_TX_DE,
     output                      HDMI_TX_HS,
-    input                       HDMI_TX_INT,
     output                      HDMI_TX_VS
 
 );
@@ -189,7 +188,6 @@ module vcortex #(
     .HDMI_TX_D          (HDMI_TX_D  ),
     .HDMI_TX_DE         (HDMI_TX_DE ),
     .HDMI_TX_HS         (HDMI_TX_HS ),
-    .HDMI_TX_INT        (HDMI_TX_INT),
     .HDMI_TX_VS         (HDMI_TX_VS )
 
   );

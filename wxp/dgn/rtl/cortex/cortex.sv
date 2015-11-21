@@ -59,6 +59,8 @@ module cortex #(
     input                       cntrlr_rst_n,
     output                      cntrlr_sw_rst_n,
 
+    output                      cortex_irq,
+
     input                       lb_wr_en,
     input                       lb_rd_en,
     input   [LB_ADDR_W-1:0]     lb_addr,
@@ -344,13 +346,13 @@ module cortex #(
       .HDMI_TX_D          (HDMI_TX_D),
       .HDMI_TX_DE         (HDMI_TX_DE),
       .HDMI_TX_HS         (HDMI_TX_HS),
-      .HDMI_TX_INT        (HDMI_TX_INT),
       .HDMI_TX_VS         (HDMI_TX_VS)
 
   );
 
   assign  cntrlr_sw_rst_n   = cortex_rst_vec[SYS_MEM_DDR_SW_RST];
 
+  assign  cortex_irq  = HDMI_TX_INT;
 
 endmodule // cortex
 

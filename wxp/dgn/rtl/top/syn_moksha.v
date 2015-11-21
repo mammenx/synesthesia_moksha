@@ -187,6 +187,8 @@ wire              lpddr2_local_init_done;
 wire              lpddr2_local_cal_success;
 wire              lpddr2_local_cal_fail;
 
+wire              cortex_irq;
+
 //=======================================================
 //  Structural coding
 //=======================================================
@@ -237,7 +239,7 @@ wire              lpddr2_local_cal_fail;
 
     /*  output wire         */  .cortex_reset_reset_n(cortex_rst_n),
 
-    /*  input  wire         */  .cortex_irq_irq(0),
+    /*  input  wire         */  .cortex_irq_irq(cortex_irq),
 
     /*  input  wire         */  .uart_rxd(UART_RX),
     /*  output wire         */  .uart_txd(UART_TX)
@@ -332,6 +334,7 @@ wire              lpddr2_local_cal_fail;
       /*  input                         */  .cntrlr_rst_n(afi_reset_n),
       /*  output                        */  .cntrlr_sw_rst_n(lpddr2_cntrlr_sw_rst_n),
 
+      /*  output                        */  .cortex_irq(cortex_irq),
 
       /*  input                         */  .lb_wr_en(cortex_lb_wr_en),
       /*  input                         */  .lb_rd_en(cortex_lb_rd_en),

@@ -64,7 +64,6 @@ module adv7513_video_drvr #(
   output reg[23:0]            HDMI_TX_D,
   output reg                  HDMI_TX_DE,
   output reg                  HDMI_TX_HS,
-  input                       HDMI_TX_INT,
   output reg                  HDMI_TX_VS
 
 );
