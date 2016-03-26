@@ -43,11 +43,11 @@ interface syn_pcm_mem_intf_mon  #(DATA_W=32,ADDR_W=8,RD_DELAY=2) (input logic cl
   clocking  cb  @(posedge clk_ir);
     default input #2ns  output  #2ns;
 
-    input   pcm_data_rdy;
-    input   pcm_addr;
-    input   pcm_rden;
-    input   pcm_rdata;
-    input   pcm_rd_valid;
+    inout   pcm_data_rdy;
+    inout   pcm_addr;
+    inout   pcm_rden;
+    inout   pcm_rdata;
+    inout   pcm_rd_valid;
 
   endclocking : cb
 

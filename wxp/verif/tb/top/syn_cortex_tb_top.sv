@@ -177,7 +177,6 @@
       .HDMI_TX_D                  (),
       .HDMI_TX_DE                 (),
       .HDMI_TX_HS                 (),
-      .HDMI_TX_INT                (1'b0),
       .HDMI_TX_VS                 ()
 
     );

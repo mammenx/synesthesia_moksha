@@ -20,7 +20,7 @@ set LINT_OPT=-lint
 set PREPROCESS_OPT=
 rem set PREPROCESS_OPT=-Epretty dgn.preprocess.v
 
-set MSIM_DIR=C:\altera\msim\6.5e\modelsim_ase
+set MSIM_DIR=C:\altera_lite\15.1\modelsim_ase
 set MSIM_INC_DIR=%MSIM_DIR%\include
 set MSIM_WIN32_DIR=%MSIM_DIR%\win32aloem
 

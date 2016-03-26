@@ -49,7 +49,7 @@
                             ) extends ovm_scoreboard;
 
     /*  Register with Factory */
-    `ovm_component_param_utils(syn_sys_mem_intf_sb#(DATA_W,ADDR_W,NUM_AGENTS,SENT_PKT_TYPE, RCVD_PKT_TYPE))
+    `ovm_component_param_utils(syn_sys_mem_intf_sb#(DATA_W,ADDR_W,NUM_AGENTS,LB_DATA_W,SENT_PKT_TYPE, RCVD_PKT_TYPE))
 
     //Queue to hold the sent pkts, till rcvd pkts come
     SENT_PKT_TYPE sent_que[$];
@@ -66,11 +66,11 @@
     syn_reg_map#(LB_DATA_W)   sys_mem_intf_reg_map; //need to connect this to original regmap in env
 
     //Ports
-    ovm_analysis_imp_sent_pkt #(SENT_PKT_TYPE,syn_sys_mem_intf_sb#(DATA_W,ADDR_W,NUM_AGENTS,SENT_PKT_TYPE, RCVD_PKT_TYPE))  Mon_sent_2Sb_port;
-    ovm_analysis_imp_rcvd_pkt #(RCVD_PKT_TYPE,syn_sys_mem_intf_sb#(DATA_W,ADDR_W,NUM_AGENTS,SENT_PKT_TYPE, RCVD_PKT_TYPE))  Mon_rcvd_2Sb_port;
+    ovm_analysis_imp_sent_pkt #(SENT_PKT_TYPE,syn_sys_mem_intf_sb#(DATA_W,ADDR_W,NUM_AGENTS,LB_DATA_W,SENT_PKT_TYPE, RCVD_PKT_TYPE))  Mon_sent_2Sb_port;
+    ovm_analysis_imp_rcvd_pkt #(RCVD_PKT_TYPE,syn_sys_mem_intf_sb#(DATA_W,ADDR_W,NUM_AGENTS,LB_DATA_W,SENT_PKT_TYPE, RCVD_PKT_TYPE))  Mon_rcvd_2Sb_port;
 
-    ovm_analysis_imp_agent_sent_pkt #(SENT_PKT_TYPE,syn_sys_mem_intf_sb#(DATA_W,ADDR_W,NUM_AGENTS,SENT_PKT_TYPE, RCVD_PKT_TYPE))  Mon_agent_sent_2Sb_port;
-    ovm_analysis_imp_agent_rcvd_pkt #(RCVD_PKT_TYPE,syn_sys_mem_intf_sb#(DATA_W,ADDR_W,NUM_AGENTS,SENT_PKT_TYPE, RCVD_PKT_TYPE))  Mon_agent_rcvd_2Sb_port;
+    ovm_analysis_imp_agent_sent_pkt #(SENT_PKT_TYPE,syn_sys_mem_intf_sb#(DATA_W,ADDR_W,NUM_AGENTS,LB_DATA_W,SENT_PKT_TYPE, RCVD_PKT_TYPE))  Mon_agent_sent_2Sb_port;
+    ovm_analysis_imp_agent_rcvd_pkt #(RCVD_PKT_TYPE,syn_sys_mem_intf_sb#(DATA_W,ADDR_W,NUM_AGENTS,LB_DATA_W,SENT_PKT_TYPE, RCVD_PKT_TYPE))  Mon_agent_rcvd_2Sb_port;
 
     OVM_FILE  f;
 
