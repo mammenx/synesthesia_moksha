@@ -1,4 +1,4 @@
-// (C) 2001-2013 Altera Corporation. All rights reserved.
+// (C) 2001-2015 Altera Corporation. All rights reserved.
 // Your use of Altera Corporation's design tools, logic functions and other 
 // software and tools, and its AMPP partner logic functions, and any output 
 // files any of the foregoing (including device programming or simulation 
@@ -43,8 +43,8 @@ module limbus_tristate_conduit_pin_sharer_0_pin_sharer (
 
   //sram.tcm signals
     ,input  logic[ 18 :0 ] tcs0_tcm_address_out
-    ,input  logic[ 0 :0 ] tcs0_tcm_outputenable_n_out
     ,input  logic[ 1 :0 ] tcs0_tcm_byteenable_n_out
+    ,input  logic[ 0 :0 ] tcs0_tcm_outputenable_n_out
     ,input  logic[ 0 :0 ] tcs0_tcm_write_n_out
     ,output logic[ 15 :0 ]  tcs0_tcm_data_in
     ,input  logic[ 15 :0 ]  tcs0_tcm_data_out
@@ -58,8 +58,8 @@ module limbus_tristate_conduit_pin_sharer_0_pin_sharer (
 		     // *** Passthrough Signals
 		     
     ,output  logic[ 18 :0 ] sram_tcm_address_out
-    ,output  logic[ 0 :0 ] sram_tcm_outputenable_n_out
     ,output  logic[ 1 :0 ] sram_tcm_byteenable_n_out
+    ,output  logic[ 0 :0 ] sram_tcm_outputenable_n_out
     ,output  logic[ 0 :0 ] sram_tcm_write_n_out
     ,input   logic[ 15 :0 ]  sram_tcm_data_in
     ,output  logic[ 15 :0 ]  sram_tcm_data_out
@@ -128,8 +128,8 @@ module limbus_tristate_conduit_pin_sharer_0_pin_sharer (
 // Passthrough Signals
 
     assign sram_tcm_address_out = tcs0_tcm_address_out;
-    assign sram_tcm_outputenable_n_out = tcs0_tcm_outputenable_n_out;
     assign sram_tcm_byteenable_n_out = tcs0_tcm_byteenable_n_out;
+    assign sram_tcm_outputenable_n_out = tcs0_tcm_outputenable_n_out;
     assign sram_tcm_write_n_out = tcs0_tcm_write_n_out;
     assign tcs0_tcm_data_in = sram_tcm_data_in;
     assign sram_tcm_data_out =  tcs0_tcm_data_out;

@@ -1,0 +1,214 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 1991-2015 Altera Corporation. All rights reserved.
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, the Altera Quartus Prime License Agreement,
+the Altera MegaCore Function License Agreement, or other 
+applicable license agreement, including, without limitation, 
+that your use is for the sole purpose of programming logic 
+devices manufactured by Altera and sold by Altera or its 
+authorized distributors.  Please refer to the applicable 
+agreement for further details.
+*/
+(header "symbol" (version "1.1"))
+(symbol
+	(rect 0 0 864 560)
+	(text "limbus" (rect 414 -1 438 11)(font "Arial" (font_size 10)))
+	(text "inst" (rect 8 544 20 556)(font "Arial" ))
+	(port
+		(pt 0 72)
+		(input)
+		(text "clk_100_clk" (rect 0 0 46 12)(font "Arial" (font_size 8)))
+		(text "clk_100_clk" (rect 4 61 70 72)(font "Arial" (font_size 8)))
+		(line (pt 0 72)(pt 352 72)(line_width 1))
+	)
+	(port
+		(pt 0 112)
+		(input)
+		(text "reset_100_reset_n" (rect 0 0 75 12)(font "Arial" (font_size 8)))
+		(text "reset_100_reset_n" (rect 4 101 106 112)(font "Arial" (font_size 8)))
+		(line (pt 0 112)(pt 352 112)(line_width 1))
+	)
+	(port
+		(pt 0 304)
+		(input)
+		(text "cortex_s_readdata[31..0]" (rect 0 0 99 12)(font "Arial" (font_size 8)))
+		(text "cortex_s_readdata[31..0]" (rect 4 293 148 304)(font "Arial" (font_size 8)))
+		(line (pt 0 304)(pt 352 304)(line_width 3))
+	)
+	(port
+		(pt 0 352)
+		(input)
+		(text "cortex_s_readdatavalid" (rect 0 0 93 12)(font "Arial" (font_size 8)))
+		(text "cortex_s_readdatavalid" (rect 4 341 136 352)(font "Arial" (font_size 8)))
+		(line (pt 0 352)(pt 352 352)(line_width 1))
+	)
+	(port
+		(pt 0 432)
+		(input)
+		(text "cortex_irq_irq" (rect 0 0 55 12)(font "Arial" (font_size 8)))
+		(text "cortex_irq_irq" (rect 4 421 88 432)(font "Arial" (font_size 8)))
+		(line (pt 0 432)(pt 352 432)(line_width 1))
+	)
+	(port
+		(pt 0 472)
+		(input)
+		(text "uart_rxd" (rect 0 0 34 12)(font "Arial" (font_size 8)))
+		(text "uart_rxd" (rect 4 461 52 472)(font "Arial" (font_size 8)))
+		(line (pt 0 472)(pt 352 472)(line_width 1))
+	)
+	(port
+		(pt 0 528)
+		(input)
+		(text "hdmi_tx_int_n_export" (rect 0 0 87 12)(font "Arial" (font_size 8)))
+		(text "hdmi_tx_int_n_export" (rect 4 517 124 528)(font "Arial" (font_size 8)))
+		(line (pt 0 528)(pt 352 528)(line_width 1))
+	)
+	(port
+		(pt 0 168)
+		(output)
+		(text "tristate_conduit_bridge_sram_out_sram_tcm_address_out[18..0]" (rect 0 0 260 12)(font "Arial" (font_size 8)))
+		(text "tristate_conduit_bridge_sram_out_sram_tcm_address_out[18..0]" (rect 4 157 364 168)(font "Arial" (font_size 8)))
+		(line (pt 0 168)(pt 352 168)(line_width 3))
+	)
+	(port
+		(pt 0 184)
+		(output)
+		(text "tristate_conduit_bridge_sram_out_sram_tcm_outputenable_n_out" (rect 0 0 264 12)(font "Arial" (font_size 8)))
+		(text "tristate_conduit_bridge_sram_out_sram_tcm_outputenable_n_out" (rect 4 173 364 184)(font "Arial" (font_size 8)))
+		(line (pt 0 184)(pt 352 184)(line_width 1))
+	)
+	(port
+		(pt 0 200)
+		(output)
+		(text "tristate_conduit_bridge_sram_out_sram_tcm_chipselect_n_out" (rect 0 0 253 12)(font "Arial" (font_size 8)))
+		(text "tristate_conduit_bridge_sram_out_sram_tcm_chipselect_n_out" (rect 4 189 352 200)(font "Arial" (font_size 8)))
+		(line (pt 0 200)(pt 352 200)(line_width 1))
+	)
+	(port
+		(pt 0 216)
+		(output)
+		(text "tristate_conduit_bridge_sram_out_sram_tcm_byteenable_n_out[1..0]" (rect 0 0 277 12)(font "Arial" (font_size 8)))
+		(text "tristate_conduit_bridge_sram_out_sram_tcm_byteenable_n_out[1..0]" (rect 4 205 388 216)(font "Arial" (font_size 8)))
+		(line (pt 0 216)(pt 352 216)(line_width 3))
+	)
+	(port
+		(pt 0 232)
+		(output)
+		(text "tristate_conduit_bridge_sram_out_sram_tcm_write_n_out" (rect 0 0 233 12)(font "Arial" (font_size 8)))
+		(text "tristate_conduit_bridge_sram_out_sram_tcm_write_n_out" (rect 4 221 322 232)(font "Arial" (font_size 8)))
+		(line (pt 0 232)(pt 352 232)(line_width 1))
+	)
+	(port
+		(pt 0 272)
+		(output)
+		(text "cortex_s_address[17..0]" (rect 0 0 96 12)(font "Arial" (font_size 8)))
+		(text "cortex_s_address[17..0]" (rect 4 261 142 272)(font "Arial" (font_size 8)))
+		(line (pt 0 272)(pt 352 272)(line_width 3))
+	)
+	(port
+		(pt 0 288)
+		(output)
+		(text "cortex_s_read" (rect 0 0 59 12)(font "Arial" (font_size 8)))
+		(text "cortex_s_read" (rect 4 277 82 288)(font "Arial" (font_size 8)))
+		(line (pt 0 288)(pt 352 288)(line_width 1))
+	)
+	(port
+		(pt 0 320)
+		(output)
+		(text "cortex_s_write" (rect 0 0 59 12)(font "Arial" (font_size 8)))
+		(text "cortex_s_write" (rect 4 309 88 320)(font "Arial" (font_size 8)))
+		(line (pt 0 320)(pt 352 320)(line_width 1))
+	)
+	(port
+		(pt 0 336)
+		(output)
+		(text "cortex_s_writedata[31..0]" (rect 0 0 99 12)(font "Arial" (font_size 8)))
+		(text "cortex_s_writedata[31..0]" (rect 4 325 154 336)(font "Arial" (font_size 8)))
+		(line (pt 0 336)(pt 352 336)(line_width 3))
+	)
+	(port
+		(pt 0 392)
+		(output)
+		(text "cortex_reset_reset_n" (rect 0 0 87 12)(font "Arial" (font_size 8)))
+		(text "cortex_reset_reset_n" (rect 4 381 124 392)(font "Arial" (font_size 8)))
+		(line (pt 0 392)(pt 352 392)(line_width 1))
+	)
+	(port
+		(pt 0 488)
+		(output)
+		(text "uart_txd" (rect 0 0 33 12)(font "Arial" (font_size 8)))
+		(text "uart_txd" (rect 4 477 52 488)(font "Arial" (font_size 8)))
+		(line (pt 0 488)(pt 352 488)(line_width 1))
+	)
+	(port
+		(pt 0 152)
+		(bidir)
+		(text "tristate_conduit_bridge_sram_out_sram_tcm_data_out[15..0]" (rect 0 0 245 12)(font "Arial" (font_size 8)))
+		(text "tristate_conduit_bridge_sram_out_sram_tcm_data_out[15..0]" (rect 4 141 346 152)(font "Arial" (font_size 8)))
+		(line (pt 0 152)(pt 352 152)(line_width 3))
+	)
+	(drawing
+		(text "clk_100" (rect 310 43 662 99)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "clk" (rect 357 67 732 144)(font "Arial" (color 0 0 0)))
+		(text "reset_100" (rect 296 83 646 179)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "reset_n" (rect 357 107 756 224)(font "Arial" (color 0 0 0)))
+		(text "tristate_conduit_bridge_sram_out" (rect 155 123 502 259)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "sram_tcm_data_out" (rect 357 147 816 304)(font "Arial" (color 0 0 0)))
+		(text "sram_tcm_address_out" (rect 357 163 834 336)(font "Arial" (color 0 0 0)))
+		(text "sram_tcm_outputenable_n_out" (rect 357 179 876 368)(font "Arial" (color 0 0 0)))
+		(text "sram_tcm_chipselect_n_out" (rect 357 195 864 400)(font "Arial" (color 0 0 0)))
+		(text "sram_tcm_byteenable_n_out" (rect 357 211 864 432)(font "Arial" (color 0 0 0)))
+		(text "sram_tcm_write_n_out" (rect 357 227 834 464)(font "Arial" (color 0 0 0)))
+		(text "cortex_s" (rect 303 243 654 499)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "address" (rect 357 267 756 544)(font "Arial" (color 0 0 0)))
+		(text "read" (rect 357 283 738 576)(font "Arial" (color 0 0 0)))
+		(text "readdata" (rect 357 299 762 608)(font "Arial" (color 0 0 0)))
+		(text "write" (rect 357 315 744 640)(font "Arial" (color 0 0 0)))
+		(text "writedata" (rect 357 331 768 672)(font "Arial" (color 0 0 0)))
+		(text "readdatavalid" (rect 357 347 792 704)(font "Arial" (color 0 0 0)))
+		(text "cortex_reset" (rect 280 363 632 739)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "reset_n" (rect 357 387 756 784)(font "Arial" (color 0 0 0)))
+		(text "cortex_irq" (rect 295 403 650 819)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "irq" (rect 357 427 732 864)(font "Arial" (color 0 0 0)))
+		(text "uart" (rect 330 443 684 899)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "rxd" (rect 357 467 732 944)(font "Arial" (color 0 0 0)))
+		(text "txd" (rect 357 483 732 976)(font "Arial" (color 0 0 0)))
+		(text "hdmi_tx_int_n" (rect 270 499 618 1011)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "export" (rect 357 523 750 1056)(font "Arial" (color 0 0 0)))
+		(text " system " (rect 829 544 1706 1098)(font "Arial" ))
+		(line (pt 352 32)(pt 512 32)(line_width 1))
+		(line (pt 512 32)(pt 512 544)(line_width 1))
+		(line (pt 352 544)(pt 512 544)(line_width 1))
+		(line (pt 352 32)(pt 352 544)(line_width 1))
+		(line (pt 353 52)(pt 353 76)(line_width 1))
+		(line (pt 354 52)(pt 354 76)(line_width 1))
+		(line (pt 353 92)(pt 353 116)(line_width 1))
+		(line (pt 354 92)(pt 354 116)(line_width 1))
+		(line (pt 353 132)(pt 353 236)(line_width 1))
+		(line (pt 354 132)(pt 354 236)(line_width 1))
+		(line (pt 353 252)(pt 353 356)(line_width 1))
+		(line (pt 354 252)(pt 354 356)(line_width 1))
+		(line (pt 353 372)(pt 353 396)(line_width 1))
+		(line (pt 354 372)(pt 354 396)(line_width 1))
+		(line (pt 353 412)(pt 353 436)(line_width 1))
+		(line (pt 354 412)(pt 354 436)(line_width 1))
+		(line (pt 353 452)(pt 353 492)(line_width 1))
+		(line (pt 354 452)(pt 354 492)(line_width 1))
+		(line (pt 353 508)(pt 353 532)(line_width 1))
+		(line (pt 354 508)(pt 354 532)(line_width 1))
+		(line (pt 0 0)(pt 864 0)(line_width 1))
+		(line (pt 864 0)(pt 864 560)(line_width 1))
+		(line (pt 0 560)(pt 864 560)(line_width 1))
+		(line (pt 0 0)(pt 0 560)(line_width 1))
+	)
+)

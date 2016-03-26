@@ -1,0 +1,24 @@
+	component limbus is
+		port (
+			clk_100_clk                                                  : in    std_logic                     := 'X';             -- clk
+			reset_100_reset_n                                            : in    std_logic                     := 'X';             -- reset_n
+			tristate_conduit_bridge_sram_out_sram_tcm_data_out           : inout std_logic_vector(15 downto 0) := (others => 'X'); -- sram_tcm_data_out
+			tristate_conduit_bridge_sram_out_sram_tcm_address_out        : out   std_logic_vector(18 downto 0);                    -- sram_tcm_address_out
+			tristate_conduit_bridge_sram_out_sram_tcm_outputenable_n_out : out   std_logic_vector(0 downto 0);                     -- sram_tcm_outputenable_n_out
+			tristate_conduit_bridge_sram_out_sram_tcm_chipselect_n_out   : out   std_logic_vector(0 downto 0);                     -- sram_tcm_chipselect_n_out
+			tristate_conduit_bridge_sram_out_sram_tcm_byteenable_n_out   : out   std_logic_vector(1 downto 0);                     -- sram_tcm_byteenable_n_out
+			tristate_conduit_bridge_sram_out_sram_tcm_write_n_out        : out   std_logic_vector(0 downto 0);                     -- sram_tcm_write_n_out
+			cortex_s_address                                             : out   std_logic_vector(17 downto 0);                    -- address
+			cortex_s_read                                                : out   std_logic;                                        -- read
+			cortex_s_readdata                                            : in    std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
+			cortex_s_write                                               : out   std_logic;                                        -- write
+			cortex_s_writedata                                           : out   std_logic_vector(31 downto 0);                    -- writedata
+			cortex_s_readdatavalid                                       : in    std_logic                     := 'X';             -- readdatavalid
+			cortex_reset_reset_n                                         : out   std_logic;                                        -- reset_n
+			cortex_irq_irq                                               : in    std_logic                     := 'X';             -- irq
+			uart_rxd                                                     : in    std_logic                     := 'X';             -- rxd
+			uart_txd                                                     : out   std_logic;                                        -- txd
+			hdmi_tx_int_n_export                                         : in    std_logic                     := 'X'              -- export
+		);
+	end component limbus;
+
