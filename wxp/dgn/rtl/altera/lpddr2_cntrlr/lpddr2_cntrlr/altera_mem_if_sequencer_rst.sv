@@ -1,4 +1,4 @@
-// (C) 2001-2013 Altera Corporation. All rights reserved.
+// (C) 2001-2015 Altera Corporation. All rights reserved.
 // Your use of Altera Corporation's design tools, logic functions and other 
 // software and tools, and its AMPP partner logic functions, and any output 
 // files any of the foregoing (including device programming or simulation 
@@ -45,7 +45,7 @@ module altera_mem_if_sequencer_rst
    reg                                 r_early_rst;
 
     assign w_sync_rst_input = altera_reset_synchronizer_int_chain[2];
-    assign reset_out = r_sync_rst;
+
 
 
    assign clken_out                    =~r_early_rst;

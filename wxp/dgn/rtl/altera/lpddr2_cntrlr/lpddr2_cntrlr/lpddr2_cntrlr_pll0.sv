@@ -1,4 +1,4 @@
-// (C) 2001-2013 Altera Corporation. All rights reserved.
+// (C) 2001-2015 Altera Corporation. All rights reserved.
 // Your use of Altera Corporation's design tools, logic functions and other 
 // software and tools, and its AMPP partner logic functions, and any output 
 // files any of the foregoing (including device programming or simulation 
@@ -17,7 +17,7 @@
 
 `timescale 1 ps / 1 ps
 
-(* altera_attribute = "-name IP_TOOL_NAME common; -name IP_TOOL_VERSION 13.1; -name FITTER_ADJUST_HC_SHORT_PATH_GUARDBAND 100; -name ALLOW_SYNCH_CTRL_USAGE OFF; -name AUTO_CLOCK_ENABLE_RECOGNITION OFF; -name AUTO_SHIFT_REGISTER_RECOGNITION OFF" *)
+(* altera_attribute = "-name IP_TOOL_NAME common; -name IP_TOOL_VERSION 15.1; -name FITTER_ADJUST_HC_SHORT_PATH_GUARDBAND 100; -name ALLOW_SYNCH_CTRL_USAGE OFF; -name AUTO_CLOCK_ENABLE_RECOGNITION OFF; -name AUTO_SHIFT_REGISTER_RECOGNITION OFF" *)
 
 
 module lpddr2_cntrlr_pll0 (
@@ -87,7 +87,7 @@ parameter MEM_CLK_PHASE      = "0 ps";
 parameter WRITE_CLK_PHASE    = "2343 ps";
 parameter ADDR_CMD_CLK_PHASE = "2343 ps";
 parameter AFI_HALF_CLK_PHASE = "0 ps";
-parameter AVL_CLK_PHASE      = "15429 ps";
+parameter AVL_CLK_PHASE      = "15390 ps";
 parameter CONFIG_CLK_PHASE   = "0 ps";
 
 parameter MEM_CLK_PHASE_SIM       = "0 ps";
@@ -123,7 +123,7 @@ localparam DR_CLK_FREQ        = SIM_FILESET ? PLL_DR_CLK_FREQ_SIM_STR : PLL_DR_C
 input	pll_ref_clk;		// PLL reference clock
 
 // When the PHY is selected to be a PLL/DLL MASTER, the PLL and DLL are instantied on this top level
-wire	pll_afi_clk;		// See pll_memphy instantiation below for detailed description of each clock
+wire	pll_afi_clk /* synthesis keep */;		// See pll_memphy instantiation below for detailed description of each clock
 
 output	pll_mem_clk;
 output	pll_write_clk;

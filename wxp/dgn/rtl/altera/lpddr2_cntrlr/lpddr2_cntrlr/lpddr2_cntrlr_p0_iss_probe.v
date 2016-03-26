@@ -1,4 +1,4 @@
-// (C) 2001-2013 Altera Corporation. All rights reserved.
+// (C) 2001-2015 Altera Corporation. All rights reserved.
 // Your use of Altera Corporation's design tools, logic functions and other 
 // software and tools, and its AMPP partner logic functions, and any output 
 // files any of the foregoing (including device programming or simulation 
@@ -28,7 +28,7 @@ altsource_probe	iss_probe_inst (
 				.source ()
 				// synopsys translate_off
 				,
-				.clrn (),
+				.clr (),
 				.ena (),
 				.ir_in (),
 				.ir_out (),

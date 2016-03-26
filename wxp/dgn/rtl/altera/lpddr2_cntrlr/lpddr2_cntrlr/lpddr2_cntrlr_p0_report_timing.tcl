@@ -1,4 +1,4 @@
-# (C) 2001-2013 Altera Corporation. All rights reserved.
+# (C) 2001-2015 Altera Corporation. All rights reserved.
 # Your use of Altera Corporation's design tools, logic functions and other 
 # software and tools, and its AMPP partner logic functions, and any output 
 # files any of the foregoing (including device programming or simulation 
@@ -92,6 +92,7 @@ set MP(DQSCK_T) 0.15
 # Initialize the environment
 #############################################################
 
+global quartus
 if { ![info exists quartus(nameofexecutable)] || $quartus(nameofexecutable) != "quartus_sta" } {
 	post_message -type error "This script must be run from quartus_sta"
 	return 1
@@ -248,6 +249,12 @@ foreach inst $instances {
 	# DQS_phase offset
 	set dqs_phase [ lpddr2_cntrlr_p0_get_dqs_phase $dqs_pins ]
 
+	set fitter_run [lpddr2_cntrlr_p0_get_io_interface_type [lindex [lindex $pins(q_groups) 0] 0]]
+	if {$fitter_run == ""} {
+		post_message -type critical_warning "Fitter (quartus_fit) failed or was not run. Run the Fitter (quartus_fit) successfully before running ReportDDR"
+		continue
+	}
+
 	# Get the interface type (HPAD or VPAD)
 	set interface_type [lpddr2_cntrlr_p0_get_io_interface_type $all_dq_pins]
 
@@ -343,7 +350,7 @@ foreach inst $instances {
 		#######################################
 		# PHY and Address/command Analyses
 
-		lpddr2_cntrlr_p0_perform_ac_analyses  $opcs $opcname $inst scale_factors pins t summary IP		
+		lpddr2_cntrlr_p0_perform_ac_analyses  $opcs $opcname $inst $family scale_factors pins t summary IP		
 		lpddr2_cntrlr_p0_perform_phy_analyses $opcs $opcname $inst $inst_controller pins t summary IP
 
 
@@ -453,8 +460,7 @@ foreach inst $instances {
 	
 	write_timing_report
 
-	post_message -type critical_warning "Timing analysis was performed on core ${::GLOBAL_lpddr2_cntrlr_p0_corename} using Quartus II v13.1 with a preliminary timing model and constraints. You must regenerate this IP in a future version of Quartus II to update the timing constraints to match the timing model."
-	
+
 	incr inst_id
 }
 

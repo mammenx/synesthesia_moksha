@@ -1,4 +1,4 @@
-// (C) 2001-2013 Altera Corporation. All rights reserved.
+// (C) 2001-2015 Altera Corporation. All rights reserved.
 // Your use of Altera Corporation's design tools, logic functions and other 
 // software and tools, and its AMPP partner logic functions, and any output 
 // files any of the foregoing (including device programming or simulation 
@@ -198,6 +198,7 @@ wire	[DLL_DELAY_CTRL_WIDTH-1:0] read_bidir_dll_phy_delayctrl;
 wire	[MEM_READ_DQS_WIDTH-1:0] bidir_read_dqs_bus_out;
 wire	[MEM_DQ_WIDTH-1:0] bidir_read_dq_input_data_out_high;
 wire	[MEM_DQ_WIDTH-1:0] bidir_read_dq_input_data_out_low;
+wire	dqs_busout;
 
 wire	hr_clk = pll_avl_clk;
 wire	core_clk = pll_afi_clk;

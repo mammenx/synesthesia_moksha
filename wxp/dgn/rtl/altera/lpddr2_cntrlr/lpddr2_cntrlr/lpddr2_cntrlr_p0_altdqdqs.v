@@ -1,4 +1,4 @@
-// (C) 2001-2013 Altera Corporation. All rights reserved.
+// (C) 2001-2015 Altera Corporation. All rights reserved.
 // Your use of Altera Corporation's design tools, logic functions and other 
 // software and tools, and its AMPP partner logic functions, and any output 
 // files any of the foregoing (including device programming or simulation 
@@ -179,6 +179,7 @@ parameter ALTERA_ALTDQ_DQS2_FAST_SIM_MODEL = "";
 	defparam altdq_dqs2_inst.USE_OCT_ENA_IN_FOR_OCT = "true";
 	defparam altdq_dqs2_inst.PREAMBLE_TYPE = "low";
 	defparam altdq_dqs2_inst.EMIF_UNALIGNED_PREAMBLE_SUPPORT = "false";
+	defparam altdq_dqs2_inst.EMIF_BYPASS_OCT_DDIO = "false";
 	defparam altdq_dqs2_inst.USE_OFFSET_CTRL = "false";
 	defparam altdq_dqs2_inst.HR_DDIO_OUT_HAS_THREE_REGS = "false";
 	defparam altdq_dqs2_inst.DQS_ENABLE_PHASECTRL = "true";

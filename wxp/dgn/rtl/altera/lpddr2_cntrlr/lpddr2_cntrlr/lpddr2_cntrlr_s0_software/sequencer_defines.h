@@ -1,3 +1,31 @@
+/*
+Copyright (c) 2012, Altera Corporation
+All rights reserved.
+
+SPDX-License-Identifier:    BSD-3-Clause
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of Altera Corporation nor the
+      names of its contributors may be used to endorse or promote products
+      derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL ALTERA CORPORATION BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #ifndef _SEQUENCER_DEFINES_H_
 #define _SEQUENCER_DEFINES_H_
 
@@ -22,14 +50,18 @@
 #define DM_PINS_ENABLED 1
 #define ENABLE_ASSERT 0
 #define ENABLE_BRINGUP_DEBUGGING 0
+#define ENABLE_DELAY_CHAIN_WRITE 0
 #define ENABLE_DQS_IN_CENTERING 1
 #define ENABLE_DQS_OUT_CENTERING 0
 #define ENABLE_EXPORT_SEQ_DEBUG_BRIDGE 0
 #define ENABLE_INST_ROM_WRITE 0
 #define ENABLE_MARGIN_REPORT_GEN 0
 #define ENABLE_NON_DESTRUCTIVE_CALIB 0
+#define ENABLE_NON_DES_CAL_TEST 0
+#define ENABLE_NON_DES_CAL 0
 #define ENABLE_SUPER_QUICK_CALIBRATION 0
 #define ENABLE_TCL_DEBUG 0
+#define FAKE_CAL_FAIL 0
 #define FULL_RATE 1
 #define GUARANTEED_READ_BRINGUP_TEST 0
 #define HALF_RATE 0
@@ -67,14 +99,16 @@
 #define MEM_BURST_LEN 8
 #define MEM_IF_COL_ADDR_WIDTH 10
 #define MEM_IF_ROW_ADDR_WIDTH 14
+#define MRS_MIRROR_PING_PONG_ATSO 0
 #define MULTIPLE_AFI_WLAT 0
+#define NON_DES_CAL 0
 #define NUM_SHADOW_REGS 1
 #define QDRII 0
 #define QUARTER_RATE 0
 #define RDIMM 0
 #define READ_AFTER_WRITE_CALIBRATION 1
 #define READ_VALID_FIFO_SIZE 16
-#define REG_FILE_INIT_SEQ_SIGNATURE 0x55550483
+#define REG_FILE_INIT_SEQ_SIGNATURE 0x55550497
 #define RLDRAM3 0
 #define RLDRAMII 0
 #define RLDRAMX 0
@@ -101,13 +135,21 @@
 #define RW_MGR_TRUE_MEM_DATA_MASK_WIDTH 4
 #define RW_MGR_WRITE_TO_DEBUG_READ 1.0
 #define SKEW_CALIBRATION 0
+#define SKIP_PTAP_0_DQS_EN_CAL 1
 #define STATIC_FULL_CALIBRATION 1
 #define STATIC_SIM_FILESET 0
 #define STATIC_SKIP_MEM_INIT 0
 #define STRATIXV 0
+#define TINIT_CNTR1_VAL 20
+#define TINIT_CNTR2_VAL 20
+#define TINIT_CNTR0_VAL 79
 #define TRACKING_ERROR_TEST 0
 #define TRACKING_WATCH_TEST 0
+#define TRESET_CNTR1_VAL 99
+#define TRESET_CNTR2_VAL 10
+#define TRESET_CNTR0_VAL 79
 #define USE_DQS_TRACKING 1
 #define USE_SHADOW_REGS 0
+#define USE_USER_RDIMM_VALUE 0
 
 #endif /* _SEQUENCER_DEFINES_H_ */

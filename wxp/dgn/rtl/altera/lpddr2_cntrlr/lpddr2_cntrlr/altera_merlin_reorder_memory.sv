@@ -1,4 +1,4 @@
-// (C) 2001-2013 Altera Corporation. All rights reserved.
+// (C) 2001-2015 Altera Corporation. All rights reserved.
 // Your use of Altera Corporation's design tools, logic functions and other 
 // software and tools, and its AMPP partner logic functions, and any output 
 // files any of the foregoing (including device programming or simulation 
@@ -11,17 +11,17 @@
 // agreement for further details.
 
 
-// $Id: //acds/rel/13.1/ip/merlin/altera_merlin_traffic_limiter/altera_merlin_reorder_memory.sv#2 $
-// $Revision: #2 $
-// $Date: 2013/08/16 $
-// $Author: tgngo $
+// $Id: //acds/rel/15.1/ip/merlin/altera_merlin_traffic_limiter/altera_merlin_reorder_memory.sv#1 $
+// $Revision: #1 $
+// $Date: 2015/08/09 $
+// $Author: swbranch $
 
 // ------------------------------------------------------------------
 // Merlin Order Memory: this stores responses from slave
 // and do reorder. The memory structure is normal memory
 // with many segments for different responses that master
 // can handle.
-// The number of segment is the number of MAX_OUTSTANIING_RESPONSE
+// The number of segment is the number of MAX_OUTSTANDING_RESPONSE
 // ------------------------------------------------------------------
 
 `timescale 1 ns / 1 ns
@@ -145,14 +145,13 @@ module altera_merlin_reorder_memory
     // Control signals for each segment
     // ---------------------------------
     genvar j;
-    generate begin : pointer_signals
+    generate
         for (j = 0; j < NUM_SEGMENT; j = j + 1)
             begin : pointer_signal
                 assign pointer_ctrl_in_valid[j]  = (wr_segment == j) && in_valid;
                 assign pointer_ctrl_out_ready[j]  = (rd_segment == j) && out_ready;
                 
             end
-    end
     endgenerate
     
     // ---------------------------------
@@ -160,7 +159,7 @@ module altera_merlin_reorder_memory
     // for each segment in memory
     // ---------------------------------
     genvar i;
-    generate begin : pointer_controllers
+    generate
         for (i = 0; i < NUM_SEGMENT; i = i + 1)
             begin : each_segment_pointer_controller
 	            memory_pointer_controller 
@@ -179,7 +178,6 @@ module altera_merlin_reorder_memory
                   .next_rd_pointer  (pointer_ctrl_next_rd_ptr[i])
                   );
             end // block: each_segment_pointer_controller
-    end // block: pointer_controllers
     endgenerate
 endmodule
 

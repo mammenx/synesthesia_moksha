@@ -1,23 +1,24 @@
 //altiobuf_out CBX_AUTO_BLACKBOX="ALL" CBX_SINGLE_OUTPUT_FILE="ON" DEVICE_FAMILY="Cyclone V" ENABLE_BUS_HOLD="FALSE" NUMBER_OF_CHANNELS=1 OPEN_DRAIN_OUTPUT="FALSE" PSEUDO_DIFFERENTIAL_MODE="TRUE" USE_DIFFERENTIAL_MODE="TRUE" USE_OE="FALSE" USE_OUT_DYNAMIC_DELAY_CHAIN1="FALSE" USE_OUT_DYNAMIC_DELAY_CHAIN2="FALSE" USE_TERMINATION_CONTROL="FALSE" datain dataout dataout_b
-//VERSION_BEGIN 13.1 cbx_altiobuf_out 2013:10:24:09:15:20:SJ cbx_mgl 2013:10:24:09:16:30:SJ cbx_stratixiii 2013:10:24:09:15:20:SJ cbx_stratixv 2013:10:24:09:15:20:SJ  VERSION_END
+//VERSION_BEGIN 15.1 cbx_altiobuf_out 2015:10:21:18:09:22:SJ cbx_mgl 2015:10:21:18:12:49:SJ cbx_stratixiii 2015:10:21:18:09:23:SJ cbx_stratixv 2015:10:21:18:09:23:SJ  VERSION_END
 // synthesis VERILOG_INPUT_VERSION VERILOG_2001
 // altera message_off 10463
 
 
 
-// Copyright (C) 1991-2013 Altera Corporation
+// Copyright (C) 1991-2015 Altera Corporation. All rights reserved.
 //  Your use of Altera Corporation's design tools, logic functions 
 //  and other software and tools, and its AMPP partner logic 
 //  functions, and any output files from any of the foregoing 
 //  (including device programming or simulation files), and any 
 //  associated documentation or information are expressly subject 
 //  to the terms and conditions of the Altera Program License 
-//  Subscription Agreement, Altera MegaCore Function License 
-//  Agreement, or other applicable license agreement, including, 
-//  without limitation, that your use is for the sole purpose of 
-//  programming logic devices manufactured by Altera and sold by 
-//  Altera or its authorized distributors.  Please refer to the 
-//  applicable agreement for further details.
+//  Subscription Agreement, the Altera Quartus Prime License Agreement,
+//  the Altera MegaCore Function License Agreement, or other 
+//  applicable license agreement, including, without limitation, 
+//  that your use is for the sole purpose of programming logic 
+//  devices manufactured by Altera and sold by Altera or its 
+//  authorized distributors.  Please refer to the applicable 
+//  agreement for further details.
 
 
 
