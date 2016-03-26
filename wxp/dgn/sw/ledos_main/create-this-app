@@ -3,8 +3,8 @@
 # This script creates the hello_world_small application in this directory.
 
 
-BSP_DIR=G:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp/
-QUARTUS_PROJECT_DIR=G:/WorK/github/synesthesia_moksha/wxp/dgn/syn/
+BSP_DIR=E:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp/
+QUARTUS_PROJECT_DIR=E:/WorK/github/synesthesia_moksha/wxp/dgn/syn/
 NIOS2_APP_GEN_ARGS="--elf-name ledos_main.elf --set APP_CFLAGS_OPTIMIZATION -Os --set OBJDUMP_INCLUDE_SOURCE 1 --src-files hello_world_small.c"
 
 

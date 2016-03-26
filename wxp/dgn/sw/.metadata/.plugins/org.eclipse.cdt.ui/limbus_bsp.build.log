@@ -1,7 +1,6 @@
-
-**** Clean-only build of configuration Nios II for project limbus_bsp ****
-
+13:30:13 **** Clean-only build of configuration Nios II for project limbus_bsp ****
 make clean 
 [BSP clean complete]
 
-**** Build Finished ****
+13:30:17 Build Finished (took 3s.277ms)
+

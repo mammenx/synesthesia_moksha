@@ -1,8 +1,6 @@
 eclipse.preferences.version=1
-newBspWizardPage.defaultLocation=G\:\\WorK\\github\\synesthesia_moksha\\wxp\\dgn\\sw\\limbus_bsp
-newBspWizardPage.sopcinfoFile=G\:\\WorK\\github\\synesthesia_moksha\\wxp\\dgn\\syn\\limbus.sopcinfo
-newLibraryWizardPage.bspLocation=G\:\\WorK\\github\\synesthesia_moksha\\wxp\\dgn\\sw\\limbus_bsp
-newLibraryWizardPage.defaultLocation=G\:\\WorK\\github\\synesthesia_moksha\\wxp\\dgn\\sw\\ledos_lib
-newSoftwareExampleWizardPage.defaultLocation=G\:\\WorK\\github\\synesthesia_moksha\\wxp\\dgn\\sw\\ledos_main
-newSoftwareExampleWizardPage.sopcinfoFile=G\:\\WorK\\github\\synesthesia_moksha\\wxp\\dgn\\syn\\limbus.sopcinfo
-newSoftwareExampleWizardPage2.newBspLocation=G\:\\WorK\\github\\synesthesia_moksha\\wxp\\dgn\\sw\\ledos_main_bsp
+newBspWizardPage.defaultLocation=E\:\\WorK\\github\\synesthesia_moksha\\wxp\\dgn\\sw\\limbus_bsp
+newBspWizardPage.sopcinfoFile=E\:\\WorK\\github\\synesthesia_moksha\\wxp\\dgn\\syn\\limbus.sopcinfo
+newSoftwareExampleWizardPage.defaultLocation=E\:\\WorK\\github\\synesthesia_moksha\\wxp\\dgn\\sw\\ledos_main
+newSoftwareExampleWizardPage.sopcinfoFile=E\:\\WorK\\github\\synesthesia_moksha\\wxp\\dgn\\syn\\limbus.sopcinfo
+newSoftwareExampleWizardPage2.newBspLocation=E\:\\WorK\\github\\synesthesia_moksha\\wxp\\dgn\\sw\\ledos_main_bsp

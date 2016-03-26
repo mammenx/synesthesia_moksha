@@ -1,7 +1,106 @@
-
-**** Clean-only build of configuration Nios II for project ledos_main ****
-
-make clean 
-[ledos_main clean complete]
-
-**** Build Finished ****
+13:35:32 **** Build of configuration Nios II for project ledos_main ****
+make all 
+Info: Building E:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp/
+C:/altera_lite/15.1/nios2eds/bin/gnu/H-x86_64-mingw32/bin/make --no-print-directory -C E:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp/
+[BSP build complete]
+Info: Compiling hello_world_small.c to obj/default/hello_world_small.o
+nios2-elf-gcc -xc -MP -MMD -c -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/kernel/include -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/ports/GCC/NiosII -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/./ -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//HAL/inc -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp/ -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//drivers/inc  -pipe -D__hal__ -DALT_NO_INSTRUCTION_EMULATION -D__chibios__    -Os -g -Wall   -mno-hw-div -mno-hw-mul -mno-hw-mulx  -o obj/default/hello_world_small.o hello_world_small.c
+hello_world_small.c: In function 'test_audio_fft':
+hello_world_small.c:91:10: warning: unused variable 'rbffr' [-Wunused-variable]
+  alt_u32 rbffr[128];
+          ^
+hello_world_small.c:90:10: warning: unused variable 'lbffr' [-Wunused-variable]
+  alt_u32 lbffr[128];
+          ^
+hello_world_small.c:89:10: warning: unused variable 'i' [-Wunused-variable]
+  alt_u32 i;
+          ^
+hello_world_small.c:88:10: warning: unused variable 'b16' [-Wunused-variable]
+  alt_u16 b16[256];
+          ^
+hello_world_small.c:87:10: warning: unused variable 'b32' [-Wunused-variable]
+  alt_u32 b32[256];
+          ^
+Info: Compiling ledos/adv7513/adv7513.c to obj/default/ledos/adv7513/adv7513.o
+nios2-elf-gcc -xc -MP -MMD -c -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/kernel/include -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/ports/GCC/NiosII -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/./ -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//HAL/inc -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp/ -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//drivers/inc  -pipe -D__hal__ -DALT_NO_INSTRUCTION_EMULATION -D__chibios__    -Os -g -Wall   -mno-hw-div -mno-hw-mul -mno-hw-mulx  -o obj/default/ledos/adv7513/adv7513.o ledos/adv7513/adv7513.c
+ledos/adv7513/adv7513.c: In function 'adv7513_vendor_infoframe_3d':
+ledos/adv7513/adv7513.c:847:6: warning: unused variable 'regv' [-Wunused-variable]
+  int regv;
+      ^
+ledos/adv7513/adv7513.c: In function 'adv7513_int_handler':
+ledos/adv7513/adv7513.c:1240:10: warning: variable 'irq_status' set but not used [-Wunused-but-set-variable]
+  alt_u32 irq_status;
+          ^
+ledos/adv7513/adv7513.c: In function 'adv7513_init':
+ledos/adv7513/adv7513.c:1445:13: warning: variable 'rr' set but not used [-Wunused-but-set-variable]
+  int r = 0, rr = 0;
+             ^
+ledos/adv7513/adv7513.c: At top level:
+ledos/adv7513/adv7513.c:844:12: warning: 'adv7513_vendor_infoframe_3d' defined but not used [-Wunused-function]
+ static int adv7513_vendor_infoframe_3d(struct hdmi_encoder *ec, int vic)
+            ^
+ledos/adv7513/adv7513.c: In function 'adv7513_chip_init_3d':
+ledos/adv7513/adv7513.c:666:6: warning: 'aspect' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  if (reg_update_bits(ec, 0x17, 0x02, (aspect & 0x01) << 1) != 0)
+      ^
+ledos/adv7513/adv7513.c:619:6: note: 'aspect' was declared here
+  int aspect;
+      ^
+Info: Compiling ledos/adv7513/edid/edid.c to obj/default/ledos/adv7513/edid/edid.o
+nios2-elf-gcc -xc -MP -MMD -c -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/kernel/include -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/ports/GCC/NiosII -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/./ -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//HAL/inc -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp/ -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//drivers/inc  -pipe -D__hal__ -DALT_NO_INSTRUCTION_EMULATION -D__chibios__    -Os -g -Wall   -mno-hw-div -mno-hw-mul -mno-hw-mulx  -o obj/default/ledos/adv7513/edid/edid.o ledos/adv7513/edid/edid.c
+ledos/adv7513/edid/edid.c: In function 'edid_print_cea':
+ledos/adv7513/edid/edid.c:406:10: warning: unused variable 'dtd' [-Wunused-variable]
+  u8 *c, *dtd = 0;
+          ^
+ledos/adv7513/edid/edid.c: In function 'edid_decode_cea':
+ledos/adv7513/edid/edid.c:234:9: warning: 'hv' may be used uninitialized in this function [-Wmaybe-uninitialized]
+     u8 *d = &hv[2 + cea->db_vsdb_hdmi.hdmi_xx_len];  // data pointer starting from 3D_Structure_ALL_15...8
+         ^
+ledos/adv7513/edid/edid.c: In function 'edid_print_cea':
+ledos/adv7513/edid/edid.c:803:40: warning: 'c' may be used uninitialized in this function [-Wmaybe-uninitialized]
+     cea->db_colorimetry.xvYCC = (int)(c[2] & 0x03);
+                                        ^
+Info: Compiling ledos/adv7513/encoder/encoder.c to obj/default/ledos/adv7513/encoder/encoder.o
+nios2-elf-gcc -xc -MP -MMD -c -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/kernel/include -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/ports/GCC/NiosII -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/./ -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//HAL/inc -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp/ -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//drivers/inc  -pipe -D__hal__ -DALT_NO_INSTRUCTION_EMULATION -D__chibios__    -Os -g -Wall   -mno-hw-div -mno-hw-mul -mno-hw-mulx  -o obj/default/ledos/adv7513/encoder/encoder.o ledos/adv7513/encoder/encoder.c
+Info: Compiling ledos/aud_codec/aud_codec.c to obj/default/ledos/aud_codec/aud_codec.o
+nios2-elf-gcc -xc -MP -MMD -c -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/kernel/include -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/ports/GCC/NiosII -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/./ -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//HAL/inc -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp/ -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//drivers/inc  -pipe -D__hal__ -DALT_NO_INSTRUCTION_EMULATION -D__chibios__    -Os -g -Wall   -mno-hw-div -mno-hw-mul -mno-hw-mulx  -o obj/default/ledos/aud_codec/aud_codec.o ledos/aud_codec/aud_codec.c
+Info: Compiling ledos/cortex/acortex/acortex.c to obj/default/ledos/cortex/acortex/acortex.o
+nios2-elf-gcc -xc -MP -MMD -c -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/kernel/include -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/ports/GCC/NiosII -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/./ -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//HAL/inc -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp/ -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//drivers/inc  -pipe -D__hal__ -DALT_NO_INSTRUCTION_EMULATION -D__chibios__    -Os -g -Wall   -mno-hw-div -mno-hw-mul -mno-hw-mulx  -o obj/default/ledos/cortex/acortex/acortex.o ledos/cortex/acortex/acortex.c
+ledos/cortex/acortex/acortex.c: In function 'pcm_cap':
+ledos/cortex/acortex/acortex.c:109:3: warning: implicit declaration of function 'printf' [-Wimplicit-function-declaration]
+   printf("[pcm_cap] LBFFR[0x%x] - 0x%x\r\n",i,lbffr[i]);
+   ^
+ledos/cortex/acortex/acortex.c:109:3: warning: incompatible implicit declaration of built-in function 'printf'
+ledos/cortex/acortex/acortex.c:109:3: warning: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'alt_u32' [-Wformat=]
+ledos/cortex/acortex/acortex.c:109:3: warning: format '%x' expects argument of type 'unsigned int', but argument 3 has type 'alt_u32' [-Wformat=]
+ledos/cortex/acortex/acortex.c:115:3: warning: incompatible implicit declaration of built-in function 'printf'
+   printf("[pcm_cap] RBFFR[0x%x] - 0x%x\r\n",i,rbffr[i]);
+   ^
+ledos/cortex/acortex/acortex.c:115:3: warning: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'alt_u32' [-Wformat=]
+ledos/cortex/acortex/acortex.c:115:3: warning: format '%x' expects argument of type 'unsigned int', but argument 3 has type 'alt_u32' [-Wformat=]
+Info: Compiling ledos/cortex/acortex/i2c/i2c.c to obj/default/ledos/cortex/acortex/i2c/i2c.o
+nios2-elf-gcc -xc -MP -MMD -c -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/kernel/include -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/ports/GCC/NiosII -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/./ -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//HAL/inc -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp/ -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//drivers/inc  -pipe -D__hal__ -DALT_NO_INSTRUCTION_EMULATION -D__chibios__    -Os -g -Wall   -mno-hw-div -mno-hw-mul -mno-hw-mulx  -o obj/default/ledos/cortex/acortex/i2c/i2c.o ledos/cortex/acortex/i2c/i2c.c
+ledos/cortex/acortex/i2c/i2c.c: In function 'i2c_xtn_write':
+ledos/cortex/acortex/i2c/i2c.c:67:12: warning: variable 'fsm' set but not used [-Wunused-but-set-variable]
+  alt_u32 i,fsm;
+            ^
+Info: Compiling ledos/cortex/acortex/pcm_bffr/pcm_bffr.c to obj/default/ledos/cortex/acortex/pcm_bffr/pcm_bffr.o
+nios2-elf-gcc -xc -MP -MMD -c -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/kernel/include -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/ports/GCC/NiosII -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/./ -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//HAL/inc -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp/ -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//drivers/inc  -pipe -D__hal__ -DALT_NO_INSTRUCTION_EMULATION -D__chibios__    -Os -g -Wall   -mno-hw-div -mno-hw-mul -mno-hw-mulx  -o obj/default/ledos/cortex/acortex/pcm_bffr/pcm_bffr.o ledos/cortex/acortex/pcm_bffr/pcm_bffr.c
+Info: Compiling ledos/cortex/acortex/ssm2603_drvr/ssm2603_drvr.c to obj/default/ledos/cortex/acortex/ssm2603_drvr/ssm2603_drvr.o
+nios2-elf-gcc -xc -MP -MMD -c -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/kernel/include -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/ports/GCC/NiosII -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/./ -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//HAL/inc -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp/ -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//drivers/inc  -pipe -D__hal__ -DALT_NO_INSTRUCTION_EMULATION -D__chibios__    -Os -g -Wall   -mno-hw-div -mno-hw-mul -mno-hw-mulx  -o obj/default/ledos/cortex/acortex/ssm2603_drvr/ssm2603_drvr.o ledos/cortex/acortex/ssm2603_drvr/ssm2603_drvr.c
+Info: Compiling ledos/cortex/cortex.c to obj/default/ledos/cortex/cortex.o
+nios2-elf-gcc -xc -MP -MMD -c -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/kernel/include -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/ports/GCC/NiosII -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/./ -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//HAL/inc -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp/ -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//drivers/inc  -pipe -D__hal__ -DALT_NO_INSTRUCTION_EMULATION -D__chibios__    -Os -g -Wall   -mno-hw-div -mno-hw-mul -mno-hw-mulx  -o obj/default/ledos/cortex/cortex.o ledos/cortex/cortex.c
+Info: Compiling ledos/cortex/fgyrus/fgyrus.c to obj/default/ledos/cortex/fgyrus/fgyrus.o
+nios2-elf-gcc -xc -MP -MMD -c -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/kernel/include -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/ports/GCC/NiosII -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/./ -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//HAL/inc -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp/ -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//drivers/inc  -pipe -D__hal__ -DALT_NO_INSTRUCTION_EMULATION -D__chibios__    -Os -g -Wall   -mno-hw-div -mno-hw-mul -mno-hw-mulx  -o obj/default/ledos/cortex/fgyrus/fgyrus.o ledos/cortex/fgyrus/fgyrus.c
+Info: Compiling ledos/cortex/sys_mem_intf/sys_mem_intf.c to obj/default/ledos/cortex/sys_mem_intf/sys_mem_intf.o
+nios2-elf-gcc -xc -MP -MMD -c -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/kernel/include -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/ports/GCC/NiosII -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/./ -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//HAL/inc -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp/ -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//drivers/inc  -pipe -D__hal__ -DALT_NO_INSTRUCTION_EMULATION -D__chibios__    -Os -g -Wall   -mno-hw-div -mno-hw-mul -mno-hw-mulx  -o obj/default/ledos/cortex/sys_mem_intf/sys_mem_intf.o ledos/cortex/sys_mem_intf/sys_mem_intf.c
+Info: Compiling ledos/ledos.c to obj/default/ledos/ledos.o
+nios2-elf-gcc -xc -MP -MMD -c -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/kernel/include -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/ports/GCC/NiosII -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//ChibiOS_v268/./ -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//HAL/inc -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp/ -IE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//drivers/inc  -pipe -D__hal__ -DALT_NO_INSTRUCTION_EMULATION -D__chibios__    -Os -g -Wall   -mno-hw-div -mno-hw-mul -mno-hw-mulx  -o obj/default/ledos/ledos.o ledos/ledos.c
+Info: Linking ledos_main.elf
+nios2-elf-g++  -T'E:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//linker.x' -msys-crt0='E:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp//obj/HAL/src/crt0.o' -msys-lib=chibios_v268_bsp -LE:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp/   -Wl,-Map=ledos_main.map   -Os -g -Wall   -mno-hw-div -mno-hw-mul -mno-hw-mulx  -o ledos_main.elf obj/default/hello_world_small.o obj/default/ledos/adv7513/adv7513.o obj/default/ledos/adv7513/edid/edid.o obj/default/ledos/adv7513/encoder/encoder.o obj/default/ledos/aud_codec/aud_codec.o obj/default/ledos/cortex/acortex/acortex.o obj/default/ledos/cortex/acortex/i2c/i2c.o obj/default/ledos/cortex/acortex/pcm_bffr/pcm_bffr.o obj/default/ledos/cortex/acortex/ssm2603_drvr/ssm2603_drvr.o obj/default/ledos/cortex/cortex.o obj/default/ledos/cortex/fgyrus/fgyrus.o obj/default/ledos/cortex/sys_mem_intf/sys_mem_intf.o obj/default/ledos/ledos.o -lm -msys-lib=m
+nios2-elf-insert ledos_main.elf --thread_model chibios_v268 --cpu_name cpu --qsys true --simulation_enabled false --stderr_dev jtag_uart_0 --stdin_dev jtag_uart_0 --stdout_dev jtag_uart_0 --sopc_system_name limbus --quartus_project_dir "e:/WorK/github/synesthesia_moksha/wxp/dgn/syn" --jdi e:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp/../../syn/syn_moksha.jdi --sopcinfo e:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp/../../syn/limbus.sopcinfo
+Info: (ledos_main.elf) 133 KBytes program size (code + initialized data).
+Info:                  371 KBytes free for stack + heap.
+Info: Creating ledos_main.objdump
+nios2-elf-objdump --disassemble --syms --all-header --source ledos_main.elf >ledos_main.objdump
+[ledos_main build complete]

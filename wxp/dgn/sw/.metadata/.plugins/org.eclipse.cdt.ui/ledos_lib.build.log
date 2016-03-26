@@ -1,9 +1,0 @@
-
-**** Build of configuration Nios II for project ledos_lib ****
-
-make all 
-/usr/bin/sh: line 0: cd: ./limbus_bsp/: No such file or directory
-makefile:201: limbus_bsp//public.mk: No such file or directory
-make: *** No rule to make target `limbus_bsp//public.mk'.  Stop.
-
-**** Build Finished ****

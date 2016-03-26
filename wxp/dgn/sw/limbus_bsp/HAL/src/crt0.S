@@ -159,9 +159,12 @@ __reset:
  * reset code is allowed unless optimizing for RTL simulation.
  * RTL simulations can ensure the instruction cache is already initialized
  * so skipping this loop speeds up RTL simulation.
+ *
+ * When ECC is present, need to execute initi for each word address
+ * to ensure ECC parity bits in cache RAM get initialized.
  */
 
-#if NIOS2_ICACHE_SIZE > 0 && defined(ALT_ALLOW_CODE_AT_RESET) && !defined(ALT_SIM_OPTIMIZE)
+#if NIOS2_ICACHE_SIZE > 0 && defined(ALT_ALLOW_CODE_AT_RESET) && (!defined(ALT_SIM_OPTIMIZE) || defined(NIOS2_ECC_PRESENT))
     /* Assume the instruction cache size is always a power of two. */
 #if NIOS2_ICACHE_SIZE > 0x8000
     movhi r2, %hi(NIOS2_ICACHE_SIZE)
@@ -455,6 +458,13 @@ _start:
     .int 3, 1, 0b, 1b
     .popsection
 #endif /* ALT_SIM_OPTIMIZE */
+
+/*
+ * Turn off the use of r1 (the assembler temporary register)
+ * so that call instructions can be safely relaxed across a
+ * 256MB boundary if needed
+ */
+    .set at
 
 /*
  * The alt_load() facility is normally used when there is no bootloader.

@@ -1,7 +1,0 @@
-
-**** Clean-only build of configuration Nios II for project ledos-lib ****
-
-make clean 
-[ledos-lib clean complete]
-
-**** Build Finished ****

@@ -129,12 +129,12 @@ BUILD_CONFIGS := default
 
 # This following VERSION comment indicates the version of the tool used to 
 # generate this makefile. A makefile variable is provided for VERSION as well. 
-# ACDS_VERSION: 13.1
-ACDS_VERSION := 13.1
+# ACDS_VERSION: 15.1
+ACDS_VERSION := 15.1
 
 # This following BUILD_NUMBER comment indicates the build number of the tool 
 # used to generate this makefile. 
-# BUILD_NUMBER: 162
+# BUILD_NUMBER: 185
 
 # Define path to the application ELF. 
 # It may be used by the makefile fragments so is defined before including them. 
@@ -143,18 +143,18 @@ ELF := ledos_main.elf
 
 # Paths to C, C++, and assembly source files.
 C_SRCS += hello_world_small.c
+C_SRCS += ledos/adv7513/adv7513.c
+C_SRCS += ledos/adv7513/edid/edid.c
+C_SRCS += ledos/adv7513/encoder/encoder.c
 C_SRCS += ledos/aud_codec/aud_codec.c
+C_SRCS += ledos/cortex/acortex/acortex.c
 C_SRCS += ledos/cortex/acortex/i2c/i2c.c
 C_SRCS += ledos/cortex/acortex/pcm_bffr/pcm_bffr.c
 C_SRCS += ledos/cortex/acortex/ssm2603_drvr/ssm2603_drvr.c
 C_SRCS += ledos/cortex/cortex.c
-C_SRCS += ledos/ledos.c
-C_SRCS += ledos/cortex/acortex/acortex.c
 C_SRCS += ledos/cortex/fgyrus/fgyrus.c
 C_SRCS += ledos/cortex/sys_mem_intf/sys_mem_intf.c
-C_SRCS += ledos/adv7513/encoder/encoder.c
-C_SRCS += ledos/adv7513/edid/edid.c
-C_SRCS += ledos/adv7513/adv7513.c
+C_SRCS += ledos/ledos.c
 CXX_SRCS :=
 ASM_SRCS :=
 
@@ -189,7 +189,7 @@ CRT0 :=
 SYS_LIB :=
 
 # Define path to the root of the BSP.
-BSP_ROOT_DIR := G:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp/
+BSP_ROOT_DIR := E:/WorK/github/synesthesia_moksha/wxp/dgn/sw/limbus_bsp/
 
 # List of application specific include directories, library directories and library names
 APP_INCLUDE_DIRS :=
@@ -200,7 +200,7 @@ APP_LIBRARY_NAMES :=
 BUILD_PRE_PROCESS :=
 BUILD_POST_PROCESS :=
 
-QUARTUS_PROJECT_DIR := G:/WorK/github/synesthesia_moksha/wxp/dgn/syn/
+QUARTUS_PROJECT_DIR := E:/WorK/github/synesthesia_moksha/wxp/dgn/syn/
 
 
 #END GENERATED
@@ -263,7 +263,6 @@ ifneq ($(WARNING.SMALL_STACK_SIZE),)
 # setting to eliminate the warning
 $(warning WARNING: $(WARNING.SMALL_STACK_SIZE))
 endif
-
 
 # If the BSP public.mk indicates that ALT_SIM_OPTIMIZE is set, rename the ELF 
 # by prefixing it with RUN_ON_HDL_SIMULATOR_ONLY_.  
@@ -328,13 +327,14 @@ else
 endif
 
 # Put each BSP dependent library in a group to avoid circular dependencies.
-APP_BSP_DEP_LIBS := $(foreach l,$(ALT_BSP_DEP_LIBRARY_NAMES),-Wl,--start-group -l$(ALT_C_LIBRARY) -lgcc -l$(l) -Wl,--end-group)
+APP_BSP_DEP_LIBS := $(foreach l,$(ALT_BSP_DEP_LIBRARY_NAMES),-Wl,--start-group -l$(ALT_C_LIBRARY) -lgcc -lm -l$(l) -Wl,--end-group)
 
 else # !AVOID_NIOS2_GCC3_OPTIONS
 
 #
 # Use Nios II GCC 3.X options.
 #
+ALT_BSP_DEP_LIBRARY_NAMES += $(ALT_BSP_DEP_LIBRARY_NAMES) m
 APP_BSP_DEP_LIBS := $(addprefix -msys-lib=, $(ALT_BSP_DEP_LIBRARY_NAMES))
 
 endif # !AVOID_NIOS2_GCC3_OPTIONS
@@ -441,7 +441,7 @@ endif
 # multiple .sopcinfo files in a Quartus project. 
 ifeq ($(JDI_FILE),)
 ifneq ($(QUARTUS_PROJECT_DIR),)
-JDI_FILE := $(wildcard $(QUARTUS_PROJECT_DIR)/*.jdi)
+JDI_FILE := $(firstword $(wildcard $(QUARTUS_PROJECT_DIR)/output_files/*.jdi) $(wildcard $(QUARTUS_PROJECT_DIR)/*.jdi))
 endif
 endif
 
@@ -860,14 +860,6 @@ help :
 	@$(ECHO) "    libs              - All libraries (including BSP)"
 	@$(ECHO) "    flash             - All flash files"	
 	@$(ECHO) "    mem_init_generate - All memory initialization files"
-ifeq ($(QSYS),1)
-	@$(ECHO) "    mem_init_install  - This target is deprecated for QSys Systems"
-	@$(ECHO) "                         --> Use the mem_init_generate target and then"
-	@$(ECHO) "                             add the generated meminit.qip file to your"
-	@$(ECHO) "                             Quartus II Project."
-else # if QSYS != 1
-	@$(ECHO) "    mem_init_install  - Copy memory initialization files to Quartus II project"
-endif # QSYS == 1
 	@$(ECHO)
 	@$(ECHO) "  Clean targets:"
 	@$(ECHO) "    clean_all         - Application and all libraries (including BSP)"
@@ -1033,7 +1025,9 @@ endif # VSIM not set
 ifeq ($(SPD),)
 ifneq ($(ABS_QUARTUS_PROJECT_DIR),)
 ifneq ($(SOPC_NAME),)
-SPD := $(ABS_QUARTUS_PROJECT_DIR)/$(SOPC_NAME)_tb.spd
+SPD_LOCATION = $(ABS_QUARTUS_PROJECT_DIR)/$(SOPC_NAME)_tb/$(SOPC_NAME)_tb/$(SOPC_NAME)_tb.spd
+LEGACY_SPD_LOCATION = $(ABS_QUARTUS_PROJECT_DIR)/$(SOPC_NAME)_tb.spd
+SPD = $(if $(wildcard $(SPD_LOCATION)),$(SPD_LOCATION),$(LEGACY_SPD_LOCATION))
 endif # SOPC_NAME set
 endif # ABS_QUARTUS_PROJECT_DIR set
 endif # SPD == empty string
