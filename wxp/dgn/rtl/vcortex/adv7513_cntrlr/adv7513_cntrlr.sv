@@ -185,6 +185,7 @@ module adv7513_cntrlr #(
     .clk                (clk),
     .clk_hdmi           (clk_hdmi),
     .rst_n              (rst_n),
+    .rst_hdmi_n         (hdmi_rst_n),
 
     .line_bffr_en       (line_bffr_en),
     .bffr_ovrflw        (bffr_ovrflw),
